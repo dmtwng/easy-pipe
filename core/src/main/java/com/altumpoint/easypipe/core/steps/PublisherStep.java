@@ -8,11 +8,16 @@ package com.altumpoint.easypipe.core.steps;
  * @param <M> type of message.
  * @since 0.1.0
  */
-public class PublisherStep<M> implements PipeStep<M> {
+public class PublisherStep<M> implements EasyPipeStep<M> {
 
     private EasyPublisher<M> publisher;
 
-    private PipeStep<M> nextStep;
+    private EasyPipeStep<M> nextStep;
+
+    public PublisherStep(EasyPublisher<M> publisher) {
+        this.publisher = publisher;
+    }
+
 
     @Override
     public void handle(M message) {
@@ -23,11 +28,7 @@ public class PublisherStep<M> implements PipeStep<M> {
         }
     }
 
-    public void setPublisher(EasyPublisher<M> publisher) {
-        this.publisher = publisher;
-    }
-
-    public void setNextStep(PipeStep nextStep) {
+    public void setNextStep(EasyPipeStep nextStep) {
         this.nextStep = nextStep;
     }
 }

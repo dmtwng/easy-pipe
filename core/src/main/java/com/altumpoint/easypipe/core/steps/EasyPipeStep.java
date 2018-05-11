@@ -6,9 +6,9 @@ package com.altumpoint.easypipe.core.steps;
  * @param <M> Type of messages.
  * @since 0.1.0
  */
-public interface PipeStep<M> {
+public interface EasyPipeStep<M> {
 
     void handle(M message);
 
-    void setNextStep(PipeStep nextStep);
+    void setNextStep(EasyPipeStep nextStep);
 }

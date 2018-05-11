@@ -8,18 +8,19 @@ import com.altumpoint.easypipe.core.EasyPipe;
  * @param <M> Type of messages.
  * @since 0.1.0
  */
-public class ConsumerStep<M> implements PipeStep<M>, EasyPipe {
+public class ConsumerStep<M> implements EasyPipeStep<M>, EasyPipe {
 
     private EasyConsumer<M> consumer;
 
-    private PipeStep<M> nextStep;
+    private EasyPipeStep<M> nextStep;
 
-    public void setConsumer(EasyConsumer<M> consumer) {
+    public ConsumerStep(EasyConsumer<M> consumer) {
         this.consumer = consumer;
         this.consumer.setMessageConsumer(this::handle);
     }
 
-    public void setNextStep(PipeStep nextStep) {
+
+    public void setNextStep(EasyPipeStep nextStep) {
         this.nextStep = nextStep;
     }
 

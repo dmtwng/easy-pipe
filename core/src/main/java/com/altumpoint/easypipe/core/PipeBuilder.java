@@ -5,7 +5,7 @@ import com.altumpoint.easypipe.core.steps.ConsumerStep;
 import com.altumpoint.easypipe.core.steps.EasyConsumer;
 import com.altumpoint.easypipe.core.steps.EasyPublisher;
 import com.altumpoint.easypipe.core.steps.EasyTransformer;
-import com.altumpoint.easypipe.core.steps.PipeStep;
+import com.altumpoint.easypipe.core.steps.EasyPipeStep;
 import com.altumpoint.easypipe.core.steps.PublisherStep;
 import com.altumpoint.easypipe.core.steps.TransformerStep;
 
@@ -20,7 +20,7 @@ import java.util.Iterator;
  */
 public final class PipeBuilder {
 
-    private Deque<PipeStep> steps;
+    private Deque<EasyPipeStep> steps;
 
     private PipeBuilder() {
         this.steps = new ArrayDeque<>();
@@ -28,22 +28,19 @@ public final class PipeBuilder {
 
     public static <M> PipeBuilder startPipe(EasyConsumer<M> consumer) {
         PipeBuilder builder = new PipeBuilder();
-        ConsumerStep<M> consumerStep = new ConsumerStep<>();
-        consumerStep.setConsumer(consumer);
+        ConsumerStep<M> consumerStep = new ConsumerStep<>(consumer);
         builder.steps.add(consumerStep);
         return builder;
     }
 
     public <M, R> PipeBuilder addTransformer(EasyTransformer<M, R> transformer) {
-        TransformerStep<M, R> transformerStep = new TransformerStep<>();
-        transformerStep.setTransformer(transformer);
+        TransformerStep<M, R> transformerStep = new TransformerStep<>(transformer);
         steps.add(transformerStep);
         return this;
     }
 
     public <M> PipeBuilder addPublisher(EasyPublisher<M> publisher) {
-        PublisherStep<M> publisherStep = new PublisherStep<>();
-        publisherStep.setPublisher(publisher);
+        PublisherStep<M> publisherStep = new PublisherStep<>(publisher);
         steps.add(publisherStep);
         return this;
     }
@@ -53,10 +50,10 @@ public final class PipeBuilder {
         if (this.steps.size() < 1) {
             throw new IllegalStateException("Cannot build pipe with no steps.");
         }
-        Iterator<PipeStep> iterator = this.steps.descendingIterator();
-        PipeStep prevStep = iterator.next();
+        Iterator<EasyPipeStep> iterator = this.steps.descendingIterator();
+        EasyPipeStep prevStep = iterator.next();
         while (iterator.hasNext()) {
-            PipeStep currentStep = iterator.next();
+            EasyPipeStep currentStep = iterator.next();
             currentStep.setNextStep(prevStep);
             prevStep = currentStep;
         }
