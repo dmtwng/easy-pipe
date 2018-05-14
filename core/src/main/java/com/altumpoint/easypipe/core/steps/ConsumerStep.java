@@ -24,10 +24,12 @@ public class ConsumerStep<M> implements EasyPipeStep<M>, EasyPipe {
         this.nextStep = nextStep;
     }
 
+    @Override
     public void start() {
         this.consumer.start();
     }
 
+    @Override
     public void stop() {
         this.consumer.stop();
     }

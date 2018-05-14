@@ -3,11 +3,15 @@ package com.altumpoint.easypipe.core;
 
 import com.altumpoint.easypipe.core.steps.ConsumerStep;
 import com.altumpoint.easypipe.core.steps.EasyConsumer;
+import com.altumpoint.easypipe.core.steps.EasyPipeStep;
 import com.altumpoint.easypipe.core.steps.EasyPublisher;
 import com.altumpoint.easypipe.core.steps.EasyTransformer;
-import com.altumpoint.easypipe.core.steps.EasyPipeStep;
 import com.altumpoint.easypipe.core.steps.PublisherStep;
 import com.altumpoint.easypipe.core.steps.TransformerStep;
+import io.micrometer.core.instrument.MeterRegistry;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
@@ -18,24 +22,31 @@ import java.util.Iterator;
  *
  * @since 0.1.0
  */
+@Component
+@Scope("prototype")
 public final class PipeBuilder {
+
+    private MeterRegistry meterRegistry;
+
+    private String pipeName;
 
     private Deque<EasyPipeStep> steps;
 
-    private PipeBuilder() {
+    @Autowired
+    private PipeBuilder(MeterRegistry meterRegistry) {
+        this.meterRegistry = meterRegistry;
         this.steps = new ArrayDeque<>();
     }
 
-    public static <M> PipeBuilder startPipe(EasyConsumer<M> consumer) {
-        PipeBuilder builder = new PipeBuilder();
+    public <M> PipeBuilder startPipe(String pipeName, EasyConsumer<M> consumer) {
         ConsumerStep<M> consumerStep = new ConsumerStep<>(consumer);
-        builder.steps.add(consumerStep);
-        return builder;
+        steps.add(consumerStep);
+        this.pipeName = pipeName;
+        return this;
     }
 
-    public <M, R> PipeBuilder addTransformer(EasyTransformer<M, R> transformer) {
-        TransformerStep<M, R> transformerStep = new TransformerStep<>(transformer);
-        steps.add(transformerStep);
+    public <M, R> PipeBuilder addTransformer(String name, EasyTransformer<M, R> transformer) {
+        steps.add(new TransformerStep<>(String.format("%s.%s", pipeName, name), transformer, meterRegistry));
         return this;
     }
 
@@ -47,7 +58,7 @@ public final class PipeBuilder {
 
 
     public EasyPipe build() {
-        if (this.steps.size() < 1) {
+        if (this.steps.isEmpty()) {
             throw new IllegalStateException("Cannot build pipe with no steps.");
         }
         Iterator<EasyPipeStep> iterator = this.steps.descendingIterator();

@@ -17,13 +17,14 @@ public class EasyPipesConfig {
     @Autowired
     @EasyPipeComponent("doubles-stream")
     public EasyPipe doublesStream(
+            PipeBuilder pipeBuilder,
             DoublesConsumer doublesConsumer,
             PercentsTransformer percentsTransformer,
             LogsPublisher logsPublisher
     ) {
-        return PipeBuilder
-                .startPipe(doublesConsumer)
-                .addTransformer(percentsTransformer)
+        return pipeBuilder
+                .startPipe("doubles-stream", doublesConsumer)
+                .addTransformer("d-transformer", percentsTransformer)
                 .addPublisher(logsPublisher)
                 .build();
     }
