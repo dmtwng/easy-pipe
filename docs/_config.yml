@@ -1,3 +1,5 @@
 theme: jekyll-theme-cayman
-tite: EasyPipe
+title: EasyPipe
 description: Yet another data streaming engine built on top of Spring Boot
+github:
+    owner_name: Dmytro Patserkovskyi
