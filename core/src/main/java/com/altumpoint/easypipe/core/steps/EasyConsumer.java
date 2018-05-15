@@ -10,7 +10,17 @@ import java.util.function.Consumer;
  * @param <M> Type of messages.
  * @since 0.1.0
  */
-public interface EasyConsumer<M> extends EasyPipe {
+public interface EasyConsumer<M> {
 
     void setMessageConsumer(Consumer<M> messageConsumer);
+
+    /**
+     * Starts consuming.
+     */
+    void start();
+
+    /**
+     * Stops consuming.
+     */
+    void stop();
 }

@@ -28,6 +28,7 @@ public class PublisherStep<M> implements EasyPipeStep<M> {
         }
     }
 
+    @Override
     public void setNextStep(EasyPipeStep nextStep) {
         this.nextStep = nextStep;
     }

@@ -24,7 +24,7 @@ import java.util.Iterator;
  */
 @Component
 @Scope("prototype")
-public final class PipeBuilder {
+public final class SimplePipeBuilder {
 
     private MeterRegistry meterRegistry;
 
@@ -33,24 +33,24 @@ public final class PipeBuilder {
     private Deque<EasyPipeStep> steps;
 
     @Autowired
-    private PipeBuilder(MeterRegistry meterRegistry) {
+    private SimplePipeBuilder(MeterRegistry meterRegistry) {
         this.meterRegistry = meterRegistry;
         this.steps = new ArrayDeque<>();
     }
 
-    public <M> PipeBuilder startPipe(String pipeName, EasyConsumer<M> consumer) {
+    public <M> SimplePipeBuilder startPipe(String pipeName, EasyConsumer<M> consumer) {
         ConsumerStep<M> consumerStep = new ConsumerStep<>(consumer);
         steps.add(consumerStep);
         this.pipeName = pipeName;
         return this;
     }
 
-    public <M, R> PipeBuilder addTransformer(String name, EasyTransformer<M, R> transformer) {
+    public <M, R> SimplePipeBuilder addTransformer(String name, EasyTransformer<M, R> transformer) {
         steps.add(new TransformerStep<>(String.format("%s.%s", pipeName, name), transformer, meterRegistry));
         return this;
     }
 
-    public <M> PipeBuilder addPublisher(EasyPublisher<M> publisher) {
+    public <M> SimplePipeBuilder addPublisher(EasyPublisher<M> publisher) {
         PublisherStep<M> publisherStep = new PublisherStep<>(publisher);
         steps.add(publisherStep);
         return this;
@@ -69,6 +69,6 @@ public final class PipeBuilder {
             prevStep = currentStep;
         }
 
-        return (EasyPipe) prevStep;
+        return new SimplePipe((ConsumerStep) prevStep);
     }
 }

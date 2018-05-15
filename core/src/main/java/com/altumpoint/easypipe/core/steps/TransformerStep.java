@@ -42,6 +42,7 @@ public class TransformerStep<M, R> implements EasyPipeStep<M> {
         nextStep.handle(transformationResult);
     }
 
+    @Override
     public void setNextStep(EasyPipeStep nextStep) {
         this.nextStep = nextStep;
     }
