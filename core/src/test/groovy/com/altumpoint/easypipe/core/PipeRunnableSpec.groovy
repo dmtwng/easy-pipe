@@ -2,7 +2,7 @@ package com.altumpoint.easypipe.core
 
 import spock.lang.Specification
 
-class PipeRunnableTest extends Specification {
+class PipeRunnableSpec extends Specification {
 
     def "pipe should be terminated"() {
         given:

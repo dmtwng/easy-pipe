@@ -35,7 +35,7 @@ public class TransformerStep<M, R> implements EasyPipeStep<M> {
         counter.increment();
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
-        R transformationResult = this.transformer.transform(message);
+        R transformationResult = transformer.transform(message);
         stopWatch.stop();
         timeGauge.set(stopWatch.getLastTaskTimeMillis());
 

@@ -21,10 +21,10 @@ public class PublisherStep<M> implements EasyPipeStep<M> {
 
     @Override
     public void handle(M message) {
-        this.publisher.publish(message);
+        publisher.publish(message);
 
-        if (this.nextStep != null) {
-            this.nextStep.handle(message);
+        if (nextStep != null) {
+            nextStep.handle(message);
         }
     }
 

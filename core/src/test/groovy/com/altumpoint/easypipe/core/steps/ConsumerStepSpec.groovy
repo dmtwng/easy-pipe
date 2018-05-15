@@ -2,7 +2,7 @@ package com.altumpoint.easypipe.core.steps
 
 import spock.lang.Specification
 
-class ConsumerStepTest extends Specification {
+class ConsumerStepSpec extends Specification {
 
     private consumer
     private consumerStep
@@ -10,9 +10,9 @@ class ConsumerStepTest extends Specification {
 
     void setup() {
         consumer = Mock(EasyConsumer)
-        consumerStep = new ConsumerStep<String>(this.consumer)
+        consumerStep = new ConsumerStep<String>(consumer)
         nextStep = Mock(EasyPipeStep)
-        this.consumerStep.setNextStep(this.nextStep)
+        consumerStep.setNextStep(nextStep)
     }
 
     void cleanup() {
@@ -21,25 +21,25 @@ class ConsumerStepTest extends Specification {
 
     def "should start consuming"() {
         when:
-            this.consumerStep.start()
+            consumerStep.start()
 
         then:
-            1 * this.consumer.start()
+            1 * consumer.start()
     }
 
     def "should stop consuming"() {
         when:
-            this.consumerStep.stop()
+            consumerStep.stop()
 
         then:
-            1 * this.consumer.stop()
+            1 * consumer.stop()
     }
 
     def "should invoke next step"() {
         when:
-            this.consumerStep.handle("message")
+            consumerStep.handle("message")
 
         then:
-            1 * this.nextStep.handle("message")
+            1 * nextStep.handle("message")
     }
 }

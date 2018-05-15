@@ -25,7 +25,7 @@ public class ConsumerStep<M> implements EasyPipeStep<M> {
 
     @Override
     public void handle(M message) {
-        this.nextStep.handle(message);
+        nextStep.handle(message);
     }
 
     /**
