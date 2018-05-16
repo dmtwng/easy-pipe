@@ -25,7 +25,9 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
-	</properties>
+
+        <maven.deploy.skip>true</maven.deploy.skip>
+    </properties>
 
     <dependencyManagement>
         <dependencies>
@@ -121,4 +123,13 @@
             </plugin>
         </plugins>
     </build>
+
+    <distributionManagement>
+        <repository>
+            <id>bintray-dmytro-winged-maven</id>
+            <name>dmytro-winged-maven</name>
+            <url>https://api.bintray.com/maven/dmytro-winged/maven/easy-pipe/;publish=1</url>
+        </repository>
+    </distributionManagement>
+
 </project>

@@ -12,6 +12,9 @@
     <artifactId>core</artifactId>
     <name>EasyPipe Core</name>
 
+    <properties>
+        <maven.deploy.skip>false</maven.deploy.skip>
+    </properties>
 
     <dependencies>
         <dependency>
