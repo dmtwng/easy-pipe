@@ -1,6 +1,7 @@
 EasyPipe
 ======================
 
+[![Download](https://api.bintray.com/packages/dmytro-winged/maven/easy-pipe/images/download.svg) ](https://bintray.com/dmytro-winged/maven/easy-pipe/_latestVersion)
 [![Build Status](https://travis-ci.org/dmytro-winged/easy-pipe.svg?branch=master)](https://travis-ci.org/dmytro-winged/easy-pipe)
 [![Code Coverage](https://sonarcloud.io/api/project_badges/measure?project=com.altumpoint.easypipe%3Aeasypipe-parent&metric=coverage)](https://sonarcloud.io/component_measures?id=com.altumpoint.easypipe%3Aeasypipe-parent&metric=Coverage)
 [![Quality Gates](https://sonarcloud.io/api/project_badges/measure?project=com.altumpoint.easypipe%3Aeasypipe-parent&metric=alert_status)](https://sonarcloud.io/dashboard?id=com.altumpoint.easypipe%3Aeasypipe-parent)
@@ -19,7 +20,7 @@ Add EasyPipe dependency to you Spring Boot application.
 <dependency>
     <groupId>com.altumpoint.easypipe</groupId>
     <artifactId>core</artifactId>
-    <version>0.1.0</version>
+    <version>0.1.1</version>
 </dependency>
 ```
 
