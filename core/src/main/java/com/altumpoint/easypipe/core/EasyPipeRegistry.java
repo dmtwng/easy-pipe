@@ -33,7 +33,7 @@ public class EasyPipeRegistry {
 
     private ConfigurableListableBeanFactory beanFactory;
 
-    Map<String, PipeDefinition> pipeDefinitions;
+    private Map<String, PipeDefinition> pipeDefinitions;
 
 
     @Autowired
