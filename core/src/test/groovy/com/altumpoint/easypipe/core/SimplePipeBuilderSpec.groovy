@@ -20,19 +20,25 @@ class SimplePipeBuilderSpec extends Specification {
 
         and:
         def pipeBuilder = new SimplePipeBuilder(meterRegistry)
+
+        and:
         def consumer = Mock(EasyConsumer)
         def msgConsumer
         consumer.setMessageConsumer(_ as Consumer) >> {Consumer setConsumer -> msgConsumer = setConsumer}
         consumer.start() >> {msgConsumer.accept("test message")}
+
+        and:
         def transformer = Mock(EasyTransformer)
         transformer.transform("test message") >> "transformed message"
+
+        and:
         def publisher = Mock(EasyPublisher)
 
         when:
         pipeBuilder
                 .startPipe("test-pipe", consumer)
                 .addTransformer("test-transformer", transformer)
-                .addPublisher(publisher)
+                .addPublisher("test-publisher", publisher)
                 .build()
                 .start()
 

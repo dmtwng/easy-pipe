@@ -25,7 +25,7 @@ public class EasyPipesConfig {
         return pipeBuilder
                 .startPipe("doubles-stream", doublesConsumer)
                 .addTransformer("d-transformer", percentsTransformer)
-                .addPublisher(logsPublisher)
+                .addPublisher("d-publisher", logsPublisher)
                 .build();
     }
 }

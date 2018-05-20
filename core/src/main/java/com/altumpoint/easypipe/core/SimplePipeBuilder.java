@@ -1,6 +1,6 @@
 package com.altumpoint.easypipe.core;
 
-
+import com.altumpoint.easypipe.core.meters.DefaultMetersStrategy;
 import com.altumpoint.easypipe.core.steps.ConsumerStep;
 import com.altumpoint.easypipe.core.steps.EasyConsumer;
 import com.altumpoint.easypipe.core.steps.EasyPipeStep;
@@ -39,19 +39,22 @@ public final class SimplePipeBuilder {
     }
 
     public <M> SimplePipeBuilder startPipe(String pipeName, EasyConsumer<M> consumer) {
-        ConsumerStep<M> consumerStep = new ConsumerStep<>(consumer);
-        steps.add(consumerStep);
         this.pipeName = pipeName;
+        ConsumerStep<M> consumerStep = new ConsumerStep<>(
+                consumer, new DefaultMetersStrategy(stepFullName("consumer"), meterRegistry));
+        steps.add(consumerStep);
         return this;
     }
 
-    public <M, R> SimplePipeBuilder addTransformer(String name, EasyTransformer<M, R> transformer) {
-        steps.add(new TransformerStep<>(String.format("%s.%s", pipeName, name), transformer, meterRegistry));
+    public <M, R> SimplePipeBuilder addTransformer(String stepName, EasyTransformer<M, R> transformer) {
+        steps.add(new TransformerStep<>(
+                transformer, new DefaultMetersStrategy(stepFullName(stepName), meterRegistry)));
         return this;
     }
 
-    public <M> SimplePipeBuilder addPublisher(EasyPublisher<M> publisher) {
-        PublisherStep<M> publisherStep = new PublisherStep<>(publisher);
+    public <M> SimplePipeBuilder addPublisher(String stepName, EasyPublisher<M> publisher) {
+        PublisherStep<M> publisherStep = new PublisherStep<>(
+                publisher, new DefaultMetersStrategy(stepFullName(stepName), meterRegistry));
         steps.add(publisherStep);
         return this;
     }
@@ -70,5 +73,9 @@ public final class SimplePipeBuilder {
         }
 
         return new SimplePipe((ConsumerStep) prevStep);
+    }
+
+    private String stepFullName(String stepName) {
+        return pipeName + "." + stepName;
     }
 }

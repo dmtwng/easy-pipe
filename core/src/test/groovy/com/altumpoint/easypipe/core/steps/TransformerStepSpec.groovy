@@ -1,23 +1,22 @@
 package com.altumpoint.easypipe.core.steps
 
+import com.altumpoint.easypipe.core.meters.MetersStrategy
 import io.micrometer.core.instrument.Counter
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry
 import spock.lang.Specification
 
-import java.util.concurrent.atomic.AtomicLong
 
 class TransformerStepSpec extends Specification {
+
     private transformer
-    private meterRegistry
+    private metersStrategy
     private transformerStep
     private nextStep
 
     void setup() {
         transformer = Mock(EasyTransformer)
-        meterRegistry = Mock(SimpleMeterRegistry)
-        meterRegistry.counter("easy-pipe.test.count") >> Mock(Counter)
-        meterRegistry.gauge("easy-pipe.test.time", _) >> Mock(AtomicLong)
-        transformerStep = new TransformerStep<String, String>("test", transformer, meterRegistry)
+        metersStrategy = Mock(MetersStrategy)
+        transformerStep = new TransformerStep<String, String>(transformer, metersStrategy)
         nextStep = Mock(EasyPipeStep)
         transformerStep.setNextStep(nextStep)
     }
@@ -30,6 +29,8 @@ class TransformerStepSpec extends Specification {
         transformerStep.handle("message")
 
         then:
+        1 * metersStrategy.beforeHandling()
+        1 * metersStrategy.afterHandling(_)
         1 * nextStep.handle("result")
     }
 
