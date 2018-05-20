@@ -22,7 +22,7 @@ class MetersDataSpec extends Specification {
 
         and:
         def delay = 50
-        def delta = delay / 10
+        def delta = delay / 5
 
         when:
         metersData.addStopWatch("KEY")
