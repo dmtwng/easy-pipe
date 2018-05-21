@@ -16,7 +16,8 @@ public class LogsPublisher implements EasyPublisher<String> {
         try {
             Thread.sleep(ThreadLocalRandom.current().nextInt(200, 250));
         } catch (InterruptedException e) {
-            LOGGER.error("Publisher was interrupted.", e);
+            LOGGER.warn("Publisher was interrupted.", e);
+            Thread.currentThread().interrupt();
         }
         LOGGER.info("message published: {}", message);
     }

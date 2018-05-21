@@ -18,7 +18,8 @@ public class PercentsTransformer implements EasyTransformer<String, String> {
         try {
             Thread.sleep(ThreadLocalRandom.current().nextInt(400, 550));
         } catch (InterruptedException e) {
-            LOGGER.error("Transformer was interrupted.", e);
+            LOGGER.warn("Transformer was interrupted.", e);
+            Thread.currentThread().interrupt();
         }
         String transformedResult = String.format(PERCENTS_FORMAT, Math.round(Double.parseDouble(message) * 100));
         LOGGER.info("Transformed message {} to {}", message, transformedResult);
