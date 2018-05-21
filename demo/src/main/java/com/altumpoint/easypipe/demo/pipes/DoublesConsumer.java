@@ -18,15 +18,10 @@ public class DoublesConsumer implements EasyConsumer<String> {
 
     public void start() {
         isRunning = true;
-        try {
-            while (isRunning) {
-                Thread.sleep(500);
-                String message = String.valueOf(Math.random());
-                LOGGER.info("Got message: {}", message);
-                messagesConsumer.accept(message);
-            }
-        } catch (InterruptedException e) {
-            LOGGER.info("Generator was interrupted");
+        while (isRunning) {
+            String message = String.valueOf(Math.random());
+            LOGGER.info("Got message: {}", message);
+            messagesConsumer.accept(message);
         }
     }
 
