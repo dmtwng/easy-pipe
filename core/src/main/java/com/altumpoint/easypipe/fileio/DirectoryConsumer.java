@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.nio.file.StandardWatchEventKinds;
 import java.nio.file.WatchEvent;
 import java.nio.file.WatchKey;
@@ -70,7 +71,7 @@ public class DirectoryConsumer implements EasyConsumer<String> {
 
 
     private void watchDirectory() {
-        Path directoryPath = new File(path).toPath();
+        Path directoryPath = Paths.get(path);
         checkItIsFolder(directoryPath);
 
         try (WatchService watcher = directoryPath.getFileSystem().newWatchService()) {
