@@ -14,14 +14,6 @@ public class PipeRunnable implements Runnable {
         this.pipe = pipe;
     }
 
-
-    /**
-     * Terminate pipe.
-     */
-    public void terminate() {
-        pipe.stop();
-    }
-
     /**
      * Run pipe.
      */

@@ -102,8 +102,7 @@ public class EasyPipeRegistry {
             return "pipe is not running";
         }
 
-        pipeDefinition.getRunnable().terminate();
-        pipeDefinition.getThread().join();
+        pipeDefinition.getPipe().stop();
         pipeDefinition.setRunnable(null);
         pipeDefinition.setThread(null);
         return "stopped";
