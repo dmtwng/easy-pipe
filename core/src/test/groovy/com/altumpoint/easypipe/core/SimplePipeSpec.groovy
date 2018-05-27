@@ -5,8 +5,8 @@ import spock.lang.Specification
 
 class SimplePipeSpec extends Specification {
 
-    def consumer
-    def simplePipe
+    private consumer
+    private simplePipe
 
     void setup() {
         consumer = Mock(ConsumerStep)

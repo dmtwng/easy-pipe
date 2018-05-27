@@ -18,10 +18,6 @@ class ConsumerStepSpec extends Specification {
         consumerStep.setNextStep(nextStep)
     }
 
-    void cleanup() {
-    }
-
-
     def "should start consuming"() {
         when:
         consumerStep.start()

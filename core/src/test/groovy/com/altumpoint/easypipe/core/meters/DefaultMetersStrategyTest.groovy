@@ -9,10 +9,10 @@ import java.util.concurrent.atomic.AtomicLong
 class DefaultMetersStrategyTest extends Specification {
     private static final String STOP_WATCH_KEY = "start-stopwatch"
 
-    private def counter
-    private def gauge
-    private def meterRegistry
-    private def metersStrategy
+    private counter
+    private gauge
+    private meterRegistry
+    private metersStrategy
 
     void setup() {
         counter = Mock(Counter)
