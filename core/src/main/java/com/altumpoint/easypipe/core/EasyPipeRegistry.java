@@ -93,7 +93,7 @@ public class EasyPipeRegistry {
     @GET
     @Produces("text/plain")
     @Path("/{pipeName}/stop")
-    public String stop(@PathParam("pipeName") String pipeName) throws InterruptedException {
+    public String stop(@PathParam("pipeName") String pipeName) {
         if (!pipeDefinitions.containsKey(pipeName)) {
             return String.format("Pipe %s doesn't registered", pipeName);
         }
