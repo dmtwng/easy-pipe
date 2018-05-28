@@ -64,7 +64,7 @@ class DirectoryConsumerSpec extends Specification {
 
     def "should fail consumer creation if path is not a directory"() {
         when: "creating new consumer"
-        new DirectoryConsumer(path)
+        new DirectoryConsumer(path).start()
 
         then: "exception should be thrown"
         fileSystemProvider.readAttributes(path, "basic:isDirectory", _ as LinkOption[]) >> [

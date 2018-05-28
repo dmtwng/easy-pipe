@@ -40,14 +40,6 @@ public class DirectoryConsumer implements EasyConsumer<String> {
     }
 
     public DirectoryConsumer(Path path, long pollTimeout) {
-        try {
-             if (!pathIsDirectory(path)) {
-                 throw new IOException("Path: " + path.getFileName() + " is not a folder");
-             }
-        } catch (IOException e) {
-            throw new IllegalArgumentException("Failed to watch a directory: " + path, e);
-        }
-
         this.path = path;
         this.pollTimeout = pollTimeout;
     }
@@ -62,6 +54,14 @@ public class DirectoryConsumer implements EasyConsumer<String> {
     public void start() {
         if (isRuning) {
             return;
+        }
+
+        try {
+            if (!pathIsDirectory(path)) {
+                throw new IOException("Path: " + path.getFileName() + " is not a folder");
+            }
+        } catch (IOException e) {
+            throw new IllegalArgumentException("Failed to watch a directory: " + path, e);
         }
 
         LOGGER.info("Starting watching directory {}", path);
