@@ -1,8 +1,5 @@
 package com.altumpoint.easypipe.fileio;
 
-import com.altumpoint.easypipe.core.steps.EasyPublisher;
-
-import java.io.Closeable;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -12,20 +9,20 @@ import java.io.IOException;
  * By default, publisher adds line ending after each message. It is possible
  * to disable it by passing an argument into constructor.
  *
+ * In case if specified path is not exists, it will be created.
+ *
  * @since 0.2.0
  */
-public class FilePublisher implements EasyPublisher<String>, Closeable {
-
-    private FileWriter fileWriter;
+public class FileEasyPublisher extends WriterEasyPublisher {
 
     private boolean addLineEnding;
 
 
-    public FilePublisher(String path) {
+    public FileEasyPublisher(String path) {
         this(path, true);
     }
 
-    public FilePublisher(String path, boolean addLineEnding) {
+    public FileEasyPublisher(String path, boolean addLineEnding) {
         try {
             File file = new File(path);
             if (!file.exists()) {
@@ -33,7 +30,7 @@ public class FilePublisher implements EasyPublisher<String>, Closeable {
                 file.createNewFile();
             }
 
-            this.fileWriter = new FileWriter(file, true);
+            setWriter(new FileWriter(file, true));
         } catch (IOException e) {
             throw new IllegalArgumentException("Could not create writer for a specified path " + path + '.', e);
         }
@@ -43,21 +40,11 @@ public class FilePublisher implements EasyPublisher<String>, Closeable {
 
     @Override
     public void publish(String message) {
-        try {
-            fileWriter.write(message);
-            if (addLineEnding) {
-                fileWriter.write(System.getProperty("line.separator"));
-            }
-            fileWriter.flush();
-        } catch (IOException e) {
-            throw new IllegalStateException("Failed to write message to a file.", e);
+        if (addLineEnding) {
+            super.publish(message + System.getProperty("line.separator"));
+        } else {
+            super.publish(message);
         }
     }
 
-    @Override
-    public void close() throws IOException {
-        if (fileWriter != null) {
-            fileWriter.close();
-        }
-    }
 }

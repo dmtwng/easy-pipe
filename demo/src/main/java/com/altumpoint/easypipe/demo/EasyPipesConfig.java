@@ -7,7 +7,7 @@ import com.altumpoint.easypipe.demo.pipes.DoublesConsumer;
 import com.altumpoint.easypipe.demo.pipes.LogsPublisher;
 import com.altumpoint.easypipe.demo.pipes.PercentsTransformer;
 import com.altumpoint.easypipe.fileio.DirectoryConsumer;
-import com.altumpoint.easypipe.fileio.FilePublisher;
+import com.altumpoint.easypipe.fileio.FileEasyPublisher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -38,7 +38,7 @@ public class EasyPipesConfig {
     public EasyPipe createdFilesAuditor(SimplePipeBuilder pipeBuilder) {
         return pipeBuilder
                 .startPipe("created-files-auditor", new DirectoryConsumer(Paths.get("temp/watch")))
-                .addPublisher("auditor", new FilePublisher("temp/audit.log"))
+                .addPublisher("auditor", new FileEasyPublisher("temp/audit.log"))
                 .build();
     }
 }
