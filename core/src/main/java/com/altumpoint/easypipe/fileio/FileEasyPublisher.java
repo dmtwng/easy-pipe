@@ -19,22 +19,22 @@ public class FileEasyPublisher extends WriterEasyPublisher {
 
 
     public FileEasyPublisher(String path) {
-        this(path, true);
+        this(new File(path), true);
     }
 
-    public FileEasyPublisher(String path, boolean addLineEnding) {
+    public FileEasyPublisher(File file, boolean addLineEnding) {
         try {
-            File file = new File(path);
             if (!file.exists()) {
                 file.getParentFile().mkdirs();
                 if (!file.createNewFile()) {
-                    throw new IOException("Could not create file for a specified path " + path + '.');
+                    throw new IOException("Could not create file for a specified path " + file.getAbsolutePath() + '.');
                 }
             }
 
             setWriter(new FileWriter(file, true));
         } catch (IOException e) {
-            throw new IllegalArgumentException("Could not create writer for a specified path " + path + '.', e);
+            throw new IllegalArgumentException(
+                    "Could not create writer for a specified path " + file.getAbsolutePath() + '.', e);
         }
 
         this.addLineEnding = addLineEnding;
