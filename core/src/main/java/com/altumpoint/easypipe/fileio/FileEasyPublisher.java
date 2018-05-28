@@ -27,7 +27,9 @@ public class FileEasyPublisher extends WriterEasyPublisher {
             File file = new File(path);
             if (!file.exists()) {
                 file.getParentFile().mkdirs();
-                file.createNewFile();
+                if (!file.createNewFile()) {
+                    throw new IOException("Could not create file for a specified path " + path + '.');
+                }
             }
 
             setWriter(new FileWriter(file, true));
