@@ -44,7 +44,6 @@ public class DirectoryConsumer implements EasyConsumer<String> {
 
     public DirectoryConsumer(Path path) {
         this.path = path;
-        this.pollTimeout = pollTimeout;
     }
 
 
