@@ -23,7 +23,7 @@ public class TypedProperties extends Properties {
         if (propertyValue == null) {
             return defaultValue;
         } else {
-            return Boolean.getBoolean(propertyValue);
+            return Boolean.parseBoolean(propertyValue);
         }
     }
 }

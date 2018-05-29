@@ -16,7 +16,9 @@ class FileEasyPublisherSpec extends Specification {
         and: "publisher with writer"
         def publisher = new FileEasyPublisher()
         publisher.setWriter(writer)
-        publisher.setAddLineEnding(false)
+        def properties = new TypedProperties();
+        properties.setProperty(FileEasyPublisher.PROPERTY_ADD_LINE_END, "false")
+        publisher.setProperties(properties)
 
         when: "publish a message"
         publisher.publish(TEST_MESSAGE)
@@ -32,7 +34,6 @@ class FileEasyPublisherSpec extends Specification {
         and: "publisher with writer"
         def publisher = new FileEasyPublisher()
         publisher.setWriter(writer)
-        publisher.setAddLineEnding(true)
 
         when: "publish a message"
         publisher.publish(TEST_MESSAGE)
@@ -49,8 +50,6 @@ class FileEasyPublisherSpec extends Specification {
 
         when: "creates publisher"
         new FileEasyPublisher(file)
-        def properties = new TypedProperties();
-        properties.setProperty(FileEasyPublisher.PROPERTY_ADD_LINE_END, "false")
 
         then: "IllegalArgumentException should be thrown"
         thrown IllegalArgumentException

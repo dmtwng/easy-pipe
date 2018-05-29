@@ -1,5 +1,6 @@
 package com.altumpoint.easypipe.fileio
 
+import com.altumpoint.easypipe.core.steps.TypedProperties
 import spock.lang.Specification
 import spock.lang.Timeout
 import spock.util.mop.ConfineMetaClassChanges
@@ -51,6 +52,9 @@ class DirectoryConsumerSpec extends Specification {
         def directoryConsumer = new DirectoryConsumer(this.path)
         def messageConsumer = Mock(Consumer)
         directoryConsumer.setMessageConsumer(messageConsumer)
+        def properties = new TypedProperties();
+        properties.setProperty(DirectoryConsumer.PROPERTY_POLL_TIMEOUT, "1000")
+        directoryConsumer.setProperties(properties)
 
         when: "start consuming"
         directoryConsumer.start()

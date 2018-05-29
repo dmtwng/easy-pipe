@@ -60,7 +60,4 @@ public class FileEasyPublisher extends WriterEasyPublisher {
         addLineEnding = properties.getBoolean(PROPERTY_ADD_LINE_END, DEFAULT_ADD_LINE_END);
     }
 
-    public void setAddLineEnding(boolean addLineEnding) {
-        this.addLineEnding = addLineEnding;
-    }
 }
