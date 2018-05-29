@@ -44,7 +44,6 @@ public class FileEasyPublisher extends WriterEasyPublisher {
             throw new IllegalArgumentException(
                     "Could not create writer for a specified path " + file.getAbsolutePath() + '.', e);
         }
-        this.addLineEnding = addLineEnding;
     }
 
 
