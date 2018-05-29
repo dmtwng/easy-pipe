@@ -1,5 +1,7 @@
 package com.altumpoint.easypipe.fileio;
 
+import com.altumpoint.easypipe.core.steps.TypedProperties;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -15,17 +17,20 @@ import java.io.IOException;
  */
 public class FileEasyPublisher extends WriterEasyPublisher {
 
-    private boolean addLineEnding;
+    public static final String PROPERTY_ADD_LINE_END = "addLineEnd";
+    public static final boolean DEFAULT_ADD_LINE_END = true;
+
+    private boolean addLineEnding = DEFAULT_ADD_LINE_END;
 
 
     public FileEasyPublisher() {
     }
 
     public FileEasyPublisher(String path) {
-        this(new File(path), true);
+        this(new File(path));
     }
 
-    public FileEasyPublisher(File file, boolean addLineEnding) {
+    public FileEasyPublisher(File file) {
         try {
             if (!file.exists()) {
                 file.getParentFile().mkdirs();
@@ -50,6 +55,10 @@ public class FileEasyPublisher extends WriterEasyPublisher {
         } else {
             super.publish(message);
         }
+    }
+
+    public void setProperties(TypedProperties properties) {
+        addLineEnding = properties.getBoolean(PROPERTY_ADD_LINE_END, DEFAULT_ADD_LINE_END);
     }
 
     public void setAddLineEnding(boolean addLineEnding) {

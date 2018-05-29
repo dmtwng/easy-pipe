@@ -3,3 +3,9 @@ management:
         web:
             exposure:
                 include: "*"
+
+easypipe:
+    auditorConsumer:
+        pollTimeout: 1000
+    auditorPublisher:
+        addLineEnding: true

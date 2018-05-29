@@ -1,5 +1,6 @@
 package com.altumpoint.easypipe.fileio
 
+import com.altumpoint.easypipe.core.steps.TypedProperties
 import spock.lang.Specification
 
 class FileEasyPublisherSpec extends Specification {
@@ -47,7 +48,9 @@ class FileEasyPublisherSpec extends Specification {
         file.getPath() >> {throw new IOException()}
 
         when: "creates publisher"
-        new FileEasyPublisher(file, true)
+        new FileEasyPublisher(file)
+        def properties = new TypedProperties();
+        properties.setProperty(FileEasyPublisher.PROPERTY_ADD_LINE_END, "false")
 
         then: "IllegalArgumentException should be thrown"
         thrown IllegalArgumentException
@@ -61,7 +64,7 @@ class FileEasyPublisherSpec extends Specification {
         file.createNewFile() >> false
 
         when: "creates publisher"
-        new FileEasyPublisher(file, true)
+        new FileEasyPublisher(file)
 
         then: "IllegalArgumentException should be thrown"
         thrown IllegalArgumentException

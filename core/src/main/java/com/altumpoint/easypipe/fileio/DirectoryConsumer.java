@@ -1,6 +1,7 @@
 package com.altumpoint.easypipe.fileio;
 
 import com.altumpoint.easypipe.core.steps.EasyConsumer;
+import com.altumpoint.easypipe.core.steps.TypedProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -8,6 +9,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.nio.file.StandardWatchEventKinds;
 import java.nio.file.WatchEvent;
 import java.nio.file.WatchKey;
@@ -25,7 +27,8 @@ public class DirectoryConsumer implements EasyConsumer<String> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DirectoryConsumer.class);
 
-    private static final int DEFAULT_POLL_TIMEOUT = 1000;
+    public static final String PROPERTY_POLL_TIMEOUT = "pollTimeout";
+    public static final int DEFAULT_POLL_TIMEOUT = 1000;
 
     private Path path;
     private long pollTimeout;
@@ -35,11 +38,11 @@ public class DirectoryConsumer implements EasyConsumer<String> {
     private Consumer<String> messageConsumer;
 
 
-    public DirectoryConsumer(Path path) {
-        this(path, DEFAULT_POLL_TIMEOUT);
+    public DirectoryConsumer(String path) {
+        this(Paths.get(path));
     }
 
-    public DirectoryConsumer(Path path, long pollTimeout) {
+    public DirectoryConsumer(Path path) {
         this.path = path;
         this.pollTimeout = pollTimeout;
     }
@@ -48,6 +51,10 @@ public class DirectoryConsumer implements EasyConsumer<String> {
     @Override
     public void setMessageConsumer(Consumer<String> messageConsumer) {
         this.messageConsumer = messageConsumer;
+    }
+
+    public void setProperties(TypedProperties properties) {
+        pollTimeout = properties.getInt(PROPERTY_POLL_TIMEOUT, DEFAULT_POLL_TIMEOUT);
     }
 
     @Override
