@@ -18,6 +18,9 @@ public class FileEasyPublisher extends WriterEasyPublisher {
     private boolean addLineEnding;
 
 
+    public FileEasyPublisher() {
+    }
+
     public FileEasyPublisher(String path) {
         this(new File(path), true);
     }
@@ -36,9 +39,9 @@ public class FileEasyPublisher extends WriterEasyPublisher {
             throw new IllegalArgumentException(
                     "Could not create writer for a specified path " + file.getAbsolutePath() + '.', e);
         }
-
         this.addLineEnding = addLineEnding;
     }
+
 
     @Override
     public void publish(String message) {
@@ -49,4 +52,7 @@ public class FileEasyPublisher extends WriterEasyPublisher {
         }
     }
 
+    public void setAddLineEnding(boolean addLineEnding) {
+        this.addLineEnding = addLineEnding;
+    }
 }

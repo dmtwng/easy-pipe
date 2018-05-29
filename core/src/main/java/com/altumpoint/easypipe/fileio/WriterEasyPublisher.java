@@ -15,14 +15,16 @@ public class WriterEasyPublisher implements EasyPublisher<String>, Closeable {
 
     private Writer writer;
 
-    protected WriterEasyPublisher() {
+
+    public WriterEasyPublisher() {
     }
 
     public WriterEasyPublisher(Writer writer) {
         this.writer = writer;
     }
 
-    protected void setWriter(Writer writer) {
+
+    public void setWriter(Writer writer) {
         this.writer = writer;
     }
 
@@ -32,7 +34,7 @@ public class WriterEasyPublisher implements EasyPublisher<String>, Closeable {
             writer.write(message);
             writer.flush();
         } catch (IOException e) {
-            throw new IllegalStateException("Failed to write message to a file.", e);
+            throw new IllegalStateException("Failed to write a message to writer.", e);
         }
     }
 
