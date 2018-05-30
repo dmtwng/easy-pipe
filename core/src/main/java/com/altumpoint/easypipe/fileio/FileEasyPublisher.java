@@ -56,7 +56,9 @@ public class FileEasyPublisher extends WriterEasyPublisher {
         }
     }
 
-    public void setProperties(TypedProperties properties) {
+    @Override
+    public void loadProperties(TypedProperties properties) {
+        super.loadProperties(properties);
         addLineEnding = properties.getBoolean(PROPERTY_ADD_LINE_END, DEFAULT_ADD_LINE_END);
     }
 

@@ -43,9 +43,9 @@ public class EasyPipesConfig {
     @EasyPipeComponent("created-files-auditor")
     public EasyPipe createdFilesAuditor(SimplePipeBuilder pipeBuilder) {
         DirectoryConsumer directoryConsumer = new DirectoryConsumer("temp/watch");
-        directoryConsumer.setProperties(auditorConsumer);
+        directoryConsumer.loadProperties(auditorConsumer);
         FileEasyPublisher filePublisher = new FileEasyPublisher("temp/audit.log");
-        filePublisher.setProperties(auditorPublisher);
+        filePublisher.loadProperties(auditorPublisher);
         return pipeBuilder
                 .startPipe("created-files-auditor", directoryConsumer)
                 .addPublisher("auditor", filePublisher)

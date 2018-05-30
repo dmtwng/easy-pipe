@@ -54,7 +54,7 @@ class DirectoryConsumerSpec extends Specification {
         directoryConsumer.setMessageConsumer(messageConsumer)
         def properties = new TypedProperties();
         properties.setProperty(DirectoryConsumer.PROPERTY_POLL_TIMEOUT, "1000")
-        directoryConsumer.setProperties(properties)
+        directoryConsumer.loadProperties(properties)
 
         when: "start consuming"
         directoryConsumer.start()

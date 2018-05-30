@@ -18,7 +18,7 @@ class FileEasyPublisherSpec extends Specification {
         publisher.setWriter(writer)
         def properties = new TypedProperties();
         properties.setProperty(FileEasyPublisher.PROPERTY_ADD_LINE_END, "false")
-        publisher.setProperties(properties)
+        publisher.loadProperties(properties)
 
         when: "publish a message"
         publisher.publish(TEST_MESSAGE)

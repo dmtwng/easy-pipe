@@ -52,7 +52,8 @@ public class DirectoryConsumer implements EasyConsumer<String> {
         this.messageConsumer = messageConsumer;
     }
 
-    public void setProperties(TypedProperties properties) {
+    @Override
+    public void loadProperties(TypedProperties properties) {
         pollTimeout = properties.getInt(PROPERTY_POLL_TIMEOUT, DEFAULT_POLL_TIMEOUT);
     }
 
