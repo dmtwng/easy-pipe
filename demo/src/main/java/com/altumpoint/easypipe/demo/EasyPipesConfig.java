@@ -14,8 +14,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
-import java.nio.file.Paths;
-
 @Configuration
 @ComponentScan("com.altumpoint.easypipe.core")
 @ConfigurationProperties(prefix = "easypipe")
@@ -44,9 +42,13 @@ public class EasyPipesConfig {
     @Autowired
     @EasyPipeComponent("created-files-auditor")
     public EasyPipe createdFilesAuditor(SimplePipeBuilder pipeBuilder) {
+        DirectoryConsumer directoryConsumer = new DirectoryConsumer("temp/watch");
+        directoryConsumer.setProperties(auditorConsumer);
+        FileEasyPublisher filePublisher = new FileEasyPublisher("temp/audit.log");
+        filePublisher.setProperties(auditorPublisher);
         return pipeBuilder
-                .startPipe("created-files-auditor", new DirectoryConsumer("temp/watch"))
-                .addPublisher("auditor", new FileEasyPublisher("temp/audit.log"))
+                .startPipe("created-files-auditor", directoryConsumer)
+                .addPublisher("auditor", filePublisher)
                 .build();
     }
 
