@@ -28,6 +28,8 @@
 		<java.version.target>1.8</java.version.target>
 
         <maven.deploy.skip>true</maven.deploy.skip>
+
+        <sonar.tests>src/test/java,src/test/groovy</sonar.tests>
     </properties>
 
     <dependencies>
