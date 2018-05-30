@@ -1,7 +1,7 @@
 package com.altumpoint.easypipe.core.meters;
 
 /**
- * Interface for collecting meters about steps execution.
+ * Interface for collecting meters about stages execution.
  *
  * @since 0.2.0
  */
@@ -16,7 +16,7 @@ public interface MetersStrategy {
     MetersData beforeHandling();
 
     /**
-     * Measure step meters based on initialized meters.
+     * Measure stage component meters based on initialized meters.
      * Should be called after message handling.
      *
      * @param metersData initialized meters.

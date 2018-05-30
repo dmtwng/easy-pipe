@@ -1,6 +1,6 @@
 package com.altumpoint.easypipe.fileio
 
-import com.altumpoint.easypipe.core.steps.TypedProperties
+import com.altumpoint.easypipe.core.stages.TypedProperties
 import spock.lang.Specification
 import spock.lang.Timeout
 import spock.util.mop.ConfineMetaClassChanges

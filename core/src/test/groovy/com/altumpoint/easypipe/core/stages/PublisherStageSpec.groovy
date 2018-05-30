@@ -1,40 +1,40 @@
-package com.altumpoint.easypipe.core.steps
+package com.altumpoint.easypipe.core.stages
 
 import com.altumpoint.easypipe.core.meters.MetersStrategy
 import spock.lang.Specification
 
-class PublisherStepSpec extends Specification {
+class PublisherStageSpec extends Specification {
 
     private publisher
     private metersStrategy
-    private publisherStep
+    private publisherStage
 
     void setup() {
         publisher = Mock(EasyPublisher)
         metersStrategy = Mock(MetersStrategy)
-        publisherStep = new PublisherStep<String>(publisher, metersStrategy)
+        publisherStage = new PublisherStage<String>(publisher, metersStrategy)
     }
 
     def "should publish message"() {
         when:
-        publisherStep.handle("message")
+        publisherStage.handle("message")
 
         then:
         1 * publisher.publish("message")
     }
 
-    def "should publish message and invoke next step"() {
+    def "should publish message and invoke next stage"() {
         given:
-        def nextStep = Mock(EasyPipeStep)
-        publisherStep.setNextStep(nextStep)
+        def nextStage = Mock(EasyPipeStage)
+        publisherStage.setNextStage(nextStage)
 
         when:
-        publisherStep.handle("message")
+        publisherStage.handle("message")
 
         then:
         1 * metersStrategy.beforeHandling()
         1 * this.publisher.publish("message")
         1 * metersStrategy.afterHandling(_)
-        1 * nextStep.handle("message")
+        1 * nextStage.handle("message")
     }
 }

@@ -1,21 +1,21 @@
-package com.altumpoint.easypipe.core.steps;
+package com.altumpoint.easypipe.core.stages;
 
 import com.altumpoint.easypipe.core.meters.MetersData;
 import com.altumpoint.easypipe.core.meters.MetersStrategy;
 
 /**
- * Pipe step for message transformation / translation.
+ * Pipe stage for message transformation / translation.
  *
  * @param <M> type of message ty handle.
  * @param <R> type of result of transformation.
  * @since 0.1.0
  */
-public class TransformerStep<M, R> extends EasyPipeStep<M> {
+public class TransformerStage<M, R> extends EasyPipeStage<M> {
 
     private EasyTransformer<M, R> transformer;
 
 
-    public TransformerStep(EasyTransformer<M, R> transformer, MetersStrategy metersStrategy) {
+    public TransformerStage(EasyTransformer<M, R> transformer, MetersStrategy metersStrategy) {
         super(metersStrategy);
 
         this.transformer = transformer;
@@ -27,7 +27,7 @@ public class TransformerStep<M, R> extends EasyPipeStep<M> {
         MetersData metersData = metersStrategy.beforeHandling();
         R transformationResult = transformer.transform(message);
         metersStrategy.afterHandling(metersData);
-        nextStep.handle(transformationResult);
+        nextStage.handle(transformationResult);
     }
 
 }

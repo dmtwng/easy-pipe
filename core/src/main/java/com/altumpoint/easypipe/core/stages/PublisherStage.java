@@ -1,21 +1,21 @@
-package com.altumpoint.easypipe.core.steps;
+package com.altumpoint.easypipe.core.stages;
 
 import com.altumpoint.easypipe.core.meters.MetersData;
 import com.altumpoint.easypipe.core.meters.MetersStrategy;
 
 /**
- * Pipe step for message publishing.
+ * Pipe stage for message publishing.
  *
- * It also could transfer message to next step, if it defined.
+ * It also could transfer message to next stage, if it defined.
  *
  * @param <M> type of message.
  * @since 0.1.0
  */
-public class PublisherStep<M> extends EasyPipeStep<M> {
+public class PublisherStage<M> extends EasyPipeStage<M> {
 
     private EasyPublisher<M> publisher;
 
-    public PublisherStep(EasyPublisher<M> publisher, MetersStrategy metersStrategy) {
+    public PublisherStage(EasyPublisher<M> publisher, MetersStrategy metersStrategy) {
         super(metersStrategy);
 
         this.publisher = publisher;
@@ -28,8 +28,8 @@ public class PublisherStep<M> extends EasyPipeStep<M> {
         publisher.publish(message);
         metersStrategy.afterHandling(metersData);
 
-        if (nextStep != null) {
-            nextStep.handle(message);
+        if (nextStage != null) {
+            nextStage.handle(message);
         }
     }
 

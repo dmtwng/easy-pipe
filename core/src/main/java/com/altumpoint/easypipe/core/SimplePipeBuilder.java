@@ -1,13 +1,13 @@
 package com.altumpoint.easypipe.core;
 
 import com.altumpoint.easypipe.core.meters.DefaultMetersStrategy;
-import com.altumpoint.easypipe.core.steps.ConsumerStep;
-import com.altumpoint.easypipe.core.steps.EasyConsumer;
-import com.altumpoint.easypipe.core.steps.EasyPipeStep;
-import com.altumpoint.easypipe.core.steps.EasyPublisher;
-import com.altumpoint.easypipe.core.steps.EasyTransformer;
-import com.altumpoint.easypipe.core.steps.PublisherStep;
-import com.altumpoint.easypipe.core.steps.TransformerStep;
+import com.altumpoint.easypipe.core.stages.ConsumerStage;
+import com.altumpoint.easypipe.core.stages.EasyConsumer;
+import com.altumpoint.easypipe.core.stages.EasyPipeStage;
+import com.altumpoint.easypipe.core.stages.EasyPublisher;
+import com.altumpoint.easypipe.core.stages.EasyTransformer;
+import com.altumpoint.easypipe.core.stages.PublisherStage;
+import com.altumpoint.easypipe.core.stages.TransformerStage;
 import io.micrometer.core.instrument.MeterRegistry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -30,52 +30,52 @@ public final class SimplePipeBuilder {
 
     private String pipeName;
 
-    private Deque<EasyPipeStep> steps;
+    private Deque<EasyPipeStage> stages;
 
     @Autowired
     private SimplePipeBuilder(MeterRegistry meterRegistry) {
         this.meterRegistry = meterRegistry;
-        this.steps = new ArrayDeque<>();
+        this.stages = new ArrayDeque<>();
     }
 
     public <M> SimplePipeBuilder startPipe(String pipeName, EasyConsumer<M> consumer) {
         this.pipeName = pipeName;
-        ConsumerStep<M> consumerStep = new ConsumerStep<>(
-                consumer, new DefaultMetersStrategy(stepFullName("consumer"), meterRegistry));
-        steps.add(consumerStep);
+        ConsumerStage<M> consumerStage = new ConsumerStage<>(
+                consumer, new DefaultMetersStrategy(stageFullName("consumer"), meterRegistry));
+        stages.add(consumerStage);
         return this;
     }
 
-    public <M, R> SimplePipeBuilder addTransformer(String stepName, EasyTransformer<M, R> transformer) {
-        steps.add(new TransformerStep<>(
-                transformer, new DefaultMetersStrategy(stepFullName(stepName), meterRegistry)));
+    public <M, R> SimplePipeBuilder addTransformer(String stageName, EasyTransformer<M, R> transformer) {
+        stages.add(new TransformerStage<>(
+                transformer, new DefaultMetersStrategy(stageFullName(stageName), meterRegistry)));
         return this;
     }
 
-    public <M> SimplePipeBuilder addPublisher(String stepName, EasyPublisher<M> publisher) {
-        PublisherStep<M> publisherStep = new PublisherStep<>(
-                publisher, new DefaultMetersStrategy(stepFullName(stepName), meterRegistry));
-        steps.add(publisherStep);
+    public <M> SimplePipeBuilder addPublisher(String stageName, EasyPublisher<M> publisher) {
+        PublisherStage<M> publisherStage = new PublisherStage<>(
+                publisher, new DefaultMetersStrategy(stageFullName(stageName), meterRegistry));
+        stages.add(publisherStage);
         return this;
     }
 
 
     public EasyPipe build() {
-        if (this.steps.isEmpty()) {
-            throw new IllegalStateException("Cannot build pipe with no steps.");
+        if (this.stages.isEmpty()) {
+            throw new IllegalStateException("Cannot build pipe with no stages.");
         }
-        Iterator<EasyPipeStep> iterator = this.steps.descendingIterator();
-        EasyPipeStep prevStep = iterator.next();
+        Iterator<EasyPipeStage> iterator = this.stages.descendingIterator();
+        EasyPipeStage prevStage = iterator.next();
         while (iterator.hasNext()) {
-            EasyPipeStep currentStep = iterator.next();
-            currentStep.setNextStep(prevStep);
-            prevStep = currentStep;
+            EasyPipeStage currentStage = iterator.next();
+            currentStage.setNextStage(prevStage);
+            prevStage = currentStage;
         }
 
-        return new SimplePipe((ConsumerStep) prevStep);
+        return new SimplePipe((ConsumerStage) prevStage);
     }
 
-    private String stepFullName(String stepName) {
-        return pipeName + "." + stepName;
+    private String stageFullName(String stageName) {
+        return pipeName + "." + stageName;
     }
 }

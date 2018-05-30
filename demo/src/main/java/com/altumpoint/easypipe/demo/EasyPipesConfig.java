@@ -3,7 +3,7 @@ package com.altumpoint.easypipe.demo;
 import com.altumpoint.easypipe.core.EasyPipe;
 import com.altumpoint.easypipe.core.EasyPipeComponent;
 import com.altumpoint.easypipe.core.SimplePipeBuilder;
-import com.altumpoint.easypipe.core.steps.TypedProperties;
+import com.altumpoint.easypipe.core.stages.TypedProperties;
 import com.altumpoint.easypipe.demo.pipes.DoublesConsumer;
 import com.altumpoint.easypipe.demo.pipes.LogsPublisher;
 import com.altumpoint.easypipe.demo.pipes.PercentsTransformer;

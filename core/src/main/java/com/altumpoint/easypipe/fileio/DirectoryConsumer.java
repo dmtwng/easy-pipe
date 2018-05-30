@@ -1,7 +1,7 @@
 package com.altumpoint.easypipe.fileio;
 
-import com.altumpoint.easypipe.core.steps.EasyConsumer;
-import com.altumpoint.easypipe.core.steps.TypedProperties;
+import com.altumpoint.easypipe.core.stages.EasyConsumer;
+import com.altumpoint.easypipe.core.stages.TypedProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

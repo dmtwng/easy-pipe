@@ -1,6 +1,6 @@
 package com.altumpoint.easypipe.core;
 
-import com.altumpoint.easypipe.core.steps.ConsumerStep;
+import com.altumpoint.easypipe.core.stages.ConsumerStage;
 
 /**
  * Simple single thread pipe with one consumer.
@@ -9,9 +9,9 @@ import com.altumpoint.easypipe.core.steps.ConsumerStep;
  */
 public class SimplePipe implements EasyPipe {
 
-    private ConsumerStep consumer;
+    private ConsumerStage consumer;
 
-    public SimplePipe(ConsumerStep consumer) {
+    public SimplePipe(ConsumerStage consumer) {
         this.consumer = consumer;
     }
 

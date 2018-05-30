@@ -1,6 +1,6 @@
 package com.altumpoint.easypipe.fileio;
 
-import com.altumpoint.easypipe.core.steps.EasyPublisher;
+import com.altumpoint.easypipe.core.stages.EasyPublisher;
 
 import java.io.Closeable;
 import java.io.IOException;

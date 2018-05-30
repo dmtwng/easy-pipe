@@ -1,26 +1,26 @@
-package com.altumpoint.easypipe.core.steps
+package com.altumpoint.easypipe.core.stages
 
 import com.altumpoint.easypipe.core.meters.MetersStrategy
 import spock.lang.Specification
 
-class ConsumerStepSpec extends Specification {
+class ConsumerStageSpec extends Specification {
 
     private consumer
     private metersStrategy
-    private consumerStep
-    private nextStep
+    private consumerStage
+    private nextStage
 
     void setup() {
         consumer = Mock(EasyConsumer)
         metersStrategy = Mock(MetersStrategy)
-        consumerStep = new ConsumerStep<String>(consumer, metersStrategy)
-        nextStep = Mock(EasyPipeStep)
-        consumerStep.setNextStep(nextStep)
+        consumerStage = new ConsumerStage<String>(consumer, metersStrategy)
+        nextStage = Mock(EasyPipeStage)
+        consumerStage.setNextStage(nextStage)
     }
 
     def "should start consuming"() {
         when:
-        consumerStep.start()
+        consumerStage.start()
 
         then:
         1 * consumer.start()
@@ -28,19 +28,19 @@ class ConsumerStepSpec extends Specification {
 
     def "should stop consuming"() {
         when:
-        consumerStep.stop()
+        consumerStage.stop()
 
         then:
         1 * consumer.stop()
     }
 
-    def "should invoke next step"() {
+    def "should invoke next stage"() {
         when:
-        consumerStep.handle("message")
+        consumerStage.handle("message")
 
         then:
         1 * metersStrategy.beforeHandling()
-        1 * nextStep.handle("message")
+        1 * nextStage.handle("message")
         1 * metersStrategy.afterHandling(_)
     }
 }

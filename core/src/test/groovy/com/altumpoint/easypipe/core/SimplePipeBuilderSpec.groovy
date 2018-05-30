@@ -1,8 +1,8 @@
 package com.altumpoint.easypipe.core
 
-import com.altumpoint.easypipe.core.steps.EasyConsumer
-import com.altumpoint.easypipe.core.steps.EasyPublisher
-import com.altumpoint.easypipe.core.steps.EasyTransformer
+import com.altumpoint.easypipe.core.stages.EasyConsumer
+import com.altumpoint.easypipe.core.stages.EasyPublisher
+import com.altumpoint.easypipe.core.stages.EasyTransformer
 import io.micrometer.core.instrument.Counter
 import io.micrometer.core.instrument.MeterRegistry
 import spock.lang.Specification
@@ -47,7 +47,7 @@ class SimplePipeBuilderSpec extends Specification {
 
     }
 
-    def "should throw exception if no steps added"() {
+    def "should throw exception if no stages added"() {
         given:
         def pipeBuilder = new SimplePipeBuilder(Mock(MeterRegistry))
 

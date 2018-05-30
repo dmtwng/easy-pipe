@@ -1,6 +1,4 @@
-package com.altumpoint.easypipe.core.steps;
-
-import com.altumpoint.easypipe.core.EasyPipe;
+package com.altumpoint.easypipe.core.stages;
 
 import java.util.function.Consumer;
 

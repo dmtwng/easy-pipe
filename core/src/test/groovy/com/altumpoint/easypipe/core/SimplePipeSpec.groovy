@@ -1,6 +1,6 @@
 package com.altumpoint.easypipe.core
 
-import com.altumpoint.easypipe.core.steps.ConsumerStep
+import com.altumpoint.easypipe.core.stages.ConsumerStage
 import spock.lang.Specification
 
 class SimplePipeSpec extends Specification {
@@ -9,7 +9,7 @@ class SimplePipeSpec extends Specification {
     private simplePipe
 
     void setup() {
-        consumer = Mock(ConsumerStep)
+        consumer = Mock(ConsumerStage)
         simplePipe = new SimplePipe(consumer)
     }
 

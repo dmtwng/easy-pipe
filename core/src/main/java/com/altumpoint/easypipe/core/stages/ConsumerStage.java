@@ -1,19 +1,19 @@
-package com.altumpoint.easypipe.core.steps;
+package com.altumpoint.easypipe.core.stages;
 
 import com.altumpoint.easypipe.core.meters.MetersData;
 import com.altumpoint.easypipe.core.meters.MetersStrategy;
 
 /**
- * Pipe step for consuming messages and invoking next pipe step.
+ * Pipe stage for consuming messages and invoking next pipe stage.
  *
  * @param <M> Type of messages.
  * @since 0.1.0
  */
-public class ConsumerStep<M> extends EasyPipeStep<M> {
+public class ConsumerStage<M> extends EasyPipeStage<M> {
 
     private EasyConsumer<M> consumer;
 
-    public ConsumerStep(EasyConsumer<M> consumer, MetersStrategy metersStrategy) {
+    public ConsumerStage(EasyConsumer<M> consumer, MetersStrategy metersStrategy) {
         super(metersStrategy);
 
         this.consumer = consumer;
@@ -24,7 +24,7 @@ public class ConsumerStep<M> extends EasyPipeStep<M> {
     @Override
     public void handle(M message) {
         MetersData metersData = metersStrategy.beforeHandling();
-        nextStep.handle(message);
+        nextStage.handle(message);
         metersStrategy.afterHandling(metersData);
     }
 

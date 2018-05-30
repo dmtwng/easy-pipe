@@ -1,4 +1,4 @@
-package com.altumpoint.easypipe.core.steps
+package com.altumpoint.easypipe.core.stages
 
 import spock.lang.Specification
 

@@ -6,7 +6,7 @@ import io.micrometer.core.instrument.MeterRegistry;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
- * Meters strategy with two main meters: messages count and step time.
+ * Meters strategy with two main meters: messages count and stage component time.
  *
  * @since 0.2.0
  */
