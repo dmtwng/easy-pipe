@@ -15,8 +15,8 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Registry for all EasyPipe pipelines in application context.
@@ -40,7 +40,7 @@ public class EasyPipeRegistry {
     public EasyPipeRegistry(ApplicationContext applicationContext, ConfigurableListableBeanFactory beanFactory) {
         this.applicationContext = applicationContext;
         this.beanFactory = beanFactory;
-        this.pipeDefinitions = new HashMap<>();
+        this.pipeDefinitions = new ConcurrentHashMap<>();
     }
 
     @PostConstruct
@@ -76,36 +76,83 @@ public class EasyPipeRegistry {
     @Produces("text/plain")
     @Path("/{pipeName}/start")
     public String start(@PathParam("pipeName") String pipeName) {
-        if (!pipeDefinitions.containsKey(pipeName)) {
+        if (!pipeRegistered(pipeName)) {
             return String.format("Pipe %s doesn't registered", pipeName);
         }
-        PipeDefinition pipeDefinition = pipeDefinitions.get(pipeName);
-        if (pipeDefinition.getThread() != null) {
+        if (pipeIsRunning(pipeName)) {
             return "pipe is running";
         }
 
-        pipeDefinition.setRunnable(new PipeRunnable(pipeDefinition.getPipe()));
-        pipeDefinition.setThread(new Thread(pipeDefinition.getRunnable()));
-        pipeDefinition.getThread().start();
-        return "started";
+        return  startPipe(pipeName) ? "started" : "failed to start";
     }
 
     @GET
     @Produces("text/plain")
     @Path("/{pipeName}/stop")
     public String stop(@PathParam("pipeName") String pipeName) {
-        if (!pipeDefinitions.containsKey(pipeName)) {
+        if (!pipeRegistered(pipeName)) {
             return String.format("Pipe %s doesn't registered", pipeName);
         }
-        PipeDefinition pipeDefinition = pipeDefinitions.get(pipeName);
-        if (pipeDefinition.getThread() == null) {
+        if (!pipeIsRunning(pipeName)) {
             return "pipe is not running";
         }
 
-        pipeDefinition.getPipe().stop();
-        pipeDefinition.setRunnable(null);
-        pipeDefinition.setThread(null);
-        return "stopped";
+        return stopPipe(pipeName) ? "stopped" : "failed to stop";
+    }
+
+
+    private boolean startPipe(String pipeName) {
+        PipeDefinition pipeDefinition = pipeDefinitions.get(pipeName);
+        try {
+            pipeDefinition.setRunnable(new PipeRunnable(pipeDefinition.getPipe()));
+            pipeDefinition.setThread(new Thread(pipeDefinition.getRunnable()));
+            pipeDefinition.getThread().setUncaughtExceptionHandler(new PipeThreadExceptionHandler(pipeName));
+            pipeDefinition.getThread().start();
+        } catch (RuntimeException e) {
+            LOGGER.error("Failed to start EasyPipe with name {0}", pipeName, e);
+            return false;
+        }
+        return true;
+    }
+
+    private boolean stopPipe(String pipeName) {
+        PipeDefinition pipeDefinition = pipeDefinitions.get(pipeName);
+        try {
+            pipeDefinition.getPipe().stop();
+            pipeDefinition.setRunnable(null);
+            pipeDefinition.setThread(null);
+        } catch (RuntimeException e) {
+            LOGGER.error("Failed to start EasyPipe with name {0}", pipeName, e);
+            return false;
+        }
+        return true;
+    }
+
+    private boolean pipeRegistered(String pipeName) {
+        return pipeDefinitions.containsKey(pipeName);
+    }
+
+    private boolean pipeIsRunning(String pipeName) {
+        return pipeDefinitions.get(pipeName).getThread() != null;
+    }
+
+
+    private class PipeThreadExceptionHandler implements Thread.UncaughtExceptionHandler {
+
+        private String pipeName;
+
+        public PipeThreadExceptionHandler(String pipeName) {
+            this.pipeName = pipeName;
+        }
+
+        @Override
+        public synchronized void uncaughtException(Thread t, Throwable e) {
+            LOGGER.error("Pipe {} failed", pipeName, e);
+
+            PipeDefinition definition = pipeDefinitions.get(pipeName);
+            definition.setRunnable(null);
+            definition.setThread(null);
+        }
     }
 
 }
