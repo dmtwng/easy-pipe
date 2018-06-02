@@ -69,6 +69,7 @@ public class EasyPipeRegistry {
         LOGGER.info("EasyPipe Registry: registering pipe '{}'", name);
         EasyPipeInfo easyPipeInfo = new EasyPipeInfo();
         easyPipeInfo.setPipe(pipe);
+        easyPipeInfo.setStatus(EasyPipeInfo.Status.PENDING);
         pipeInfoMap.put(name, easyPipeInfo);
     }
 
@@ -104,12 +105,13 @@ public class EasyPipeRegistry {
     private boolean startPipe(String pipeName) {
         EasyPipeInfo easyPipeInfo = pipeInfoMap.get(pipeName);
         try {
-            easyPipeInfo.setRunnable(new PipeRunnable(easyPipeInfo.getPipe()));
-            easyPipeInfo.setThread(new Thread(easyPipeInfo.getRunnable()));
-            easyPipeInfo.getThread().setUncaughtExceptionHandler(new PipeThreadExceptionHandler(pipeName));
-            easyPipeInfo.getThread().start();
+            Thread pipeThread = new Thread(new PipeRunnable(easyPipeInfo.getPipe()));
+            pipeThread.setUncaughtExceptionHandler(new PipeThreadExceptionHandler(pipeName));
+            pipeThread.start();
+            easyPipeInfo.setStatus(EasyPipeInfo.Status.RUNNING);
         } catch (RuntimeException e) {
             LOGGER.error("Failed to start EasyPipe with name {0}", pipeName, e);
+            easyPipeInfo.setStatus(EasyPipeInfo.Status.FAILED);
             return false;
         }
         return true;
@@ -119,10 +121,10 @@ public class EasyPipeRegistry {
         EasyPipeInfo easyPipeInfo = pipeInfoMap.get(pipeName);
         try {
             easyPipeInfo.getPipe().stop();
-            easyPipeInfo.setRunnable(null);
-            easyPipeInfo.setThread(null);
+            easyPipeInfo.setStatus(EasyPipeInfo.Status.PENDING);
         } catch (RuntimeException e) {
             LOGGER.error("Failed to start EasyPipe with name {0}", pipeName, e);
+            easyPipeInfo.setStatus(EasyPipeInfo.Status.FAILED);
             return false;
         }
         return true;
@@ -133,7 +135,7 @@ public class EasyPipeRegistry {
     }
 
     private boolean pipeIsRunning(String pipeName) {
-        return pipeInfoMap.get(pipeName).getThread() != null;
+        return pipeInfoMap.get(pipeName).getStatus() == EasyPipeInfo.Status.RUNNING;
     }
 
 
@@ -149,9 +151,8 @@ public class EasyPipeRegistry {
         public synchronized void uncaughtException(Thread t, Throwable e) {
             LOGGER.error("Pipe {} failed", pipeName, e);
 
-            EasyPipeInfo definition = pipeInfoMap.get(pipeName);
-            definition.setRunnable(null);
-            definition.setThread(null);
+            EasyPipeInfo pipeInfo = pipeInfoMap.get(pipeName);
+            pipeInfo.setStatus(EasyPipeInfo.Status.FAILED);
         }
     }
 

@@ -16,27 +16,15 @@ class EasyPipeInfoSpec extends Specification {
         pipe == pipeInfo.getPipe()
     }
 
-    def "pipe definition should store thread"() {
+    def "pipe definition should store status"() {
         given:
         def pipeInfo = new EasyPipeInfo()
-        def thread = Mock(Thread)
 
         when:
-        pipeInfo.setThread(thread)
+        pipeInfo.setStatus(EasyPipeInfo.Status.RUNNING)
 
         then:
-        thread == pipeInfo.getThread()
+        EasyPipeInfo.Status.RUNNING == pipeInfo.getStatus()
     }
 
-    def "pipe definition should store pipe runnable"() {
-        given:
-        def pipeInfo = new EasyPipeInfo()
-        def runnable = Mock(PipeRunnable)
-
-        when:
-        pipeInfo.setRunnable(runnable)
-
-        then:
-        runnable == pipeInfo.getRunnable()
-    }
 }

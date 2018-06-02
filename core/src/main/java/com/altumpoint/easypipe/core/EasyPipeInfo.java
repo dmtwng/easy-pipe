@@ -1,7 +1,7 @@
 package com.altumpoint.easypipe.core;
 
 /**
- * Definition object for managing EasyPipe executions.
+ * Wrapper object for saving EasyPipe metadata.
  *
  * @since 0.1.0
  */
@@ -9,9 +9,7 @@ public class EasyPipeInfo {
 
     private EasyPipe pipe;
 
-    private Thread thread;
-
-    private PipeRunnable runnable;
+    private Status status;
 
 
     public EasyPipe getPipe() {
@@ -22,19 +20,24 @@ public class EasyPipeInfo {
         this.pipe = pipe;
     }
 
-    public Thread getThread() {
-        return thread;
+    public Status getStatus() {
+        return status;
     }
 
-    public void setThread(Thread thread) {
-        this.thread = thread;
+    public void setStatus(Status status) {
+        this.status = status;
     }
 
-    public PipeRunnable getRunnable() {
-        return runnable;
-    }
 
-    public void setRunnable(PipeRunnable runnable) {
-        this.runnable = runnable;
+    public enum Status {
+        PENDING("Pending"),
+        RUNNING("Running"),
+        FAILED("Failed");
+
+        String name;
+
+        Status(String name) {
+            this.name = name;
+        }
     }
 }
