@@ -88,7 +88,7 @@ public class EasyPipeRegistry {
     @Produces(MediaType.TEXT_PLAIN)
     public String start(@PathParam("pipeName") String pipeName) {
         if (!pipeRegistered(pipeName)) {
-            return String.format("Pipe %s doesn't registered", pipeName);
+            return String.format(TMPL_PIPE_DOESNT_REGISTERED, pipeName);
         }
         if (pipeIsRunning(pipeName)) {
             return "pipe is running";
@@ -102,7 +102,7 @@ public class EasyPipeRegistry {
     @Produces(MediaType.TEXT_PLAIN)
     public String stop(@PathParam("pipeName") String pipeName) {
         if (!pipeRegistered(pipeName)) {
-            return String.format("Pipe %s doesn't registered", pipeName);
+            return String.format(TMPL_PIPE_DOESNT_REGISTERED, pipeName);
         }
         if (!pipeIsRunning(pipeName)) {
             return "pipe is not running";
