@@ -29,3 +29,6 @@
 
 # Log files
 *.log
+
+# Temporary files
+temp/
