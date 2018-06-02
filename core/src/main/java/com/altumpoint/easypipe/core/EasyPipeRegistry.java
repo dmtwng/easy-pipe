@@ -15,7 +15,9 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -74,8 +76,15 @@ public class EasyPipeRegistry {
     }
 
     @GET
-    @Produces("text/plain")
+    @Path("/")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Set<String> pipesList() {
+        return pipeInfoMap.keySet();
+    }
+
+    @GET
     @Path("/{pipeName}/start")
+    @Produces(MediaType.TEXT_PLAIN)
     public String start(@PathParam("pipeName") String pipeName) {
         if (!pipeRegistered(pipeName)) {
             return String.format("Pipe %s doesn't registered", pipeName);
@@ -88,8 +97,8 @@ public class EasyPipeRegistry {
     }
 
     @GET
-    @Produces("text/plain")
     @Path("/{pipeName}/stop")
+    @Produces(MediaType.TEXT_PLAIN)
     public String stop(@PathParam("pipeName") String pipeName) {
         if (!pipeRegistered(pipeName)) {
             return String.format("Pipe %s doesn't registered", pipeName);
@@ -99,6 +108,17 @@ public class EasyPipeRegistry {
         }
 
         return stopPipe(pipeName) ? "stopped" : "failed to stop";
+    }
+
+    @GET
+    @Path("/{pipeName}/status")
+    @Produces(MediaType.TEXT_PLAIN)
+    public String status(@PathParam("pipeName") String pipeName) {
+        if (!pipeRegistered(pipeName)) {
+            return String.format("Pipe %s doesn't registered", pipeName);
+        }
+
+        return pipeInfoMap.get(pipeName).getStatus().name;
     }
 
 
@@ -139,6 +159,10 @@ public class EasyPipeRegistry {
     }
 
 
+    /**
+     * Exception handler for pipes threads.
+     * In case of exception, changes status of pipe to {@code FAILED}.
+     */
     private class PipeThreadExceptionHandler implements Thread.UncaughtExceptionHandler {
 
         private String pipeName;

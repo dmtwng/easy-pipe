@@ -43,11 +43,15 @@ class EasyPipeRegistrySpec extends Specification {
         when: "post construct invoked"
         easyPipeRegistry.buildPipe()
 
-        and: "pipe call start"
+        then: "test pipe should be registered"
+        easyPipeRegistry.pipesList().contains(PIPE_NAME)
+
+        when: "pipe call start"
         def startResult = easyPipeRegistry.start(PIPE_NAME)
 
         then: "pipe start should be invoked"
         startResult == "started"
+        EasyPipeInfo.Status.RUNNING.name == easyPipeRegistry.status(PIPE_NAME)
 
         when: "pipe call start second time"
         startResult = easyPipeRegistry.start(PIPE_NAME)
@@ -60,12 +64,13 @@ class EasyPipeRegistrySpec extends Specification {
 
         then: "pipe stop should be invoked"
         stopResult == "stopped"
+        easyPipeRegistry.status(PIPE_NAME) == EasyPipeInfo.Status.PENDING.name
 
         when: "pipe call stop second time"
         stopResult = easyPipeRegistry.stop(PIPE_NAME)
 
         then: "pipe stop should be invoked"
-        stopResult == "pipe is not running"
+        "pipe is not running" == stopResult
     }
 
     def "should not add an pipes with incorrect configuration"() {
@@ -96,19 +101,10 @@ class EasyPipeRegistrySpec extends Specification {
         when: "post construct invoked"
         easyPipeRegistry.buildPipe()
 
-        and: "incorrect pipe call start"
-        def startResult = easyPipeRegistry.start(INCORRECT_PIPE_NAME)
-
-        then: "incorrect pipe start should not be invoked"
-        startResult == "Pipe $INCORRECT_PIPE_NAME doesn't registered"
-        0 * incorrectPipe.start()
-
-        when: "incorrect pipe call stop"
-        def stopResult = easyPipeRegistry.stop(INCORRECT_PIPE_NAME)
-
-        then: "pipe stop should be invoked"
-        stopResult == "Pipe $INCORRECT_PIPE_NAME doesn't registered"
-        0 * incorrectPipe.stop()
+        then: "incorrect pipe start should not be found"
+        easyPipeRegistry.start(INCORRECT_PIPE_NAME) == "Pipe $INCORRECT_PIPE_NAME doesn't registered"
+        easyPipeRegistry.stop(INCORRECT_PIPE_NAME) == "Pipe $INCORRECT_PIPE_NAME doesn't registered"
+        easyPipeRegistry.status(INCORRECT_PIPE_NAME) == "Pipe $INCORRECT_PIPE_NAME doesn't registered"
     }
 
     def "should not add pipes with same names"() {
@@ -179,19 +175,13 @@ class EasyPipeRegistrySpec extends Specification {
         easyPipeRegistry.buildPipe()
 
         and: "pipe call start"
-        def startResult = easyPipeRegistry.start(PIPE_NAME)
+        easyPipeRegistry.start(PIPE_NAME)
 
         and: "wait for a half second"
         sleep 500
 
-        then: "result should indicate that pipe is broken"
-        startResult == "started"
-
-        when: "pipe call start"
-        startResult = easyPipeRegistry.start(PIPE_NAME)
-
-        then: "result should indicate that pipe is broken"
-        startResult == "started"
+        then: "pipe status should be failed"
+        easyPipeRegistry.status(PIPE_NAME) == EasyPipeInfo.Status.FAILED.name
     }
 
     def "should handle broken pipe stops"() {
@@ -228,13 +218,14 @@ class EasyPipeRegistrySpec extends Specification {
         and: "pipe call start"
         def startResult = easyPipeRegistry.start(PIPE_NAME)
 
-        then: "pipe start should be invoked"
+        then: "pipe should be started"
         startResult == "started"
 
         when: "pipe call stop"
         def stopResult = easyPipeRegistry.stop(PIPE_NAME)
 
-        then: "pipe stop should be invoked"
+        then: "pipe status should be failed"
         stopResult == "failed to stop"
+        easyPipeRegistry.status(PIPE_NAME) == EasyPipeInfo.Status.FAILED.name
     }
 }
