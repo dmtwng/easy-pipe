@@ -2,41 +2,41 @@ package com.altumpoint.easypipe.core
 
 import spock.lang.Specification
 
-class PipeDefinitionSpec extends Specification {
+class EasyPipeInfoSpec extends Specification {
 
     def "pipe definition should store pipe"() {
         given:
-        def pipeDefinition = new PipeDefinition()
+        def pipeInfo = new EasyPipeInfo()
         def pipe = Mock(EasyPipe)
 
         when:
-        pipeDefinition.setPipe(pipe)
+        pipeInfo.setPipe(pipe)
 
         then:
-        pipe == pipeDefinition.getPipe()
+        pipe == pipeInfo.getPipe()
     }
 
     def "pipe definition should store thread"() {
         given:
-        def pipeDefinition = new PipeDefinition()
+        def pipeInfo = new EasyPipeInfo()
         def thread = Mock(Thread)
 
         when:
-        pipeDefinition.setThread(thread)
+        pipeInfo.setThread(thread)
 
         then:
-        thread == pipeDefinition.getThread()
+        thread == pipeInfo.getThread()
     }
 
     def "pipe definition should store pipe runnable"() {
         given:
-        def pipeDefinition = new PipeDefinition()
+        def pipeInfo = new EasyPipeInfo()
         def runnable = Mock(PipeRunnable)
 
         when:
-        pipeDefinition.setRunnable(runnable)
+        pipeInfo.setRunnable(runnable)
 
         then:
-        runnable == pipeDefinition.getRunnable()
+        runnable == pipeInfo.getRunnable()
     }
 }

@@ -5,7 +5,7 @@ package com.altumpoint.easypipe.core;
  *
  * @since 0.1.0
  */
-public class PipeDefinition {
+public class EasyPipeInfo {
 
     private EasyPipe pipe;
 

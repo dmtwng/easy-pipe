@@ -33,14 +33,14 @@ public class EasyPipeRegistry {
 
     private ConfigurableListableBeanFactory beanFactory;
 
-    private Map<String, PipeDefinition> pipeDefinitions;
+    private Map<String, EasyPipeInfo> pipeInfoMap;
 
 
     @Autowired
     public EasyPipeRegistry(ApplicationContext applicationContext, ConfigurableListableBeanFactory beanFactory) {
         this.applicationContext = applicationContext;
         this.beanFactory = beanFactory;
-        this.pipeDefinitions = new ConcurrentHashMap<>();
+        this.pipeInfoMap = new ConcurrentHashMap<>();
     }
 
     @PostConstruct
@@ -61,15 +61,15 @@ public class EasyPipeRegistry {
     }
 
     private void registerPipe(String name, EasyPipe pipe) {
-        if (pipeDefinitions.containsKey(name)) {
+        if (pipeInfoMap.containsKey(name)) {
             throw new BeanCreationException(String
                     .format("Failed to create EasyPipe Registry: pipe with name %s already registered", name));
         }
 
         LOGGER.info("EasyPipe Registry: registering pipe '{}'", name);
-        PipeDefinition pipeDefinition = new PipeDefinition();
-        pipeDefinition.setPipe(pipe);
-        pipeDefinitions.put(name, pipeDefinition);
+        EasyPipeInfo easyPipeInfo = new EasyPipeInfo();
+        easyPipeInfo.setPipe(pipe);
+        pipeInfoMap.put(name, easyPipeInfo);
     }
 
     @GET
@@ -102,12 +102,12 @@ public class EasyPipeRegistry {
 
 
     private boolean startPipe(String pipeName) {
-        PipeDefinition pipeDefinition = pipeDefinitions.get(pipeName);
+        EasyPipeInfo easyPipeInfo = pipeInfoMap.get(pipeName);
         try {
-            pipeDefinition.setRunnable(new PipeRunnable(pipeDefinition.getPipe()));
-            pipeDefinition.setThread(new Thread(pipeDefinition.getRunnable()));
-            pipeDefinition.getThread().setUncaughtExceptionHandler(new PipeThreadExceptionHandler(pipeName));
-            pipeDefinition.getThread().start();
+            easyPipeInfo.setRunnable(new PipeRunnable(easyPipeInfo.getPipe()));
+            easyPipeInfo.setThread(new Thread(easyPipeInfo.getRunnable()));
+            easyPipeInfo.getThread().setUncaughtExceptionHandler(new PipeThreadExceptionHandler(pipeName));
+            easyPipeInfo.getThread().start();
         } catch (RuntimeException e) {
             LOGGER.error("Failed to start EasyPipe with name {0}", pipeName, e);
             return false;
@@ -116,11 +116,11 @@ public class EasyPipeRegistry {
     }
 
     private boolean stopPipe(String pipeName) {
-        PipeDefinition pipeDefinition = pipeDefinitions.get(pipeName);
+        EasyPipeInfo easyPipeInfo = pipeInfoMap.get(pipeName);
         try {
-            pipeDefinition.getPipe().stop();
-            pipeDefinition.setRunnable(null);
-            pipeDefinition.setThread(null);
+            easyPipeInfo.getPipe().stop();
+            easyPipeInfo.setRunnable(null);
+            easyPipeInfo.setThread(null);
         } catch (RuntimeException e) {
             LOGGER.error("Failed to start EasyPipe with name {0}", pipeName, e);
             return false;
@@ -129,11 +129,11 @@ public class EasyPipeRegistry {
     }
 
     private boolean pipeRegistered(String pipeName) {
-        return pipeDefinitions.containsKey(pipeName);
+        return pipeInfoMap.containsKey(pipeName);
     }
 
     private boolean pipeIsRunning(String pipeName) {
-        return pipeDefinitions.get(pipeName).getThread() != null;
+        return pipeInfoMap.get(pipeName).getThread() != null;
     }
 
 
@@ -149,7 +149,7 @@ public class EasyPipeRegistry {
         public synchronized void uncaughtException(Thread t, Throwable e) {
             LOGGER.error("Pipe {} failed", pipeName, e);
 
-            PipeDefinition definition = pipeDefinitions.get(pipeName);
+            EasyPipeInfo definition = pipeInfoMap.get(pipeName);
             definition.setRunnable(null);
             definition.setThread(null);
         }
