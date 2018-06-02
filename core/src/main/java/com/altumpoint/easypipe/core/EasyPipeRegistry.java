@@ -28,6 +28,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @Path("easy-pipes")
 @Component
 public class EasyPipeRegistry {
+    private static final String TMPL_PIPE_DOESNT_REGISTERED = "Pipe %s doesn't registered";
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EasyPipeRegistry.class);
 
@@ -115,7 +116,7 @@ public class EasyPipeRegistry {
     @Produces(MediaType.TEXT_PLAIN)
     public String status(@PathParam("pipeName") String pipeName) {
         if (!pipeRegistered(pipeName)) {
-            return String.format("Pipe %s doesn't registered", pipeName);
+            return String.format(TMPL_PIPE_DOESNT_REGISTERED, pipeName);
         }
 
         return pipeInfoMap.get(pipeName).getStatus().name;
