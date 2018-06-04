@@ -76,6 +76,11 @@ public class EasyPipeRegistry {
         pipeInfoMap.put(name, easyPipeInfo);
     }
 
+    /**
+     * Returns all registered pipes with their statuses.
+     *
+     * @return registered pipes.
+     */
     @GET
     @Path("/")
     @Produces(MediaType.APPLICATION_JSON)
@@ -84,6 +89,15 @@ public class EasyPipeRegistry {
                 .collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().getStatus().name));
     }
 
+    /**
+     * Starts specified pipe.
+     *
+     * @param pipeName name of pipe.
+     * @return {@code started} if pipe is started successfully,
+     *      {@code pipe is running} if specified pipe is already running,
+     *      {@code Pipe doesn't registered} if can't find such pipe
+     *      and {@code failed to start} if something goes wrong during pipe start.
+     */
     @GET
     @Path("/{pipeName}/start")
     @Produces(MediaType.TEXT_PLAIN)
@@ -98,6 +112,15 @@ public class EasyPipeRegistry {
         return  startPipe(pipeName) ? "started" : "failed to start";
     }
 
+    /**
+     * Stops specified pipe.
+     *
+     * @param pipeName name of pipe.
+     * @return {@code stopped} if pipe is stopped successfully,
+     *      {@code pipe is not running} if specified pipe is not running,
+     *      {@code Pipe doesn't registered} if can't find such pipe
+     *      and {@code failed to stop} if something goes wrong during pipe stop.
+     */
     @GET
     @Path("/{pipeName}/stop")
     @Produces(MediaType.TEXT_PLAIN)
@@ -112,6 +135,16 @@ public class EasyPipeRegistry {
         return stopPipe(pipeName) ? "stopped" : "failed to stop";
     }
 
+    /**
+     * Gets the status of execution of specified pipe.
+     * Possible statuses is:
+     * <p/> {@code Pending}: if pipe is not running;
+     * <p/> {@code Running}: if pipe is running;
+     * <p/> {@code Failed}: if last execution of pipe is failed and currently pipe is not running.
+     *
+     * @param pipeName name of pipe.
+     * @return status of pipe execution.
+     */
     @GET
     @Path("/{pipeName}/status")
     @Produces(MediaType.TEXT_PLAIN)
