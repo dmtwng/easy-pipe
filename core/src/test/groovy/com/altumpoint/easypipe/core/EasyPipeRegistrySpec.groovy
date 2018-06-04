@@ -44,7 +44,7 @@ class EasyPipeRegistrySpec extends Specification {
         easyPipeRegistry.buildPipe()
 
         then: "test pipe should be registered"
-        easyPipeRegistry.pipesList().contains(PIPE_NAME)
+        easyPipeRegistry.pipesList().keySet().contains(PIPE_NAME)
 
         when: "pipe call start"
         def startResult = easyPipeRegistry.start(PIPE_NAME)

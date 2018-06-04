@@ -17,8 +17,8 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 /**
  * Registry for all EasyPipe pipelines in application context.
@@ -79,8 +79,9 @@ public class EasyPipeRegistry {
     @GET
     @Path("/")
     @Produces(MediaType.APPLICATION_JSON)
-    public Set<String> pipesList() {
-        return pipeInfoMap.keySet();
+    public Map<String, String> pipesList() {
+        return pipeInfoMap.entrySet().stream()
+                .collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().getStatus().name));
     }
 
     @GET
