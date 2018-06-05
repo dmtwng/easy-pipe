@@ -18,7 +18,7 @@ public interface EasyPipeBuilder {
      * @param pipeName name of pipe.
      * @return builder instance.
      */
-    SimplePipeBuilder startPipe(String pipeName);
+    EasyPipeBuilder startPipe(String pipeName);
 
     /**
      * Adds consumer stage into the pipe.
@@ -27,7 +27,7 @@ public interface EasyPipeBuilder {
      * @param consumer pipe entry point.
      * @return builder instance.
      */
-    default  <M> SimplePipeBuilder addConsumer(String stageName, EasyConsumer<M> consumer) {
+    default  <M> EasyPipeBuilder addConsumer(String stageName, EasyConsumer<M> consumer) {
         return addConsumer(stageName, consumer, null);
     }
 
@@ -40,7 +40,7 @@ public interface EasyPipeBuilder {
      * @param properties consumer properties.
      * @return builder instance.
      */
-    <M> SimplePipeBuilder addConsumer(String stageName, EasyConsumer<M> consumer, TypedProperties properties);
+    <M> EasyPipeBuilder addConsumer(String stageName, EasyConsumer<M> consumer, TypedProperties properties);
 
     /**
      * Adds transformer stage into the pipe.
@@ -49,7 +49,7 @@ public interface EasyPipeBuilder {
      * @param transformer stage component.
      * @return builder instance.
      */
-    default <M, R> SimplePipeBuilder addTransformer(String stageName, EasyTransformer<M, R> transformer) {
+    default <M, R> EasyPipeBuilder addTransformer(String stageName, EasyTransformer<M, R> transformer) {
         return addTransformer(stageName, transformer, null);
     }
 
@@ -62,7 +62,7 @@ public interface EasyPipeBuilder {
      * @param properties transformer properties.
      * @return builder instance.
      */
-    <M, R> SimplePipeBuilder addTransformer(
+    <M, R> EasyPipeBuilder addTransformer(
             String stageName, EasyTransformer<M, R> transformer, TypedProperties properties);
 
     /**
@@ -72,7 +72,7 @@ public interface EasyPipeBuilder {
      * @param publisher stage component.
      * @return builder instance.
      */
-    default  <M> SimplePipeBuilder addPublisher(String stageName, EasyPublisher<M> publisher) {
+    default  <M> EasyPipeBuilder addPublisher(String stageName, EasyPublisher<M> publisher) {
         return addPublisher(stageName, publisher, null);
     }
 
@@ -85,7 +85,7 @@ public interface EasyPipeBuilder {
      * @param properties publisher properties.
      * @return builder instance.
      */
-    <M> SimplePipeBuilder addPublisher(String stageName, EasyPublisher<M> publisher, TypedProperties properties);
+    <M> EasyPipeBuilder addPublisher(String stageName, EasyPublisher<M> publisher, TypedProperties properties);
 
 
     /**
