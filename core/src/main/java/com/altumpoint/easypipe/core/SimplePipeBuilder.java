@@ -26,7 +26,7 @@ import java.util.Iterator;
  */
 @Component
 @Scope("prototype")
-public final class SimplePipeBuilder {
+public final class SimplePipeBuilder implements EasyPipeBuilder {
 
     private MeterRegistry meterRegistry;
 
@@ -41,29 +41,18 @@ public final class SimplePipeBuilder {
     }
 
 
-    /**
-     * Initialize builder with pipe entry point: consumer.
-     *
-     * @param pipeName name of pipe.
-     * @param consumer pipe entry point.
-     * @param <M> type of consuming messages.
-     * @return builder instance.
-     */
-    public <M> SimplePipeBuilder startPipe(String pipeName, EasyConsumer<M> consumer) {
-        return startPipe(pipeName, consumer, null);
+    @Override
+    public SimplePipeBuilder startPipe(String pipeName) {
+        this.pipeName = pipeName;
+        return this;
     }
 
-    /**
-     * Initialize builder with pipe entry point: consumer.
-     * Loads consumer properties.
-     *
-     * @param pipeName name of pipe.
-     * @param consumer pipe entry point.
-     * @param properties consumer properties.
-     * @return builder instance.
-     */
-    public <M> SimplePipeBuilder startPipe(String pipeName, EasyConsumer<M> consumer, TypedProperties properties) {
-        this.pipeName = pipeName;
+    @Override
+    public <M> SimplePipeBuilder addConsumer(String stageName, EasyConsumer<M> consumer, TypedProperties properties) {
+        if (!stages.isEmpty()) {
+            throw new IllegalStateException("SimplePipe could contain just one consumer.");
+        }
+
         loadPropertiesIntoStageComponent(consumer, properties);
         ConsumerStage<M> consumerStage = new ConsumerStage<>(
                 consumer, new DefaultMetersStrategy(stageFullName("consumer"), meterRegistry));
@@ -71,56 +60,26 @@ public final class SimplePipeBuilder {
         return this;
     }
 
-    /**
-     * Adds transformer stage into the pipe.
-     *
-     * @param stageName name of stage.
-     * @param transformer stage component.
-     * @return builder instance.
-     */
-    public <M, R> SimplePipeBuilder addTransformer(String stageName, EasyTransformer<M, R> transformer) {
-        return addTransformer(stageName, transformer, null);
-    }
-
-    /**
-     * Adds transformer stage into the pipe.
-     * Loads transformer properties.
-     *
-     * @param stageName name of stage.
-     * @param transformer stage component.
-     * @param properties transformer properties.
-     * @return builder instance.
-     */
+    @Override
     public <M, R> SimplePipeBuilder addTransformer(
             String stageName, EasyTransformer<M, R> transformer, TypedProperties properties) {
+        if (stages.isEmpty()) {
+            throw new IllegalStateException("Consumer should be added first in SimplePipe.");
+        }
+
         loadPropertiesIntoStageComponent(transformer, properties);
         stages.add(new TransformerStage<>(
                 transformer, new DefaultMetersStrategy(stageFullName(stageName), meterRegistry)));
         return this;
     }
 
-    /**
-     * Adds publisher into the pipe.
-     *
-     * @param stageName name of stage.
-     * @param publisher stage component.
-     * @return builder instance.
-     */
-    public <M> SimplePipeBuilder addPublisher(String stageName, EasyPublisher<M> publisher) {
-        return addPublisher(stageName, publisher, null);
-    }
-
-    /**
-     * Adds publisher into the pipe.
-     * Loads publisher properties.
-     *
-     * @param stageName name of stage.
-     * @param publisher stage component.
-     * @param properties publisher properties.
-     * @return builder instance.
-     */
+    @Override
     public <M> SimplePipeBuilder addPublisher(
             String stageName, EasyPublisher<M> publisher, TypedProperties properties) {
+        if (stages.isEmpty()) {
+            throw new IllegalStateException("Consumer should be added first in SimplePipe.");
+        }
+
         loadPropertiesIntoStageComponent(publisher, properties);
         PublisherStage<M> publisherStage = new PublisherStage<>(
                 publisher, new DefaultMetersStrategy(stageFullName(stageName), meterRegistry));
@@ -129,11 +88,7 @@ public final class SimplePipeBuilder {
     }
 
 
-    /**
-     * Builds and returns simple easy pipe.
-     *
-     * @return instance of easy pipe.
-     */
+    @Override
     public EasyPipe build() {
         if (this.stages.isEmpty()) {
             throw new IllegalStateException("Cannot build pipe with no stages.");
@@ -148,6 +103,7 @@ public final class SimplePipeBuilder {
 
         return new SimplePipe((ConsumerStage) prevStage);
     }
+
 
     private String stageFullName(String stageName) {
         return pipeName + "." + stageName;

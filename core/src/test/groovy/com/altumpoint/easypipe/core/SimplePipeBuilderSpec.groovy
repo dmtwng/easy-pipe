@@ -43,7 +43,8 @@ class SimplePipeBuilderSpec extends Specification {
 
         when: "build and start pipeline"
         pipeBuilder
-                .startPipe("test-pipe", consumer)
+                .startPipe("test-pipe")
+                .addConsumer("test-consumer", consumer)
                 .addTransformer("test-transformer", transformer)
                 .addPublisher("test-publisher", publisher)
                 .build()
@@ -63,7 +64,8 @@ class SimplePipeBuilderSpec extends Specification {
 
         when: "build and start pipeline"
         pipeBuilder
-                .startPipe("test-pipe", consumer, properties)
+                .startPipe("test-pipe")
+                .addConsumer("test-consumer", consumer, properties)
                 .addTransformer("test-transformer", transformer, properties)
                 .addPublisher("test-publisher", publisher, properties)
                 .build()
@@ -74,6 +76,41 @@ class SimplePipeBuilderSpec extends Specification {
         1 * transformer.loadProperties(properties)
         1 * publisher.loadProperties(properties)
         1 * publisher.publish("transformed message")
+    }
+
+    def "should throw exception if add transformer with no consumer"() {
+        given:
+        def pipeBuilder = new SimplePipeBuilder(Mock(MeterRegistry))
+
+        when:
+        pipeBuilder.addTransformer("test-transfomer", Mock(EasyTransformer))
+
+        then:
+        thrown IllegalStateException
+    }
+
+    def "should throw exception if add publisher with no consumer"() {
+        given:
+        def pipeBuilder = new SimplePipeBuilder(Mock(MeterRegistry))
+
+        when:
+        pipeBuilder.addPublisher("test-publisher", Mock(EasyPublisher))
+
+        then:
+        thrown IllegalStateException
+    }
+
+    def "should throw exception if add two consumers"() {
+        given:
+        def pipeBuilder = new SimplePipeBuilder(Mock(MeterRegistry))
+
+        when:
+        pipeBuilder
+                .addConsumer("test-consumer1", Mock(EasyConsumer))
+                .addConsumer("test-consumer2", Mock(EasyConsumer))
+
+        then:
+        thrown IllegalStateException
     }
 
     def "should throw exception if no stages added"() {
