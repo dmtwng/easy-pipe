@@ -1,7 +1,9 @@
-package com.altumpoint.easypipe.core.pipes
+package com.altumpoint.easypipe.core.pipes.simple
 
 import com.altumpoint.easypipe.core.meters.MetersStrategy
-import com.altumpoint.easypipe.core.simple.PublisherStage
+import com.altumpoint.easypipe.core.pipes.EasyPipeStage
+import com.altumpoint.easypipe.core.pipes.EasyPublisher
+import com.altumpoint.easypipe.core.pipes.simple.PublisherStage
 import spock.lang.Specification
 
 class PublisherStageSpec extends Specification {

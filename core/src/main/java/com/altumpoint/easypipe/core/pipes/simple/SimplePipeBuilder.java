@@ -1,4 +1,4 @@
-package com.altumpoint.easypipe.core.simple;
+package com.altumpoint.easypipe.core.pipes.simple;
 
 import com.altumpoint.easypipe.core.pipes.EasyPipe;
 import com.altumpoint.easypipe.core.EasyPipeBuilder;

@@ -1,7 +1,9 @@
-package com.altumpoint.easypipe.core.pipes
+package com.altumpoint.easypipe.core.pipes.simple
 
 import com.altumpoint.easypipe.core.meters.MetersStrategy
-import com.altumpoint.easypipe.core.simple.ConsumerStage
+import com.altumpoint.easypipe.core.pipes.EasyConsumer
+import com.altumpoint.easypipe.core.pipes.EasyPipeStage
+import com.altumpoint.easypipe.core.pipes.simple.ConsumerStage
 import spock.lang.Specification
 
 class ConsumerStageSpec extends Specification {
