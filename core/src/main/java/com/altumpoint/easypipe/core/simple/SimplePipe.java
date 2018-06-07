@@ -1,6 +1,6 @@
-package com.altumpoint.easypipe.core;
+package com.altumpoint.easypipe.core.simple;
 
-import com.altumpoint.easypipe.core.stages.ConsumerStage;
+import com.altumpoint.easypipe.core.pipes.EasyPipe;
 
 /**
  * Simple single thread pipe with one consumer.

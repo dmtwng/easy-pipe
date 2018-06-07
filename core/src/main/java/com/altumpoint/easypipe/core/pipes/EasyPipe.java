@@ -1,4 +1,4 @@
-package com.altumpoint.easypipe.core;
+package com.altumpoint.easypipe.core.pipes;
 
 /**
  * Main interface of EasyPipe instance - one particular stream of data.

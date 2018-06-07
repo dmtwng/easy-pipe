@@ -1,15 +1,14 @@
-package com.altumpoint.easypipe.core;
+package com.altumpoint.easypipe.core.simple;
 
+import com.altumpoint.easypipe.core.pipes.EasyPipe;
+import com.altumpoint.easypipe.core.EasyPipeBuilder;
 import com.altumpoint.easypipe.core.meters.DefaultMetersStrategy;
-import com.altumpoint.easypipe.core.stages.ConsumerStage;
-import com.altumpoint.easypipe.core.stages.EasyConsumer;
-import com.altumpoint.easypipe.core.stages.EasyPipeStage;
-import com.altumpoint.easypipe.core.stages.EasyPublisher;
-import com.altumpoint.easypipe.core.stages.EasyTransformer;
-import com.altumpoint.easypipe.core.stages.PublisherStage;
-import com.altumpoint.easypipe.core.stages.StageComponent;
-import com.altumpoint.easypipe.core.stages.TransformerStage;
-import com.altumpoint.easypipe.core.stages.TypedProperties;
+import com.altumpoint.easypipe.core.pipes.EasyConsumer;
+import com.altumpoint.easypipe.core.pipes.EasyPipeStage;
+import com.altumpoint.easypipe.core.pipes.EasyPublisher;
+import com.altumpoint.easypipe.core.pipes.EasyTransformer;
+import com.altumpoint.easypipe.core.pipes.StageComponent;
+import com.altumpoint.easypipe.core.pipes.TypedProperties;
 import io.micrometer.core.instrument.MeterRegistry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -91,7 +90,7 @@ public final class SimplePipeBuilder implements EasyPipeBuilder {
     @Override
     public EasyPipe build() {
         if (this.stages.isEmpty()) {
-            throw new IllegalStateException("Cannot build pipe with no stages.");
+            throw new IllegalStateException("Cannot build pipe with no pipes.");
         }
         Iterator<EasyPipeStage> iterator = this.stages.descendingIterator();
         EasyPipeStage prevStage = iterator.next();

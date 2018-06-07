@@ -1,6 +1,6 @@
 package com.altumpoint.easypipe.fileio;
 
-import com.altumpoint.easypipe.core.stages.TypedProperties;
+import com.altumpoint.easypipe.core.pipes.TypedProperties;
 
 import java.io.File;
 import java.io.FileWriter;

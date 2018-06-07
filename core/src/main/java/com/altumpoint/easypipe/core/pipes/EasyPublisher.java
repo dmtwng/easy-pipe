@@ -1,4 +1,4 @@
-package com.altumpoint.easypipe.core.stages;
+package com.altumpoint.easypipe.core.pipes;
 
 /**
  * Interface for EasyPipe message publishers.

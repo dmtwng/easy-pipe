@@ -1,9 +1,10 @@
 package com.altumpoint.easypipe.core;
 
-import com.altumpoint.easypipe.core.stages.EasyConsumer;
-import com.altumpoint.easypipe.core.stages.EasyPublisher;
-import com.altumpoint.easypipe.core.stages.EasyTransformer;
-import com.altumpoint.easypipe.core.stages.TypedProperties;
+import com.altumpoint.easypipe.core.pipes.EasyConsumer;
+import com.altumpoint.easypipe.core.pipes.EasyPipe;
+import com.altumpoint.easypipe.core.pipes.EasyPublisher;
+import com.altumpoint.easypipe.core.pipes.EasyTransformer;
+import com.altumpoint.easypipe.core.pipes.TypedProperties;
 
 /**
  * Main interface for EasyPipe builders.

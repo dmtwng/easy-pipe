@@ -1,6 +1,7 @@
 package com.altumpoint.easypipe.core
 
-import com.altumpoint.easypipe.core.stages.ConsumerStage
+import com.altumpoint.easypipe.core.simple.ConsumerStage
+import com.altumpoint.easypipe.core.simple.SimplePipe
 import spock.lang.Specification
 
 class SimplePipeSpec extends Specification {

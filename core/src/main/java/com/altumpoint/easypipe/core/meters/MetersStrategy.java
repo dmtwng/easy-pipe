@@ -1,7 +1,7 @@
 package com.altumpoint.easypipe.core.meters;
 
 /**
- * Interface for collecting meters about stages execution.
+ * Interface for collecting meters about pipes execution.
  *
  * @since 0.2.0
  */

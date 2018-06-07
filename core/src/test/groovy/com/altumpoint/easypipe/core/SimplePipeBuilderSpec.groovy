@@ -1,9 +1,10 @@
 package com.altumpoint.easypipe.core
 
-import com.altumpoint.easypipe.core.stages.EasyConsumer
-import com.altumpoint.easypipe.core.stages.EasyPublisher
-import com.altumpoint.easypipe.core.stages.EasyTransformer
-import com.altumpoint.easypipe.core.stages.TypedProperties
+import com.altumpoint.easypipe.core.simple.SimplePipeBuilder
+import com.altumpoint.easypipe.core.pipes.EasyConsumer
+import com.altumpoint.easypipe.core.pipes.EasyPublisher
+import com.altumpoint.easypipe.core.pipes.EasyTransformer
+import com.altumpoint.easypipe.core.pipes.TypedProperties
 import io.micrometer.core.instrument.Counter
 import io.micrometer.core.instrument.MeterRegistry
 import spock.lang.Specification

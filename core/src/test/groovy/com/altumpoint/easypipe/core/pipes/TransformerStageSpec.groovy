@@ -1,6 +1,7 @@
-package com.altumpoint.easypipe.core.stages
+package com.altumpoint.easypipe.core.pipes
 
 import com.altumpoint.easypipe.core.meters.MetersStrategy
+import com.altumpoint.easypipe.core.simple.TransformerStage
 import spock.lang.Specification
 
 

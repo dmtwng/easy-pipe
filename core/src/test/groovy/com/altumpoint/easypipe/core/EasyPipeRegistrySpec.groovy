@@ -1,5 +1,6 @@
 package com.altumpoint.easypipe.core
 
+import com.altumpoint.easypipe.core.pipes.EasyPipe
 import org.springframework.beans.factory.BeanCreationException
 import org.springframework.beans.factory.config.BeanDefinition
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory

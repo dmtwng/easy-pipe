@@ -1,5 +1,6 @@
 package com.altumpoint.easypipe.core
 
+import com.altumpoint.easypipe.core.pipes.EasyPipe
 import spock.lang.Specification
 
 class EasyPipeInfoSpec extends Specification {

@@ -1,6 +1,6 @@
 package com.altumpoint.easypipe.demo.pipes;
 
-import com.altumpoint.easypipe.core.stages.EasyTransformer;
+import com.altumpoint.easypipe.core.pipes.EasyTransformer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;

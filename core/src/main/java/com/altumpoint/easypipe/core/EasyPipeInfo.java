@@ -1,5 +1,7 @@
 package com.altumpoint.easypipe.core;
 
+import com.altumpoint.easypipe.core.pipes.EasyPipe;
+
 /**
  * Wrapper object for saving EasyPipe metadata.
  *

@@ -1,7 +1,9 @@
-package com.altumpoint.easypipe.core.stages;
+package com.altumpoint.easypipe.core.simple;
 
 import com.altumpoint.easypipe.core.meters.MetersData;
 import com.altumpoint.easypipe.core.meters.MetersStrategy;
+import com.altumpoint.easypipe.core.pipes.EasyConsumer;
+import com.altumpoint.easypipe.core.pipes.EasyPipeStage;
 
 /**
  * Pipe stage for consuming messages and invoking next pipe stage.
