@@ -11,8 +11,8 @@
 		<module>demo</module>
 	</modules>
     <packaging>pom</packaging>
-
 	<name>EasyPipe</name>
+    <url>https://dmytro-winged.github.io/easy-pipe/</url>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -20,6 +20,23 @@
 		<version>2.0.1.RELEASE</version>
 		<relativePath/> 
 	</parent>
+
+    <scm>
+        <url>https://github.com/dmytro-winged/easy-pipe</url>
+        <connection>scm:git:git://github.com/dmytro-winged/easy-pipe.git</connection>
+        <developerConnection>scm:git:git@github.com:dmytro-winged/easy-pipe.git</developerConnection>
+    </scm>
+
+    <ciManagement>
+        <url>https://travis-ci.org/dmytro-winged/easy-pipe</url>
+    </ciManagement>
+
+    <licenses>
+        <license>
+            <name>Apache 2.0</name>
+            <url>https://www.apache.org/licenses/LICENSE-2.0.html</url>
+        </license>
+    </licenses>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
