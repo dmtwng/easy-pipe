@@ -94,8 +94,10 @@ public class DirectoryConsumer implements EasyConsumer<String> {
                 }
                 Thread.sleep(pollTimeout);
             }
-        } catch (IOException|InterruptedException e) {
+        } catch (IOException e) {
             throw new IllegalStateException("Failed to watch directory: " + path, e);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
         }
     }
 
