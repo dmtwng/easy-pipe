@@ -12,17 +12,8 @@ public abstract class EasyPipeStage<M> {
 
     protected final MetersStrategy metersStrategy;
 
-    protected EasyPipeStage nextStage;
-
-
     public EasyPipeStage(MetersStrategy metersStrategy) {
         this.metersStrategy = metersStrategy;
     }
 
-
-    public abstract void handle(M message);
-
-    public void setNextStage(EasyPipeStage pipeStage) {
-        this.nextStage = pipeStage;
-    }
 }

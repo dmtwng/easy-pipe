@@ -1,9 +1,7 @@
 package com.altumpoint.easypipe.core.pipes.simple
 
 import com.altumpoint.easypipe.core.meters.MetersStrategy
-import com.altumpoint.easypipe.core.pipes.EasyPipeStage
 import com.altumpoint.easypipe.core.pipes.EasyPublisher
-import com.altumpoint.easypipe.core.pipes.simple.PublisherStage
 import spock.lang.Specification
 
 class PublisherStageSpec extends Specification {
@@ -28,7 +26,7 @@ class PublisherStageSpec extends Specification {
 
     def "should publish message and invoke next stage"() {
         given:
-        def nextStage = Mock(EasyPipeStage)
+        def nextStage = Mock(SimpleStage)
         publisherStage.setNextStage(nextStage)
 
         when:

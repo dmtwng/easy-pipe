@@ -1,11 +1,8 @@
 package com.altumpoint.easypipe.core.pipes.simple
 
 import com.altumpoint.easypipe.core.meters.MetersStrategy
-import com.altumpoint.easypipe.core.pipes.EasyPipeStage
 import com.altumpoint.easypipe.core.pipes.EasyTransformer
-import com.altumpoint.easypipe.core.pipes.simple.TransformerStage
 import spock.lang.Specification
-
 
 class TransformerStageSpec extends Specification {
 
@@ -18,7 +15,7 @@ class TransformerStageSpec extends Specification {
         transformer = Mock(EasyTransformer)
         metersStrategy = Mock(MetersStrategy)
         transformerStage = new TransformerStage<String, String>(transformer, metersStrategy)
-        nextStage = Mock(EasyPipeStage)
+        nextStage = Mock(SimpleStage)
         transformerStage.setNextStage(nextStage)
     }
 

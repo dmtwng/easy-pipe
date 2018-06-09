@@ -1,10 +1,9 @@
 package com.altumpoint.easypipe.core.pipes.simple;
 
-import com.altumpoint.easypipe.core.pipes.EasyPipe;
 import com.altumpoint.easypipe.core.EasyPipeBuilder;
 import com.altumpoint.easypipe.core.meters.DefaultMetersStrategy;
 import com.altumpoint.easypipe.core.pipes.EasyConsumer;
-import com.altumpoint.easypipe.core.pipes.EasyPipeStage;
+import com.altumpoint.easypipe.core.pipes.EasyPipe;
 import com.altumpoint.easypipe.core.pipes.EasyPublisher;
 import com.altumpoint.easypipe.core.pipes.EasyTransformer;
 import com.altumpoint.easypipe.core.pipes.StageComponent;
@@ -31,7 +30,7 @@ public final class SimplePipeBuilder implements EasyPipeBuilder {
 
     private String pipeName;
 
-    private Deque<EasyPipeStage> stages;
+    private Deque<SimpleStage> stages;
 
     @Autowired
     private SimplePipeBuilder(MeterRegistry meterRegistry) {
@@ -92,10 +91,10 @@ public final class SimplePipeBuilder implements EasyPipeBuilder {
         if (this.stages.isEmpty()) {
             throw new IllegalStateException("Cannot build pipe with no pipes.");
         }
-        Iterator<EasyPipeStage> iterator = this.stages.descendingIterator();
-        EasyPipeStage prevStage = iterator.next();
+        Iterator<SimpleStage> iterator = this.stages.descendingIterator();
+        SimpleStage prevStage = iterator.next();
         while (iterator.hasNext()) {
-            EasyPipeStage currentStage = iterator.next();
+            SimpleStage currentStage = iterator.next();
             currentStage.setNextStage(prevStage);
             prevStage = currentStage;
         }

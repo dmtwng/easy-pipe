@@ -1,6 +1,5 @@
 package com.altumpoint.easypipe.core.pipes.simple
 
-import com.altumpoint.easypipe.core.pipes.simple.SimplePipeBuilder
 import com.altumpoint.easypipe.core.pipes.EasyConsumer
 import com.altumpoint.easypipe.core.pipes.EasyPublisher
 import com.altumpoint.easypipe.core.pipes.EasyTransformer

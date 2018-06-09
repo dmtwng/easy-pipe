@@ -2,8 +2,6 @@ package com.altumpoint.easypipe.core.pipes.simple
 
 import com.altumpoint.easypipe.core.meters.MetersStrategy
 import com.altumpoint.easypipe.core.pipes.EasyConsumer
-import com.altumpoint.easypipe.core.pipes.EasyPipeStage
-import com.altumpoint.easypipe.core.pipes.simple.ConsumerStage
 import spock.lang.Specification
 
 class ConsumerStageSpec extends Specification {
@@ -17,7 +15,7 @@ class ConsumerStageSpec extends Specification {
         consumer = Mock(EasyConsumer)
         metersStrategy = Mock(MetersStrategy)
         consumerStage = new ConsumerStage<String>(consumer, metersStrategy)
-        nextStage = Mock(EasyPipeStage)
+        nextStage = Mock(SimpleStage)
         consumerStage.setNextStage(nextStage)
     }
 
