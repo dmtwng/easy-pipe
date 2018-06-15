@@ -8,6 +8,8 @@ EasyPipe
 
 Yet another data streaming engine, built on top of **Spring Boot**.
 
+Web site: https://dmytro-winged.github.io/easy-pipe/
+
 ## Features
 - implement all steps of your pipe separately;
 - combine steps into EasyPipe;
