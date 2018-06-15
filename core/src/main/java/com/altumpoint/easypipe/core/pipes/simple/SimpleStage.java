@@ -10,7 +10,7 @@ import com.altumpoint.easypipe.core.pipes.EasyPipeStage;
  * @param <M> type of messages.
  * @since 0.2.0
  */
-public abstract class SimpleStage<M> extends EasyPipeStage<M> {
+public abstract class SimpleStage<M> extends EasyPipeStage {
 
     protected SimpleStage nextStage;
 

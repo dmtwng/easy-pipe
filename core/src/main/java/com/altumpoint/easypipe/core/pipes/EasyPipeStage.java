@@ -5,10 +5,9 @@ import com.altumpoint.easypipe.core.meters.MetersStrategy;
 /**
  * Interface for EasyPipe stage instance.
  *
- * @param <M> Type of messages.
  * @since 0.1.0
  */
-public abstract class EasyPipeStage<M> {
+public abstract class EasyPipeStage {
 
     protected final MetersStrategy metersStrategy;
 
