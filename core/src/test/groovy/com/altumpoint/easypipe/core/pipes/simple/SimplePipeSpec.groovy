@@ -8,7 +8,7 @@ class SimplePipeSpec extends Specification {
     private simplePipe
 
     void setup() {
-        consumer = Mock(ConsumerStage)
+        consumer = Mock(SourceStage)
         simplePipe = new SimplePipe(consumer)
     }
 

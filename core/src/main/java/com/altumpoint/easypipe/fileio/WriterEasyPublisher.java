@@ -1,6 +1,6 @@
 package com.altumpoint.easypipe.fileio;
 
-import com.altumpoint.easypipe.core.pipes.EasyPublisher;
+import com.altumpoint.easypipe.core.pipes.EasyDestination;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -11,7 +11,7 @@ import java.io.Writer;
  *
  * @since 0.2.0
  */
-public class WriterEasyPublisher implements EasyPublisher<String>, Closeable {
+public class WriterEasyPublisher implements EasyDestination<String>, Closeable {
 
     private Writer writer;
 

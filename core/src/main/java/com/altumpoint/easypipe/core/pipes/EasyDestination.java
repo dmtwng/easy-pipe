@@ -6,7 +6,7 @@ package com.altumpoint.easypipe.core.pipes;
  * @param <M> Type of messages.
  * @since 0.1.0
  */
-public interface EasyPublisher<M> extends StageComponent {
+public interface EasyDestination<M> extends StageComponent {
 
     void publish(M message);
 }

@@ -1,6 +1,6 @@
 package com.altumpoint.easypipe.fileio;
 
-import com.altumpoint.easypipe.core.pipes.EasyConsumer;
+import com.altumpoint.easypipe.core.pipes.EasySource;
 import com.altumpoint.easypipe.core.pipes.TypedProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,7 +23,7 @@ import java.util.function.Consumer;
  *
  * @since 0.2.0
  */
-public class DirectoryConsumer implements EasyConsumer<String> {
+public class DirectoryConsumer implements EasySource<String> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DirectoryConsumer.class);
 

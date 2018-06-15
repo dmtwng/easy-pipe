@@ -1,6 +1,6 @@
 package com.altumpoint.easypipe.demo.pipes;
 
-import com.altumpoint.easypipe.core.pipes.EasyPublisher;
+import com.altumpoint.easypipe.core.pipes.EasyDestination;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import java.util.concurrent.ThreadLocalRandom;
 
 @Component
-public class LogsPublisher implements EasyPublisher<String> {
+public class LogsPublisher implements EasyDestination<String> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LogsPublisher.class);
 

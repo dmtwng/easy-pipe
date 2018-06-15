@@ -9,9 +9,9 @@ import com.altumpoint.easypipe.core.pipes.EasyPipe;
  */
 public class SimplePipe implements EasyPipe {
 
-    private ConsumerStage consumer;
+    private SourceStage consumer;
 
-    public SimplePipe(ConsumerStage consumer) {
+    public SimplePipe(SourceStage consumer) {
         this.consumer = consumer;
     }
 

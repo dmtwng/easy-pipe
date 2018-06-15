@@ -1,6 +1,6 @@
 package com.altumpoint.easypipe.demo.pipes;
 
-import com.altumpoint.easypipe.core.pipes.EasyConsumer;
+import com.altumpoint.easypipe.core.pipes.EasySource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import java.util.function.Consumer;
 
 @Component
-public class DoublesConsumer implements EasyConsumer<String> {
+public class DoublesConsumer implements EasySource<String> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DoublesConsumer.class);
 

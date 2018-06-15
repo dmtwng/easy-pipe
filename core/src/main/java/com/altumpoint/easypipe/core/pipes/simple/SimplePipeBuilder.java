@@ -2,9 +2,9 @@ package com.altumpoint.easypipe.core.pipes.simple;
 
 import com.altumpoint.easypipe.core.EasyPipeBuilder;
 import com.altumpoint.easypipe.core.meters.DefaultMetersStrategy;
-import com.altumpoint.easypipe.core.pipes.EasyConsumer;
+import com.altumpoint.easypipe.core.pipes.EasySource;
 import com.altumpoint.easypipe.core.pipes.EasyPipe;
-import com.altumpoint.easypipe.core.pipes.EasyPublisher;
+import com.altumpoint.easypipe.core.pipes.EasyDestination;
 import com.altumpoint.easypipe.core.pipes.EasyTransformer;
 import com.altumpoint.easypipe.core.pipes.StageComponent;
 import com.altumpoint.easypipe.core.pipes.TypedProperties;
@@ -46,15 +46,15 @@ public final class SimplePipeBuilder implements EasyPipeBuilder {
     }
 
     @Override
-    public <M> SimplePipeBuilder addConsumer(String stageName, EasyConsumer<M> consumer, TypedProperties properties) {
+    public <M> SimplePipeBuilder addSource(String stageName, EasySource<M> source, TypedProperties properties) {
         if (!stages.isEmpty()) {
-            throw new IllegalStateException("SimplePipe could contain just one consumer.");
+            throw new IllegalStateException("SimplePipe could contain just one source.");
         }
 
-        loadPropertiesIntoStageComponent(consumer, properties);
-        ConsumerStage<M> consumerStage = new ConsumerStage<>(
-                consumer, new DefaultMetersStrategy(stageFullName("consumer"), meterRegistry));
-        stages.add(consumerStage);
+        loadPropertiesIntoStageComponent(source, properties);
+        SourceStage<M> sourceStage = new SourceStage<>(
+                source, new DefaultMetersStrategy(stageFullName("source"), meterRegistry));
+        stages.add(sourceStage);
         return this;
     }
 
@@ -62,7 +62,7 @@ public final class SimplePipeBuilder implements EasyPipeBuilder {
     public <M, R> SimplePipeBuilder addTransformer(
             String stageName, EasyTransformer<M, R> transformer, TypedProperties properties) {
         if (stages.isEmpty()) {
-            throw new IllegalStateException("Consumer should be added first in SimplePipe.");
+            throw new IllegalStateException("Source should be added first in SimplePipe.");
         }
 
         loadPropertiesIntoStageComponent(transformer, properties);
@@ -72,16 +72,16 @@ public final class SimplePipeBuilder implements EasyPipeBuilder {
     }
 
     @Override
-    public <M> SimplePipeBuilder addPublisher(
-            String stageName, EasyPublisher<M> publisher, TypedProperties properties) {
+    public <M> SimplePipeBuilder addDestination(
+            String stageName, EasyDestination<M> destination, TypedProperties properties) {
         if (stages.isEmpty()) {
-            throw new IllegalStateException("Consumer should be added first in SimplePipe.");
+            throw new IllegalStateException("Source should be added first in SimplePipe.");
         }
 
-        loadPropertiesIntoStageComponent(publisher, properties);
-        PublisherStage<M> publisherStage = new PublisherStage<>(
-                publisher, new DefaultMetersStrategy(stageFullName(stageName), meterRegistry));
-        stages.add(publisherStage);
+        loadPropertiesIntoStageComponent(destination, properties);
+        DestinationStage<M> destinationStage = new DestinationStage<>(
+                destination, new DefaultMetersStrategy(stageFullName(stageName), meterRegistry));
+        stages.add(destinationStage);
         return this;
     }
 
@@ -99,7 +99,7 @@ public final class SimplePipeBuilder implements EasyPipeBuilder {
             prevStage = currentStage;
         }
 
-        return new SimplePipe((ConsumerStage) prevStage);
+        return new SimplePipe((SourceStage) prevStage);
     }
 
 

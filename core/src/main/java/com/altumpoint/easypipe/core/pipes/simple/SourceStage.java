@@ -2,7 +2,7 @@ package com.altumpoint.easypipe.core.pipes.simple;
 
 import com.altumpoint.easypipe.core.meters.MetersData;
 import com.altumpoint.easypipe.core.meters.MetersStrategy;
-import com.altumpoint.easypipe.core.pipes.EasyConsumer;
+import com.altumpoint.easypipe.core.pipes.EasySource;
 
 /**
  * Pipe stage for consuming messages and invoking next pipe stage.
@@ -10,11 +10,11 @@ import com.altumpoint.easypipe.core.pipes.EasyConsumer;
  * @param <M> Type of messages.
  * @since 0.1.0
  */
-public class ConsumerStage<M> extends SimpleStage<M> {
+public class SourceStage<M> extends SimpleStage<M> {
 
-    private EasyConsumer<M> consumer;
+    private EasySource<M> consumer;
 
-    public ConsumerStage(EasyConsumer<M> consumer, MetersStrategy metersStrategy) {
+    public SourceStage(EasySource<M> consumer, MetersStrategy metersStrategy) {
         super(metersStrategy);
 
         this.consumer = consumer;

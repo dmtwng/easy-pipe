@@ -67,7 +67,7 @@ class DirectoryConsumerSpec extends Specification {
     }
 
     def "should fail consumer creation if path is not a directory"() {
-        when: "creating new consumer"
+        when: "creating new source"
         new DirectoryConsumer(path).start()
 
         then: "exception should be thrown"
@@ -79,7 +79,7 @@ class DirectoryConsumerSpec extends Specification {
 
     @Timeout(value = 1500, unit = TimeUnit.MILLISECONDS)
     def "should fail start of consuming if creation of watcher failed"() {
-        given: "new consumer"
+        given: "new source"
         def consumer = new DirectoryConsumer(path)
 
         when: "start consuming"

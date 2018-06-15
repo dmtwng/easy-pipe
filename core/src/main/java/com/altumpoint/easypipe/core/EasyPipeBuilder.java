@@ -1,8 +1,8 @@
 package com.altumpoint.easypipe.core;
 
-import com.altumpoint.easypipe.core.pipes.EasyConsumer;
+import com.altumpoint.easypipe.core.pipes.EasySource;
 import com.altumpoint.easypipe.core.pipes.EasyPipe;
-import com.altumpoint.easypipe.core.pipes.EasyPublisher;
+import com.altumpoint.easypipe.core.pipes.EasyDestination;
 import com.altumpoint.easypipe.core.pipes.EasyTransformer;
 import com.altumpoint.easypipe.core.pipes.TypedProperties;
 
@@ -22,26 +22,26 @@ public interface EasyPipeBuilder {
     EasyPipeBuilder startPipe(String pipeName);
 
     /**
-     * Adds consumer stage into the pipe.
+     * Adds source stage into the pipe.
      *
      * @param stageName name of pipe.
-     * @param consumer pipe entry point.
+     * @param source pipe entry point.
      * @return builder instance.
      */
-    default  <M> EasyPipeBuilder addConsumer(String stageName, EasyConsumer<M> consumer) {
-        return addConsumer(stageName, consumer, null);
+    default  <M> EasyPipeBuilder addSource(String stageName, EasySource<M> source) {
+        return addSource(stageName, source, null);
     }
 
     /**
-     * Adds consumer stage into the pipe.
-     * Loads consumer properties.
+     * Adds source stage into the pipe.
+     * Loads source properties.
      *
      * @param stageName name of pipe.
-     * @param consumer pipe entry point.
-     * @param properties consumer properties.
+     * @param source pipe entry point.
+     * @param properties source properties.
      * @return builder instance.
      */
-    <M> EasyPipeBuilder addConsumer(String stageName, EasyConsumer<M> consumer, TypedProperties properties);
+    <M> EasyPipeBuilder addSource(String stageName, EasySource<M> source, TypedProperties properties);
 
     /**
      * Adds transformer stage into the pipe.
@@ -67,26 +67,26 @@ public interface EasyPipeBuilder {
             String stageName, EasyTransformer<M, R> transformer, TypedProperties properties);
 
     /**
-     * Adds publisher into the pipe.
+     * Adds destination into the pipe.
      *
      * @param stageName name of stage.
-     * @param publisher stage component.
+     * @param destination stage component.
      * @return builder instance.
      */
-    default  <M> EasyPipeBuilder addPublisher(String stageName, EasyPublisher<M> publisher) {
-        return addPublisher(stageName, publisher, null);
+    default  <M> EasyPipeBuilder addDestination(String stageName, EasyDestination<M> destination) {
+        return addDestination(stageName, destination, null);
     }
 
     /**
-     * Adds publisher into the pipe.
-     * Loads publisher properties.
+     * Adds destination into the pipe.
+     * Loads destination properties.
      *
      * @param stageName name of stage.
-     * @param publisher stage component.
-     * @param properties publisher properties.
+     * @param destination stage component.
+     * @param properties destination properties.
      * @return builder instance.
      */
-    <M> EasyPipeBuilder addPublisher(String stageName, EasyPublisher<M> publisher, TypedProperties properties);
+    <M> EasyPipeBuilder addDestination(String stageName, EasyDestination<M> destination, TypedProperties properties);
 
 
     /**

@@ -1,7 +1,7 @@
 package com.altumpoint.easypipe.core.pipes.simple
 
-import com.altumpoint.easypipe.core.pipes.EasyConsumer
-import com.altumpoint.easypipe.core.pipes.EasyPublisher
+import com.altumpoint.easypipe.core.pipes.EasySource
+import com.altumpoint.easypipe.core.pipes.EasyDestination
 import com.altumpoint.easypipe.core.pipes.EasyTransformer
 import com.altumpoint.easypipe.core.pipes.TypedProperties
 import io.micrometer.core.instrument.Counter
@@ -25,7 +25,7 @@ class SimplePipeBuilderSpec extends Specification {
         this.meterRegistry.counter(_ as String) >> Mock(Counter)
         this.meterRegistry.gauge(_ as String, _ as AtomicLong) >> Mock(AtomicLong)
 
-        consumer = Mock(EasyConsumer)
+        consumer = Mock(EasySource)
         def msgConsumer
         consumer.setMessageConsumer(_ as Consumer) >> {Consumer setConsumer -> msgConsumer = setConsumer}
         consumer.start() >> {msgConsumer.accept("test message")}
@@ -33,7 +33,7 @@ class SimplePipeBuilderSpec extends Specification {
         transformer = Mock(EasyTransformer)
         transformer.transform("test message") >> "transformed message"
 
-        publisher = Mock(EasyPublisher)
+        publisher = Mock(EasyDestination)
     }
 
 
@@ -44,13 +44,13 @@ class SimplePipeBuilderSpec extends Specification {
         when: "build and start pipeline"
         pipeBuilder
                 .startPipe("test-pipe")
-                .addConsumer("test-consumer", consumer)
+                .addSource("test-source", consumer)
                 .addTransformer("test-transformer", transformer)
-                .addPublisher("test-publisher", publisher)
+                .addDestination("test-destination", publisher)
                 .build()
                 .start()
 
-        then: "message from consumer should be published"
+        then: "message from source should be published"
         1 * publisher.publish("transformed message")
 
     }
@@ -65,13 +65,13 @@ class SimplePipeBuilderSpec extends Specification {
         when: "build and start pipeline"
         pipeBuilder
                 .startPipe("test-pipe")
-                .addConsumer("test-consumer", consumer, properties)
+                .addSource("test-source", consumer, properties)
                 .addTransformer("test-transformer", transformer, properties)
-                .addPublisher("test-publisher", publisher, properties)
+                .addDestination("test-destination", publisher, properties)
                 .build()
                 .start()
 
-        then: "message from consumer should be published"
+        then: "message from source should be published"
         1 * consumer.loadProperties(properties)
         1 * transformer.loadProperties(properties)
         1 * publisher.loadProperties(properties)
@@ -94,7 +94,7 @@ class SimplePipeBuilderSpec extends Specification {
         def pipeBuilder = new SimplePipeBuilder(Mock(MeterRegistry))
 
         when:
-        pipeBuilder.addPublisher("test-publisher", Mock(EasyPublisher))
+        pipeBuilder.addDestination("test-destination", Mock(EasyDestination))
 
         then:
         thrown IllegalStateException
@@ -106,8 +106,8 @@ class SimplePipeBuilderSpec extends Specification {
 
         when:
         pipeBuilder
-                .addConsumer("test-consumer1", Mock(EasyConsumer))
-                .addConsumer("test-consumer2", Mock(EasyConsumer))
+                .addSource("test-consumer1", Mock(EasySource))
+                .addSource("test-consumer2", Mock(EasySource))
 
         then:
         thrown IllegalStateException

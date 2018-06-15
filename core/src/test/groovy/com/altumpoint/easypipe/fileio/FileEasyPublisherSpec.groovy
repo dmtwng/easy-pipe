@@ -13,7 +13,7 @@ class FileEasyPublisherSpec extends Specification {
         given: "writer"
         def writer = Mock(FileWriter)
 
-        and: "publisher with writer"
+        and: "destination with writer"
         def publisher = new FileEasyPublisher()
         publisher.setWriter(writer)
         def properties = new TypedProperties();
@@ -31,7 +31,7 @@ class FileEasyPublisherSpec extends Specification {
         given: "writer"
         def writer = Mock(FileWriter)
 
-        and: "publisher with writer"
+        and: "destination with writer"
         def publisher = new FileEasyPublisher()
         publisher.setWriter(writer)
 
@@ -48,7 +48,7 @@ class FileEasyPublisherSpec extends Specification {
         file.exists() >> true
         file.getPath() >> {throw new IOException()}
 
-        when: "creates publisher"
+        when: "creates destination"
         new FileEasyPublisher(file)
 
         then: "IllegalArgumentException should be thrown"
@@ -62,7 +62,7 @@ class FileEasyPublisherSpec extends Specification {
         file.getParentFile() >> Mock(File)
         file.createNewFile() >> false
 
-        when: "creates publisher"
+        when: "creates destination"
         new FileEasyPublisher(file)
 
         then: "IllegalArgumentException should be thrown"

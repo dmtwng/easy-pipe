@@ -11,7 +11,7 @@ class WriterEasyPublisherSpec extends Specification {
         given: "writer"
         def writer = Mock(Writer)
 
-        and: "writer easy publisher"
+        and: "writer easy destination"
         def publisher = new WriterEasyPublisher(writer)
 
         when: "publish was invoked"
@@ -27,7 +27,7 @@ class WriterEasyPublisherSpec extends Specification {
         def writer = Mock(Writer)
         writer.write(MESSAGE) >> {throw new IOException()}
 
-        and: "writer easy publisher"
+        and: "writer easy destination"
         def publisher = new WriterEasyPublisher(writer)
 
         when: "publish was invoked"
@@ -41,7 +41,7 @@ class WriterEasyPublisherSpec extends Specification {
         given: "non null writer"
         def writer = Mock(Writer)
 
-        and: "writer easy publisher"
+        and: "writer easy destination"
         def publisher = new WriterEasyPublisher(writer)
 
         when: "close was invoked"

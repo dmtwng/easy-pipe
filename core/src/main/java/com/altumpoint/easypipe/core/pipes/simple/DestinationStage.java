@@ -2,7 +2,7 @@ package com.altumpoint.easypipe.core.pipes.simple;
 
 import com.altumpoint.easypipe.core.meters.MetersData;
 import com.altumpoint.easypipe.core.meters.MetersStrategy;
-import com.altumpoint.easypipe.core.pipes.EasyPublisher;
+import com.altumpoint.easypipe.core.pipes.EasyDestination;
 
 /**
  * Pipe stage for message publishing.
@@ -12,11 +12,11 @@ import com.altumpoint.easypipe.core.pipes.EasyPublisher;
  * @param <M> type of message.
  * @since 0.1.0
  */
-public class PublisherStage<M> extends SimpleStage<M> {
+public class DestinationStage<M> extends SimpleStage<M> {
 
-    private EasyPublisher<M> publisher;
+    private EasyDestination<M> publisher;
 
-    public PublisherStage(EasyPublisher<M> publisher, MetersStrategy metersStrategy) {
+    public DestinationStage(EasyDestination<M> publisher, MetersStrategy metersStrategy) {
         super(metersStrategy);
 
         this.publisher = publisher;
