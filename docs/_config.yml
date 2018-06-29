@@ -1,5 +1,9 @@
 theme: jekyll-theme-cayman
 title: EasyPipe
-description: easy data streaming
+description: Data Streaming is Easy
 github:
-    owner_name: Dmytro Patserkovskyi
+  owner_name: Dmytro Patserkovskyi
+
+links:
+  travis: https://travis-ci.org/dmytro-winged/easy-pipe
+  sonar: https://sonarcloud.io/dashboard?id=com.altumpoint.easypipe%3Aeasypipe-parent
