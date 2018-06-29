@@ -1,16 +1,29 @@
-EasyPipe
-======================
-Data streaming framework, built on top of **Spring Boot**. Concentrate on business aspect 
-of your data, let **EasyPipe** do the rest. 
+EasyPipe is a data streaming library, which handles all important aspects of each pipeline and provide possibility to 
+build pipelines fast and easy.
 
-## How it Works
+<br>
 
+---
 
-## Features
-- implement all steps of your pipe separately;
-- combine steps into EasyPipe;
-- get control on your pipe out of the box;
-- get main metrics of your pipe out of the box;
+![Spring](/img/spring.png) | Built on top of SpringBoot, so you can use all the advantages of Spring ecosystem.
+
+---
+
+Concentrate on the business goals and implementing of particular streaming steps. | ![Spring](/img/objective.png)
+
+---
+
+![Spring](/img/puzzles.png) | Easily connect implemented steps and build data streaming pipeline.
+
+---
+
+Get comfortable control of your pipes to have possibility to run and stop via HTTP. | ![Spring](/img/control.png)
+
+---
+
+![Spring](/img/monitoring.png) | Get all important metrics of your data streaming pipeline and separate steps out of the box. Easily export it to your favorite monitoring system.
+
+---
 
 ## Installation
 Add EasyPipe dependency to you Spring Boot application.

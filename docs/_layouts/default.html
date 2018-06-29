@@ -3,10 +3,20 @@
   <head>
     <meta charset="UTF-8">
 
-{% seo %}
+    {% seo %}
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#157878">
     <link rel="stylesheet" href="{{ '/assets/css/style.css?v=' | append: site.github.build_revision | relative_url }}">
+
+    <style>
+        .main-content table {
+            text-align: center;
+            border-width: 0px;
+        }
+        .main-content table td {
+            border-width: 0px;
+        }
+    </style>
   </head>
   <body>
     <section class="page-header">
