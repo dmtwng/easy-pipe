@@ -26,7 +26,7 @@ Get comfortable control of your pipes to have possibility to run and stop via HT
 ---
 
 ## Installation
-Add EasyPipe dependency to you Spring Boot application.
+Add EasyPipe dependency to your Spring Boot application.
 ```xml
 <dependency>
     <groupId>com.altumpoint.easypipe</groupId>
@@ -34,6 +34,22 @@ Add EasyPipe dependency to you Spring Boot application.
     <version>0.1.1</version>
 </dependency>
 ```
+
+Add Bintray repository to your project.
+```xml
+<repositories>
+    <repository>
+        <snapshots>
+            <enabled>false</enabled>
+        </snapshots>
+        <id>bintray-dmytro-winged-maven</id>
+        <name>bintray</name>
+        <url>https://dl.bintray.com/dmytro-winged/maven</url>
+    </repository>
+</repositories>
+```
+
+Project on [Bintray](https://bintray.com/dmytro-winged/maven/easy-pipe)
 
 ## Usage Instructions
 Build your EasyPipe with builder and add to application context with `EasyPipeComponent` annotation.
