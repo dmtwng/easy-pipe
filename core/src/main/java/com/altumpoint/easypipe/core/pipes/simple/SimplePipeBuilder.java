@@ -73,8 +73,14 @@ public final class SimplePipeBuilder implements EasyPipeBuilder {
     }
 
     @Override
-    public <M, R> EasyPipeBuilder filter(String stageName, EasyFilter<M> filter, TypedProperties properties) {
-        throw new IllegalStateException("Filtration for simple pipes ot implemented yet");
+    public <M> EasyPipeBuilder filter(String stageName, EasyFilter<M> filter, TypedProperties properties) {
+        if (stages.isEmpty()) {
+            throw new IllegalStateException("Source should be added first in SimplePipe.");
+        }
+
+        loadPropertiesIntoStageComponent(filter, properties);
+        stages.add(new FilterStage<>(filter, new DefaultMetersStrategy(stageFullName(stageName), meterRegistry)));
+        return this;
     }
 
     @Override

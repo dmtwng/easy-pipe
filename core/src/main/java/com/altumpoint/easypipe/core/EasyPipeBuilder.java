@@ -74,7 +74,7 @@ public interface EasyPipeBuilder {
      * @param filter stage component.
      * @return builder instance.
      */
-    default <M, R> EasyPipeBuilder filter(String stageName, EasyFilter<M> filter) {
+    default <M> EasyPipeBuilder filter(String stageName, EasyFilter<M> filter) {
         return filter(stageName, filter, null);
     }
 
@@ -87,7 +87,7 @@ public interface EasyPipeBuilder {
      * @param properties transformer properties.
      * @return builder instance.
      */
-    <M, R> EasyPipeBuilder filter(
+    <M> EasyPipeBuilder filter(
             String stageName, EasyFilter<M> filter, TypedProperties properties);
 
     /**

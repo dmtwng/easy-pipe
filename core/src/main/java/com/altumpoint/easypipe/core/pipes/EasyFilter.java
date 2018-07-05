@@ -9,7 +9,7 @@ package com.altumpoint.easypipe.core.pipes;
  * @param <M> Type of messages.
  * @since 0.2.0
  */
-public interface EasyFilter<M> {
+public interface EasyFilter<M> extends StageComponent {
 
     /**
      * Checks if message should be passed further in pipeline.
