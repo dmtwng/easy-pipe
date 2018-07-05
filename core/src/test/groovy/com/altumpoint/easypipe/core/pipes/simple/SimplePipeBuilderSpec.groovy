@@ -44,9 +44,9 @@ class SimplePipeBuilderSpec extends Specification {
         when: "build and start pipeline"
         pipeBuilder
                 .startPipe("test-pipe")
-                .addSource("test-source", consumer)
-                .addTransformer("test-transformer", transformer)
-                .addDestination("test-destination", publisher)
+                .withSource("test-source", consumer)
+                .transform("test-transformer", transformer)
+                .publish("test-destination", publisher)
                 .build()
                 .start()
 
@@ -65,9 +65,9 @@ class SimplePipeBuilderSpec extends Specification {
         when: "build and start pipeline"
         pipeBuilder
                 .startPipe("test-pipe")
-                .addSource("test-source", consumer, properties)
-                .addTransformer("test-transformer", transformer, properties)
-                .addDestination("test-destination", publisher, properties)
+                .withSource("test-source", consumer, properties)
+                .transform("test-transformer", transformer, properties)
+                .publish("test-destination", publisher, properties)
                 .build()
                 .start()
 
@@ -83,7 +83,7 @@ class SimplePipeBuilderSpec extends Specification {
         def pipeBuilder = new SimplePipeBuilder(Mock(MeterRegistry))
 
         when:
-        pipeBuilder.addTransformer("test-transfomer", Mock(EasyTransformer))
+        pipeBuilder.transform("test-transfomer", Mock(EasyTransformer))
 
         then:
         thrown IllegalStateException
@@ -94,7 +94,7 @@ class SimplePipeBuilderSpec extends Specification {
         def pipeBuilder = new SimplePipeBuilder(Mock(MeterRegistry))
 
         when:
-        pipeBuilder.addDestination("test-destination", Mock(EasyDestination))
+        pipeBuilder.publish("test-destination", Mock(EasyDestination))
 
         then:
         thrown IllegalStateException
@@ -106,8 +106,8 @@ class SimplePipeBuilderSpec extends Specification {
 
         when:
         pipeBuilder
-                .addSource("test-consumer1", Mock(EasySource))
-                .addSource("test-consumer2", Mock(EasySource))
+                .withSource("test-consumer1", Mock(EasySource))
+                .withSource("test-consumer2", Mock(EasySource))
 
         then:
         thrown IllegalStateException

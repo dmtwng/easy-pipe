@@ -46,7 +46,7 @@ public final class SimplePipeBuilder implements EasyPipeBuilder {
     }
 
     @Override
-    public <M> SimplePipeBuilder addSource(String stageName, EasySource<M> source, TypedProperties properties) {
+    public <M> SimplePipeBuilder withSource(String stageName, EasySource<M> source, TypedProperties properties) {
         if (!stages.isEmpty()) {
             throw new IllegalStateException("SimplePipe could contain just one source.");
         }
@@ -59,7 +59,7 @@ public final class SimplePipeBuilder implements EasyPipeBuilder {
     }
 
     @Override
-    public <M, R> SimplePipeBuilder addTransformer(
+    public <M, R> SimplePipeBuilder transform(
             String stageName, EasyTransformer<M, R> transformer, TypedProperties properties) {
         if (stages.isEmpty()) {
             throw new IllegalStateException("Source should be added first in SimplePipe.");
@@ -72,7 +72,7 @@ public final class SimplePipeBuilder implements EasyPipeBuilder {
     }
 
     @Override
-    public <M> SimplePipeBuilder addDestination(
+    public <M> SimplePipeBuilder publish(
             String stageName, EasyDestination<M> destination, TypedProperties properties) {
         if (stages.isEmpty()) {
             throw new IllegalStateException("Source should be added first in SimplePipe.");

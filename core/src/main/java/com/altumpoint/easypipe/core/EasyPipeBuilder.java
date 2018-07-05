@@ -28,8 +28,8 @@ public interface EasyPipeBuilder {
      * @param source pipe entry point.
      * @return builder instance.
      */
-    default  <M> EasyPipeBuilder addSource(String stageName, EasySource<M> source) {
-        return addSource(stageName, source, null);
+    default  <M> EasyPipeBuilder withSource(String stageName, EasySource<M> source) {
+        return withSource(stageName, source, null);
     }
 
     /**
@@ -41,7 +41,7 @@ public interface EasyPipeBuilder {
      * @param properties source properties.
      * @return builder instance.
      */
-    <M> EasyPipeBuilder addSource(String stageName, EasySource<M> source, TypedProperties properties);
+    <M> EasyPipeBuilder withSource(String stageName, EasySource<M> source, TypedProperties properties);
 
     /**
      * Adds transformer stage into the pipe.
@@ -50,8 +50,8 @@ public interface EasyPipeBuilder {
      * @param transformer stage component.
      * @return builder instance.
      */
-    default <M, R> EasyPipeBuilder addTransformer(String stageName, EasyTransformer<M, R> transformer) {
-        return addTransformer(stageName, transformer, null);
+    default <M, R> EasyPipeBuilder transform(String stageName, EasyTransformer<M, R> transformer) {
+        return transform(stageName, transformer, null);
     }
 
     /**
@@ -63,7 +63,7 @@ public interface EasyPipeBuilder {
      * @param properties transformer properties.
      * @return builder instance.
      */
-    <M, R> EasyPipeBuilder addTransformer(
+    <M, R> EasyPipeBuilder transform(
             String stageName, EasyTransformer<M, R> transformer, TypedProperties properties);
 
     /**
@@ -73,8 +73,8 @@ public interface EasyPipeBuilder {
      * @param destination stage component.
      * @return builder instance.
      */
-    default  <M> EasyPipeBuilder addDestination(String stageName, EasyDestination<M> destination) {
-        return addDestination(stageName, destination, null);
+    default  <M> EasyPipeBuilder publish(String stageName, EasyDestination<M> destination) {
+        return publish(stageName, destination, null);
     }
 
     /**
@@ -86,7 +86,7 @@ public interface EasyPipeBuilder {
      * @param properties destination properties.
      * @return builder instance.
      */
-    <M> EasyPipeBuilder addDestination(String stageName, EasyDestination<M> destination, TypedProperties properties);
+    <M> EasyPipeBuilder publish(String stageName, EasyDestination<M> destination, TypedProperties properties);
 
 
     /**

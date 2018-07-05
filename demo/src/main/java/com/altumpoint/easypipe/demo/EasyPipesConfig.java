@@ -34,9 +34,9 @@ public class EasyPipesConfig {
     ) {
         return pipeBuilder
                 .startPipe("doubles-stream")
-                .addSource("doubles-consumer", doublesConsumer)
-                .addTransformer("d-transformer", percentsTransformer)
-                .addDestination("d-publisher", logsPublisher)
+                .withSource("doubles-consumer", doublesConsumer)
+                .transform("d-transformer", percentsTransformer)
+                .publish("d-publisher", logsPublisher)
                 .build();
     }
 
@@ -45,8 +45,8 @@ public class EasyPipesConfig {
     public EasyPipe createdFilesAuditor(SimplePipeBuilder pipeBuilder) {
         return pipeBuilder
                 .startPipe("created-files-auditor")
-                .addSource("files-auditor-wather", new DirectoryConsumer("temp/watch"), auditorConsumer)
-                .addDestination("files-auditor-writer", new FileEasyPublisher("temp/audit.log"), auditorPublisher)
+                .withSource("files-auditor-wather", new DirectoryConsumer("temp/watch"), auditorConsumer)
+                .publish("files-auditor-writer", new FileEasyPublisher("temp/audit.log"), auditorPublisher)
                 .build();
     }
 
