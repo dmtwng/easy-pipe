@@ -1,5 +1,6 @@
 package com.altumpoint.easypipe.core;
 
+import com.altumpoint.easypipe.core.pipes.EasyFilter;
 import com.altumpoint.easypipe.core.pipes.EasySource;
 import com.altumpoint.easypipe.core.pipes.EasyPipe;
 import com.altumpoint.easypipe.core.pipes.EasyDestination;
@@ -65,6 +66,29 @@ public interface EasyPipeBuilder {
      */
     <M, R> EasyPipeBuilder transform(
             String stageName, EasyTransformer<M, R> transformer, TypedProperties properties);
+
+    /**
+     * Adds filter into the pipe.
+     *
+     * @param stageName name of stage.
+     * @param filter stage component.
+     * @return builder instance.
+     */
+    default <M, R> EasyPipeBuilder filter(String stageName, EasyFilter<M> filter) {
+        return filter(stageName, filter, null);
+    }
+
+    /**
+     * Adds filter into the pipe.
+     * Loads transformer properties.
+     *
+     * @param stageName name of stage.
+     * @param filter stage component.
+     * @param properties transformer properties.
+     * @return builder instance.
+     */
+    <M, R> EasyPipeBuilder filter(
+            String stageName, EasyFilter<M> filter, TypedProperties properties);
 
     /**
      * Adds destination into the pipe.

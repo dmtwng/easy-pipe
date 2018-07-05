@@ -2,6 +2,7 @@ package com.altumpoint.easypipe.core.pipes.simple;
 
 import com.altumpoint.easypipe.core.EasyPipeBuilder;
 import com.altumpoint.easypipe.core.meters.DefaultMetersStrategy;
+import com.altumpoint.easypipe.core.pipes.EasyFilter;
 import com.altumpoint.easypipe.core.pipes.EasySource;
 import com.altumpoint.easypipe.core.pipes.EasyPipe;
 import com.altumpoint.easypipe.core.pipes.EasyDestination;
@@ -69,6 +70,11 @@ public final class SimplePipeBuilder implements EasyPipeBuilder {
         stages.add(new TransformerStage<>(
                 transformer, new DefaultMetersStrategy(stageFullName(stageName), meterRegistry)));
         return this;
+    }
+
+    @Override
+    public <M, R> EasyPipeBuilder filter(String stageName, EasyFilter<M> filter, TypedProperties properties) {
+        throw new IllegalStateException("Filtration for simple pipes ot implemented yet");
     }
 
     @Override
