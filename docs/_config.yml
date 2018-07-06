@@ -1,6 +1,8 @@
 theme: jekyll-theme-cayman
 title: EasyPipe
 description: Data Streaming is Easy
+logo: /img/easy-pipe.png
+
 github:
   owner_name: Dmytro Patserkovskyi
 
