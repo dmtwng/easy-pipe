@@ -25,6 +25,23 @@ Get comfortable control of your pipes to have possibility to run and stop via HT
 
 ---
 
+## How it works
+![EasyPipe Architecture](/img/architecture.png)
+ - Container with pipelines (`PipesManager`) runs within [Spring Boot](https://spring.io/projects/spring-boot) application, 
+ so you can use all benefits of **Spring Container** in your pipelines.
+ - `PipesManager` could contain several pipelines withing one application, each of them should have
+ an uniq identifier.
+ - `PipesManager` exposes **HTTP endpoints** to manage pipelines. It provides commands such as run or stop
+ pipeline, get status. 
+ - Each pipeline consists of several stages (`PipeStage`), each stage is a wrapper for one `Component`.
+ - `PipeStage` is a part of EasyPipe application, and provides management of messages sequence and its
+ stream between `Components` 
+ - `PipeStage`, using [Micrometer](https://micrometer.io/), collects the main measures of streaming system
+ for each step of pipeline, such as messages count, execution time etc. **Micrometer** provides integration
+ with the most monitoring systems.
+ - `Components` is the ones, who represent the business logic of each data streaming pipeline. There are a few 
+ types of components: `Source`, `Processor`, `Destination`.
+
 ## Installation
 Add EasyPipe dependency to your Spring Boot application.
 ```xml
