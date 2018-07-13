@@ -7,8 +7,8 @@
 	<artifactId>easypipe-parent</artifactId>
 	<version>0.2.0-SNAPSHOT</version>
     <modules>
-        <module>core</module>
-		<module>demo</module>
+        <module>easypipe-core</module>
+		<module>easypipe-demo</module>
 	</modules>
     <packaging>pom</packaging>
 	<name>EasyPipe</name>
