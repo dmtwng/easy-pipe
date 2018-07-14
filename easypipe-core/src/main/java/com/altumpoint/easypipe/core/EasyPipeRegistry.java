@@ -139,9 +139,11 @@ public class EasyPipeRegistry {
     /**
      * Gets the status of execution of specified pipe.
      * Possible statuses is:
-     * <p/> {@code Pending}: if pipe is not running;
-     * <p/> {@code Running}: if pipe is running;
-     * <p/> {@code Failed}: if last execution of pipe is failed and currently pipe is not running.
+     * <ul>
+     *     <li>{@code Pending}: if pipe is not running;</li>
+     *     <li>{@code Running}: if pipe is running;</li>
+     *     <li>{@code Failed}: if last execution of pipe is failed and currently pipe is not running.</li>
+     * </ul>
      *
      * @param pipeName name of pipe.
      * @return status of pipe execution.
