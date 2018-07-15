@@ -13,6 +13,10 @@
     <packaging>jar</packaging>
     <name>EasyPipe Demo</name>
 
+    <properties>
+        <maven.deploy.skip>true</maven.deploy.skip>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>

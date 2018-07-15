@@ -27,10 +27,6 @@
         <developerConnection>scm:git:git@github.com:dmytro-winged/easy-pipe.git</developerConnection>
     </scm>
 
-    <ciManagement>
-        <url>https://travis-ci.org/dmytro-winged/easy-pipe</url>
-    </ciManagement>
-
     <licenses>
         <license>
             <name>Apache 2.0</name>
@@ -38,13 +34,23 @@
         </license>
     </licenses>
 
+    <ciManagement>
+        <url>https://travis-ci.org/dmytro-winged/easy-pipe</url>
+    </ciManagement>
+
+    <distributionManagement>
+        <repository>
+            <id>bintray-dmytro-winged-maven</id>
+            <name>dmytro-winged-maven</name>
+            <url>https://api.bintray.com/maven/dmytro-winged/maven/easy-pipe/;publish=1</url>
+        </repository>
+    </distributionManagement>
+
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version.source>1.8</java.version.source>
 		<java.version.target>1.8</java.version.target>
-
-        <maven.deploy.skip>true</maven.deploy.skip>
 
         <sonar.tests>src/test/java,src/test/groovy</sonar.tests>
     </properties>
@@ -165,13 +171,5 @@
             </plugin>
         </plugins>
     </build>
-
-    <distributionManagement>
-        <repository>
-            <id>bintray-dmytro-winged-maven</id>
-            <name>dmytro-winged-maven</name>
-            <url>https://api.bintray.com/maven/dmytro-winged/maven/easy-pipe/;publish=1</url>
-        </repository>
-    </distributionManagement>
 
 </project>
