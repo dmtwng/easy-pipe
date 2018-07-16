@@ -5,17 +5,13 @@
     <parent>
         <artifactId>easypipe-parent</artifactId>
         <groupId>com.altumpoint.easypipe</groupId>
-        <version>0.2.0-SNAPSHOT</version>
+        <version>0.3.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>easypipe-core</artifactId>
     <packaging>jar</packaging>
     <name>EasyPipe Core</name>
-
-    <properties>
-        <maven.deploy.skip>false</maven.deploy.skip>
-    </properties>
 
     <dependencies>
         <dependency>
@@ -30,7 +26,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-jersey</artifactId>
         </dependency>
-
     </dependencies>
 
 </project>

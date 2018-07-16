@@ -27,6 +27,7 @@ public interface EasyPipeBuilder {
      *
      * @param stageName name of pipe.
      * @param source pipe entry point.
+     * @param <M> type of message.
      * @return builder instance.
      */
     default  <M> EasyPipeBuilder withSource(String stageName, EasySource<M> source) {
@@ -40,6 +41,7 @@ public interface EasyPipeBuilder {
      * @param stageName name of pipe.
      * @param source pipe entry point.
      * @param properties source properties.
+     * @param <M> type of message.
      * @return builder instance.
      */
     <M> EasyPipeBuilder withSource(String stageName, EasySource<M> source, TypedProperties properties);
@@ -49,6 +51,8 @@ public interface EasyPipeBuilder {
      *
      * @param stageName name of stage.
      * @param transformer stage component.
+     * @param <M> type of message.
+     * @param <R> type of transformation result.
      * @return builder instance.
      */
     default <M, R> EasyPipeBuilder transform(String stageName, EasyTransformer<M, R> transformer) {
@@ -62,6 +66,8 @@ public interface EasyPipeBuilder {
      * @param stageName name of stage.
      * @param transformer stage component.
      * @param properties transformer properties.
+     * @param <M> type of message.
+     * @param <R> type of transformation result.
      * @return builder instance.
      */
     <M, R> EasyPipeBuilder transform(
@@ -72,6 +78,7 @@ public interface EasyPipeBuilder {
      *
      * @param stageName name of stage.
      * @param filter stage component.
+     * @param <M> type of message.
      * @return builder instance.
      */
     default <M> EasyPipeBuilder filter(String stageName, EasyFilter<M> filter) {
@@ -85,6 +92,7 @@ public interface EasyPipeBuilder {
      * @param stageName name of stage.
      * @param filter stage component.
      * @param properties transformer properties.
+     * @param <M> type of message.
      * @return builder instance.
      */
     <M> EasyPipeBuilder filter(
@@ -95,6 +103,7 @@ public interface EasyPipeBuilder {
      *
      * @param stageName name of stage.
      * @param destination stage component.
+     * @param <M> type of message.
      * @return builder instance.
      */
     default  <M> EasyPipeBuilder publish(String stageName, EasyDestination<M> destination) {
@@ -108,6 +117,7 @@ public interface EasyPipeBuilder {
      * @param stageName name of stage.
      * @param destination stage component.
      * @param properties destination properties.
+     * @param <M> type of message.
      * @return builder instance.
      */
     <M> EasyPipeBuilder publish(String stageName, EasyDestination<M> destination, TypedProperties properties);
