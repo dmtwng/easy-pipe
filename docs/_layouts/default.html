@@ -8,6 +8,7 @@
     <meta name="theme-color" content="#157878">
     <link rel="stylesheet" href="{{ '/assets/css/style.css?v=' | append: site.github.build_revision | relative_url }}">
 
+    <link rel="stylesheet" href="/{{site.github.repository_name}}/css/home.css">
     <link rel="stylesheet" href="/{{site.github.repository_name}}/css/project-links.css">
 
     <style>
@@ -28,12 +29,12 @@
   <section class="page-header">
       <div style="width: 100%; text-align: center">
         <div style="display: inline-block">
-          <div style="width: 10rem; height: 10rem; display: inline; float: left; margin-right: 2rem">
-            <img src="/{{site.github.repository_name}}{{site.logo}}" style="width: 10rem; height: 9rem">
+          <div style="width: 12rem; height: 11rem; display: inline; float: left; margin-right: 2rem">
+            <img src="/{{site.github.repository_name}}{{site.logo}}" style="height: 11rem;">
           </div>
           <div style="display: inline; float: left">
-            <h1 class="project-name">{{ site.title | default: site.github.repository_name }}</h1>
-            <h2 class="project-tagline">{{ site.description | default: site.github.project_tagline }}</h2>
+            <h1 class="home-project-name">{{ site.title | default: site.github.repository_name }}</h1>
+            <h2 class="home-project-description">{{ site.description | default: site.github.project_tagline }}</h2>
           </div>
           <div style="clear: left"></div>
         </div>

@@ -1,0 +1,53 @@
+
+.ep-navbar {
+  position: fixed;
+  width: 100%;
+  min-height: 3rem;
+  background: darkslategrey;
+  padding-left: 6rem;
+  padding-right: 6rem;
+  text-align: right
+}
+
+.ep-navbar ul {
+  padding: 0;
+  margin: 0;
+  min-height: inherit;
+  display: flex;
+  align-items: center;
+}
+
+.ep-navbar li {
+  list-style: none;
+  float: left;
+  margin-left: 1rem;
+  display: block;
+}
+
+.ep-navbar a {
+  text-decoration: none;
+  cursor: pointer;
+  color: lightgrey;
+}
+
+.ep-navbar a:hover {
+  color: whitesmoke;
+}
+
+
+.project-links {
+  float: right;
+}
+
+.project-links .link-svg {
+  width: 1.3rem;
+  height: 1.3rem;
+}
+
+.docs-links {
+  float: left;
+}
+
+.docs-links-logo {
+  height: 2.6rem;
+}
