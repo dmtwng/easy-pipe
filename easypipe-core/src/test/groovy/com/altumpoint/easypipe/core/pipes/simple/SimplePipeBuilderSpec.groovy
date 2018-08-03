@@ -42,7 +42,7 @@ class SimplePipeBuilderSpec extends Specification {
     }
 
 
-    def "should build simple pipeline"() {
+    def "should build context with simple pipeline"() {
         given: "simple pipe builder"
         def pipeBuilder = new SimplePipeBuilder(this.meterRegistry)
 
@@ -54,6 +54,7 @@ class SimplePipeBuilderSpec extends Specification {
                 .filter("test-filter", filter)
                 .publish("test-destination", publisher)
                 .build()
+                .getPipe()
                 .start()
 
         then: "message from source should be published"
@@ -61,7 +62,7 @@ class SimplePipeBuilderSpec extends Specification {
 
     }
 
-    def "should build simple pipeline with component properties"() {
+    def "should build context with simple pipeline with component properties"() {
         given: "simple pipe builder"
         def pipeBuilder = new SimplePipeBuilder(meterRegistry)
 
@@ -76,6 +77,7 @@ class SimplePipeBuilderSpec extends Specification {
                 .filter("test-filter", filter, properties)
                 .publish("test-destination", publisher, properties)
                 .build()
+                .getPipe()
                 .start()
 
         then: "message from source should be published"

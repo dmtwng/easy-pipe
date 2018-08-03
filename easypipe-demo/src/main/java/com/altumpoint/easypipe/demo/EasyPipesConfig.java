@@ -1,5 +1,6 @@
 package com.altumpoint.easypipe.demo;
 
+import com.altumpoint.easypipe.core.PipelineContext;
 import com.altumpoint.easypipe.core.pipes.EasyPipe;
 import com.altumpoint.easypipe.core.EasyPipeComponent;
 import com.altumpoint.easypipe.core.pipes.simple.SimplePipeBuilder;
@@ -26,7 +27,7 @@ public class EasyPipesConfig {
 
     @Autowired
     @EasyPipeComponent("doubles-stream")
-    public EasyPipe doublesStream(
+    public PipelineContext doublesStream(
             SimplePipeBuilder pipeBuilder,
             DoublesConsumer doublesConsumer,
             PercentsTransformer percentsTransformer,
@@ -42,7 +43,7 @@ public class EasyPipesConfig {
 
     @Autowired
     @EasyPipeComponent("created-files-auditor")
-    public EasyPipe createdFilesAuditor(SimplePipeBuilder pipeBuilder) {
+    public PipelineContext createdFilesAuditor(SimplePipeBuilder pipeBuilder) {
         return pipeBuilder
                 .startPipe("created-files-auditor")
                 .withSource("files-auditor-wather", new DirectoryConsumer("temp/watch"), auditorConsumer)

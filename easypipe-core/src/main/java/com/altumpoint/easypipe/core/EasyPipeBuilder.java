@@ -126,7 +126,7 @@ public interface EasyPipeBuilder {
     /**
      * Builds and returns simple easy pipe.
      *
-     * @return instance of easy pipe.
+     * @return instance of EasyPipe context.
      */
-    EasyPipe build();
+    PipelineContext build();
 }

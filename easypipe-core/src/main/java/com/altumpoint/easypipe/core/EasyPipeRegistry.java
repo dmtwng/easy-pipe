@@ -1,6 +1,5 @@
 package com.altumpoint.easypipe.core;
 
-import com.altumpoint.easypipe.core.pipes.EasyPipe;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.BeanCreationException;
@@ -49,8 +48,8 @@ public class EasyPipeRegistry {
 
     @PostConstruct
     public void buildPipe() {
-        Map<String, EasyPipe> pipes = applicationContext.getBeansOfType(EasyPipe.class, true, true);
-        for (Map.Entry<String, EasyPipe> entry : pipes.entrySet()) {
+        Map<String, PipelineContext> pipes = applicationContext.getBeansOfType(PipelineContext.class, true, true);
+        for (Map.Entry<String, PipelineContext> entry : pipes.entrySet()) {
             String beanName = entry.getKey();
             BeanDefinition beanDefinition = beanFactory.getBeanDefinition(beanName);
             if(beanDefinition.getSource() instanceof AnnotatedTypeMetadata) {
@@ -64,16 +63,13 @@ public class EasyPipeRegistry {
         }
     }
 
-    private void registerPipe(String name, EasyPipe pipe) {
+    private void registerPipe(String name, PipelineContext pipelineContext) {
         if (pipelines.containsKey(name)) {
             throw new BeanCreationException(String
                     .format("Failed to create EasyPipe Registry: pipe with name %s already registered", name));
         }
 
         LOGGER.info("EasyPipe Registry: registering pipe '{}'", name);
-        PipelineContext pipelineContext = new PipelineContext();
-        pipelineContext.setPipe(pipe);
-        pipelineContext.setStatus(PipelineContext.Status.PENDING);
         pipelines.put(name, pipelineContext);
     }
 

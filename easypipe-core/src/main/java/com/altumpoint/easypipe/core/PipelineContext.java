@@ -14,6 +14,15 @@ public class PipelineContext {
     private Status status;
 
 
+    public void start() {
+        pipe.start();
+    }
+
+    public void stop() {
+        pipe.stop();
+    }
+
+
     public EasyPipe getPipe() {
         return pipe;
     }

@@ -1,6 +1,7 @@
 package com.altumpoint.easypipe.core.pipes.simple;
 
 import com.altumpoint.easypipe.core.EasyPipeBuilder;
+import com.altumpoint.easypipe.core.PipelineContext;
 import com.altumpoint.easypipe.core.meters.DefaultMetersStrategy;
 import com.altumpoint.easypipe.core.pipes.EasyFilter;
 import com.altumpoint.easypipe.core.pipes.EasySource;
@@ -99,7 +100,7 @@ public final class SimplePipeBuilder implements EasyPipeBuilder {
 
 
     @Override
-    public EasyPipe build() {
+    public PipelineContext build() {
         if (this.stages.isEmpty()) {
             throw new IllegalStateException("Cannot build pipe with no pipes.");
         }
@@ -111,7 +112,9 @@ public final class SimplePipeBuilder implements EasyPipeBuilder {
             prevStage = currentStage;
         }
 
-        return new SimplePipe((SourceStage) prevStage);
+        PipelineContext context = new PipelineContext();
+        context.setPipe(new SimplePipe((SourceStage) prevStage));
+        return context;
     }
 
 
