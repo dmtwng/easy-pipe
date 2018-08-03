@@ -3,11 +3,11 @@ package com.altumpoint.easypipe.core;
 import com.altumpoint.easypipe.core.pipes.EasyPipe;
 
 /**
- * Wrapper object for saving EasyPipe metadata.
+ * Context class for managing {@link EasyPipe} and holding metadata information.
  *
- * @since 0.1.0
+ * @since 0.3.0
  */
-public class EasyPipeInfo {
+public class PipelineContext {
 
     private EasyPipe pipe;
 

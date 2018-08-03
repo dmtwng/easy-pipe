@@ -52,7 +52,7 @@ class EasyPipeRegistrySpec extends Specification {
 
         then: "pipe start should be invoked"
         startResult == "started"
-        EasyPipeInfo.Status.RUNNING.name == easyPipeRegistry.status(PIPE_NAME)
+        PipelineContext.Status.RUNNING.name == easyPipeRegistry.status(PIPE_NAME)
 
         when: "pipe call start second time"
         startResult = easyPipeRegistry.start(PIPE_NAME)
@@ -65,7 +65,7 @@ class EasyPipeRegistrySpec extends Specification {
 
         then: "pipe stop should be invoked"
         stopResult == "stopped"
-        easyPipeRegistry.status(PIPE_NAME) == EasyPipeInfo.Status.PENDING.name
+        easyPipeRegistry.status(PIPE_NAME) == PipelineContext.Status.PENDING.name
 
         when: "pipe call stop second time"
         stopResult = easyPipeRegistry.stop(PIPE_NAME)
@@ -182,7 +182,7 @@ class EasyPipeRegistrySpec extends Specification {
         sleep 500
 
         then: "pipe status should be failed"
-        easyPipeRegistry.status(PIPE_NAME) == EasyPipeInfo.Status.FAILED.name
+        easyPipeRegistry.status(PIPE_NAME) == PipelineContext.Status.FAILED.name
     }
 
     def "should handle broken pipe stops"() {
@@ -227,6 +227,6 @@ class EasyPipeRegistrySpec extends Specification {
 
         then: "pipe status should be failed"
         stopResult == "failed to stop"
-        easyPipeRegistry.status(PIPE_NAME) == EasyPipeInfo.Status.FAILED.name
+        easyPipeRegistry.status(PIPE_NAME) == PipelineContext.Status.FAILED.name
     }
 }

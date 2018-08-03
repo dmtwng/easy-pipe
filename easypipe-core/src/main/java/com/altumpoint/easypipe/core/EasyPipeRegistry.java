@@ -37,14 +37,14 @@ public class EasyPipeRegistry {
 
     private ConfigurableListableBeanFactory beanFactory;
 
-    private Map<String, EasyPipeInfo> pipeInfoMap;
+    private Map<String, PipelineContext> pipelines;
 
 
     @Autowired
     public EasyPipeRegistry(ApplicationContext applicationContext, ConfigurableListableBeanFactory beanFactory) {
         this.applicationContext = applicationContext;
         this.beanFactory = beanFactory;
-        this.pipeInfoMap = new ConcurrentHashMap<>();
+        this.pipelines = new ConcurrentHashMap<>();
     }
 
     @PostConstruct
@@ -65,16 +65,16 @@ public class EasyPipeRegistry {
     }
 
     private void registerPipe(String name, EasyPipe pipe) {
-        if (pipeInfoMap.containsKey(name)) {
+        if (pipelines.containsKey(name)) {
             throw new BeanCreationException(String
                     .format("Failed to create EasyPipe Registry: pipe with name %s already registered", name));
         }
 
         LOGGER.info("EasyPipe Registry: registering pipe '{}'", name);
-        EasyPipeInfo easyPipeInfo = new EasyPipeInfo();
-        easyPipeInfo.setPipe(pipe);
-        easyPipeInfo.setStatus(EasyPipeInfo.Status.PENDING);
-        pipeInfoMap.put(name, easyPipeInfo);
+        PipelineContext pipelineContext = new PipelineContext();
+        pipelineContext.setPipe(pipe);
+        pipelineContext.setStatus(PipelineContext.Status.PENDING);
+        pipelines.put(name, pipelineContext);
     }
 
     /**
@@ -86,7 +86,7 @@ public class EasyPipeRegistry {
     @Path("/")
     @Produces(MediaType.APPLICATION_JSON)
     public Map<String, String> pipesList() {
-        return pipeInfoMap.entrySet().stream()
+        return pipelines.entrySet().stream()
                 .collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().getStatus().name));
     }
 
@@ -110,7 +110,7 @@ public class EasyPipeRegistry {
             return "pipe is running";
         }
 
-        return  startPipe(pipeName) ? "started" : "failed to start";
+        return startPipe(pipeName) ? "started" : "failed to start";
     }
 
     /**
@@ -156,44 +156,44 @@ public class EasyPipeRegistry {
             return String.format(TMPL_PIPE_DOESNT_REGISTERED, pipeName);
         }
 
-        return pipeInfoMap.get(pipeName).getStatus().name;
+        return pipelines.get(pipeName).getStatus().name;
     }
 
 
     private boolean startPipe(String pipeName) {
-        EasyPipeInfo easyPipeInfo = pipeInfoMap.get(pipeName);
+        PipelineContext pipelineContext = pipelines.get(pipeName);
         try {
-            Thread pipeThread = new Thread(new PipeRunnable(easyPipeInfo.getPipe()));
+            Thread pipeThread = new Thread(new PipeRunnable(pipelineContext.getPipe()));
             pipeThread.setUncaughtExceptionHandler(new PipeThreadExceptionHandler(pipeName));
             pipeThread.start();
-            easyPipeInfo.setStatus(EasyPipeInfo.Status.RUNNING);
+            pipelineContext.setStatus(PipelineContext.Status.RUNNING);
         } catch (RuntimeException e) {
             LOGGER.error("Failed to start EasyPipe with name {0}", pipeName, e);
-            easyPipeInfo.setStatus(EasyPipeInfo.Status.FAILED);
+            pipelineContext.setStatus(PipelineContext.Status.FAILED);
             return false;
         }
         return true;
     }
 
     private boolean stopPipe(String pipeName) {
-        EasyPipeInfo easyPipeInfo = pipeInfoMap.get(pipeName);
+        PipelineContext pipelineContext = pipelines.get(pipeName);
         try {
-            easyPipeInfo.getPipe().stop();
-            easyPipeInfo.setStatus(EasyPipeInfo.Status.PENDING);
+            pipelineContext.getPipe().stop();
+            pipelineContext.setStatus(PipelineContext.Status.PENDING);
         } catch (RuntimeException e) {
             LOGGER.error("Failed to start EasyPipe with name {0}", pipeName, e);
-            easyPipeInfo.setStatus(EasyPipeInfo.Status.FAILED);
+            pipelineContext.setStatus(PipelineContext.Status.FAILED);
             return false;
         }
         return true;
     }
 
     private boolean pipeRegistered(String pipeName) {
-        return pipeInfoMap.containsKey(pipeName);
+        return pipelines.containsKey(pipeName);
     }
 
     private boolean pipeIsRunning(String pipeName) {
-        return pipeInfoMap.get(pipeName).getStatus() == EasyPipeInfo.Status.RUNNING;
+        return pipelines.get(pipeName).getStatus() == PipelineContext.Status.RUNNING;
     }
 
 
@@ -213,8 +213,8 @@ public class EasyPipeRegistry {
         public synchronized void uncaughtException(Thread t, Throwable e) {
             LOGGER.error("Pipe {} failed", pipeName, e);
 
-            EasyPipeInfo pipeInfo = pipeInfoMap.get(pipeName);
-            pipeInfo.setStatus(EasyPipeInfo.Status.FAILED);
+            PipelineContext pipeInfo = pipelines.get(pipeName);
+            pipeInfo.setStatus(PipelineContext.Status.FAILED);
         }
     }
 
