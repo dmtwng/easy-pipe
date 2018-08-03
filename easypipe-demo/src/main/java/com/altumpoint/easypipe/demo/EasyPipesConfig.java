@@ -1,10 +1,9 @@
 package com.altumpoint.easypipe.demo;
 
-import com.altumpoint.easypipe.core.PipelineContext;
-import com.altumpoint.easypipe.core.pipes.EasyPipe;
 import com.altumpoint.easypipe.core.EasyPipeComponent;
-import com.altumpoint.easypipe.core.pipes.simple.SimplePipeBuilder;
+import com.altumpoint.easypipe.core.PipelineContext;
 import com.altumpoint.easypipe.core.pipes.TypedProperties;
+import com.altumpoint.easypipe.core.pipes.simple.SimplePipeBuilder;
 import com.altumpoint.easypipe.demo.pipes.DoublesConsumer;
 import com.altumpoint.easypipe.demo.pipes.LogsPublisher;
 import com.altumpoint.easypipe.demo.pipes.PercentsTransformer;
