@@ -5,30 +5,31 @@ import org.springframework.beans.factory.config.BeanDefinition
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory
 import org.springframework.context.ApplicationContext
 import org.springframework.core.type.StandardAnnotationMetadata
-import spock.lang.Ignore
 import spock.lang.Specification
 
-@Ignore
 class EasyPipeRegistrySpec extends Specification {
 
     private static final String PIPE_NAME = "test-pipe"
     private static final String INCORRECT_PIPE_NAME = "incorrect-pipe"
 
+    private pipelineContext
+    private applicationContext
+    private beanFactory
 
-    def "should add and manage correct pipes with annotation"() {
+    void setup() {
+        // Correct pipeline setup
         given: "pipe instance"
-        def testPipe = Mock(PipelineContext)
-        testPipe.getStatus() >> PipelineContext.Status.PENDING
+        pipelineContext = Mock(PipelineContext)
 
-        and: "application context with two bean definitions"
-        def applicationContext = Mock(ApplicationContext)
-        applicationContext.getBeansOfType(PipelineContext.class, true, true) >> {
+        and: "application context with bean definition"
+        applicationContext = Mock(ApplicationContext)
+        this.applicationContext.getBeansOfType(PipelineContext.class, true, true) >> {
             Map<String, PipelineContext> pipesBeans = new HashMap<>()
-            pipesBeans.put(PIPE_NAME, testPipe)
+            pipesBeans.put(PIPE_NAME, this.pipelineContext)
             return pipesBeans
         }
 
-        and: "bean definition of pipes"
+        and: "bean definition of pipeline"
         def annotatedTypeMetadata = Mock(StandardAnnotationMetadata)
         Map<String, Object> attributes = new HashMap<>()
         attributes.put("value", PIPE_NAME)
@@ -37,8 +38,15 @@ class EasyPipeRegistrySpec extends Specification {
         beanDefinition.getSource() >> annotatedTypeMetadata
 
         and: "Spring beans factory"
-        def beanFactory = Mock(ConfigurableListableBeanFactory)
-        beanFactory.getBeanDefinition(PIPE_NAME) >> beanDefinition
+        beanFactory = Mock(ConfigurableListableBeanFactory)
+        this.beanFactory.getBeanDefinition(PIPE_NAME) >> beanDefinition
+    }
+
+
+    def "should add correct pipeline with annotation"() {
+        given: "pipe instance with pending status"
+        pipelineContext.getStatus() >> PipelineContext.Status.PENDING
+        pipelineContext.start() >> true
 
         and: "easy pipes registry"
         def easyPipeRegistry = new EasyPipeRegistry(applicationContext, beanFactory)
@@ -46,34 +54,67 @@ class EasyPipeRegistrySpec extends Specification {
         when: "post construct invoked"
         easyPipeRegistry.buildPipe()
 
-        then: "test pipe should be registered"
+        then: "test pipeline should be registered and pending"
         easyPipeRegistry.pipesList().keySet().contains(PIPE_NAME)
-
-        when: "pipe call start"
-        def startResult = easyPipeRegistry.start(PIPE_NAME)
-
-        then: "pipe start should be invoked"
-        startResult == "started"
-        easyPipeRegistry.status(PIPE_NAME) == PipelineContext.Status.RUNNING.name
-
-        when: "pipe call start second time"
-        startResult = easyPipeRegistry.start(PIPE_NAME)
-
-        then: "pipe start should be invoked"
-        startResult == "pipe is running"
-
-        when: "pipe call stop"
-        def stopResult = easyPipeRegistry.stop(PIPE_NAME)
-
-        then: "pipe stop should be invoked"
-        stopResult == "stopped"
         easyPipeRegistry.status(PIPE_NAME) == PipelineContext.Status.PENDING.name
 
-        when: "pipe call stop second time"
-        stopResult = easyPipeRegistry.stop(PIPE_NAME)
+        when: "such pipeline starting"
+        def response = easyPipeRegistry.start(PIPE_NAME)
 
-        then: "pipe stop should be invoked"
-        "pipe is not running" == stopResult
+        then: "pipe should be abe to start"
+        response == "started"
+    }
+
+    def "should stop running pipelines"() {
+        given: "pipe instance with running status"
+        pipelineContext.getStatus() >> PipelineContext.Status.RUNNING
+        pipelineContext.stop() >> true
+
+        and: "easy pipes registry"
+        def easyPipeRegistry = new EasyPipeRegistry(applicationContext, beanFactory)
+
+        when: "post construct invoked"
+        easyPipeRegistry.buildPipe()
+
+        and: "pipeline stopping"
+        def response = easyPipeRegistry.stop(PIPE_NAME)
+
+        then: "running pipeline should not be started again"
+        response == "stopped"
+    }
+
+    def "should not start already running pipelines"() {
+        given: "pipe instance with running status"
+        pipelineContext.getStatus() >> PipelineContext.Status.RUNNING
+
+        and: "easy pipes registry"
+        def easyPipeRegistry = new EasyPipeRegistry(applicationContext, beanFactory)
+
+        when: "post construct invoked"
+        easyPipeRegistry.buildPipe()
+
+        and: "pipeline is starting"
+        def response = easyPipeRegistry.start(PIPE_NAME)
+
+        then: "running pipeline should not be started again"
+        response == "pipe is running"
+    }
+
+    def "should not stop pending pipelines"() {
+        given: "pipe instance with running status"
+        pipelineContext.getStatus() >> PipelineContext.Status.PENDING
+
+        and: "easy pipes registry"
+        def easyPipeRegistry = new EasyPipeRegistry(applicationContext, beanFactory)
+
+        when: "post construct invoked"
+        easyPipeRegistry.buildPipe()
+
+        and: "pipeline is starting"
+        def response = easyPipeRegistry.stop(PIPE_NAME)
+
+        then: "running pipeline should not be started again"
+        response == "pipe is not running"
     }
 
     def "should not add an pipes with incorrect configuration"() {
@@ -144,91 +185,5 @@ class EasyPipeRegistrySpec extends Specification {
 
         then: "pipe call start"
         thrown BeanCreationException
-    }
-
-    def "should clean up pipe definition after pipe is break"() {
-        given: "pipe instance with broken start method"
-        def testPipe = Mock(PipelineContext)
-        testPipe.start() >> {throw new RuntimeException()}
-
-        and: "application context with two bean definitions"
-        def applicationContext = Mock(ApplicationContext)
-        applicationContext.getBeansOfType(PipelineContext.class, true, true) >> {
-            Map<String, PipelineContext> pipesBeans = new HashMap<>()
-            pipesBeans.put(PIPE_NAME, testPipe)
-            return pipesBeans
-        }
-
-        and: "bean definition of pipes"
-        def annotatedTypeMetadata = Mock(StandardAnnotationMetadata)
-        Map<String, Object> attributes = new HashMap<>()
-        attributes.put("value", PIPE_NAME)
-        annotatedTypeMetadata.getAnnotationAttributes(_ as String) >> attributes
-        def beanDefinition = Mock(BeanDefinition)
-        beanDefinition.getSource() >> annotatedTypeMetadata
-
-        and: "Spring beans factory"
-        def beanFactory = Mock(ConfigurableListableBeanFactory)
-        beanFactory.getBeanDefinition(PIPE_NAME) >> beanDefinition
-
-        and: "easy pipes registry"
-        def easyPipeRegistry = new EasyPipeRegistry(applicationContext, beanFactory)
-
-        when: "post construct invoked"
-        easyPipeRegistry.buildPipe()
-
-        and: "pipe call start"
-        easyPipeRegistry.start(PIPE_NAME)
-
-        and: "wait for a half second"
-        sleep 500
-
-        then: "pipe status should be failed"
-        easyPipeRegistry.status(PIPE_NAME) == PipelineContext.Status.FAILED.name
-    }
-
-    def "should handle broken pipe stops"() {
-        given: "pipe instance"
-        def testPipe = Mock(PipelineContext)
-        testPipe.stop() >> {throw new RuntimeException()}
-
-        and: "application context with two bean definitions"
-        def applicationContext = Mock(ApplicationContext)
-        applicationContext.getBeansOfType(PipelineContext.class, true, true) >> {
-            Map<String, PipelineContext> pipesBeans = new HashMap<>()
-            pipesBeans.put(PIPE_NAME, testPipe)
-            return pipesBeans
-        }
-
-        and: "bean definition of pipes"
-        def annotatedTypeMetadata = Mock(StandardAnnotationMetadata)
-        Map<String, Object> attributes = new HashMap<>()
-        attributes.put("value", PIPE_NAME)
-        annotatedTypeMetadata.getAnnotationAttributes(_ as String) >> attributes
-        def beanDefinition = Mock(BeanDefinition)
-        beanDefinition.getSource() >> annotatedTypeMetadata
-
-        and: "Spring beans factory"
-        def beanFactory = Mock(ConfigurableListableBeanFactory)
-        beanFactory.getBeanDefinition(PIPE_NAME) >> beanDefinition
-
-        and: "easy pipes registry"
-        def easyPipeRegistry = new EasyPipeRegistry(applicationContext, beanFactory)
-
-        when: "post construct invoked"
-        easyPipeRegistry.buildPipe()
-
-        and: "pipe call start"
-        def startResult = easyPipeRegistry.start(PIPE_NAME)
-
-        then: "pipe should be started"
-        startResult == "started"
-
-        when: "pipe call stop"
-        def stopResult = easyPipeRegistry.stop(PIPE_NAME)
-
-        then: "pipe status should be failed"
-        stopResult == "failed to stop"
-        easyPipeRegistry.status(PIPE_NAME) == PipelineContext.Status.FAILED.name
     }
 }

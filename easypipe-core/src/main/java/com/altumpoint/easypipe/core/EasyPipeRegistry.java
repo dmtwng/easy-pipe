@@ -69,8 +69,9 @@ public class EasyPipeRegistry {
                     .format("Failed to create EasyPipe Registry: pipe with name %s already registered", name));
         }
 
-        LOGGER.info("EasyPipe Registry: registering pipe '{}'", name);
+        pipelineContext.setPipeName(name);
         pipelines.put(name, pipelineContext);
+        LOGGER.info("EasyPipe Registry: registering pipe '{}'", name);
     }
 
     /**
@@ -87,7 +88,7 @@ public class EasyPipeRegistry {
     }
 
     /**
-     * Starts specified pipe.
+     * Starts specified pipeline.
      *
      * @param pipeName name of pipe.
      * @return {@code started} if pipe is started successfully,
@@ -106,11 +107,11 @@ public class EasyPipeRegistry {
             return "pipe is running";
         }
 
-        return startPipe(pipeName) ? "started" : "failed to start";
+        return pipelines.get(pipeName).start() ? "started" : "failed to start";
     }
 
     /**
-     * Stops specified pipe.
+     * Stops specified pipeline.
      *
      * @param pipeName name of pipe.
      * @return {@code stopped} if pipe is stopped successfully,
@@ -129,12 +130,12 @@ public class EasyPipeRegistry {
             return "pipe is not running";
         }
 
-        return stopPipe(pipeName) ? "stopped" : "failed to stop";
+        return pipelines.get(pipeName).stop() ? "stopped" : "failed to stop";
     }
 
     /**
-     * Gets the status of execution of specified pipe.
-     * Possible statuses is:
+     * Gets the status of execution of specified pipeline.
+     * Possible statuses are:
      * <ul>
      *     <li>{@code Pending}: if pipe is not running;</li>
      *     <li>{@code Running}: if pipe is running;</li>
@@ -156,62 +157,12 @@ public class EasyPipeRegistry {
     }
 
 
-    private boolean startPipe(String pipeName) {
-        PipelineContext pipelineContext = pipelines.get(pipeName);
-        try {
-            Thread pipeThread = new Thread(new PipeRunnable(pipelineContext.getPipe()));
-            pipeThread.setUncaughtExceptionHandler(new PipeThreadExceptionHandler(pipeName));
-            pipeThread.start();
-            pipelineContext.setStatus(PipelineContext.Status.RUNNING);
-        } catch (RuntimeException e) {
-            LOGGER.error("Failed to start EasyPipe with name {0}", pipeName, e);
-            pipelineContext.setStatus(PipelineContext.Status.FAILED);
-            return false;
-        }
-        return true;
-    }
-
-    private boolean stopPipe(String pipeName) {
-        PipelineContext pipelineContext = pipelines.get(pipeName);
-        try {
-            pipelineContext.getPipe().stop();
-            pipelineContext.setStatus(PipelineContext.Status.PENDING);
-        } catch (RuntimeException e) {
-            LOGGER.error("Failed to start EasyPipe with name {0}", pipeName, e);
-            pipelineContext.setStatus(PipelineContext.Status.FAILED);
-            return false;
-        }
-        return true;
-    }
-
     private boolean pipeRegistered(String pipeName) {
         return pipelines.containsKey(pipeName);
     }
 
     private boolean pipeIsRunning(String pipeName) {
         return pipelines.get(pipeName).getStatus() == PipelineContext.Status.RUNNING;
-    }
-
-
-    /**
-     * Exception handler for pipes threads.
-     * In case of exception, changes status of pipe to {@code FAILED}.
-     */
-    private class PipeThreadExceptionHandler implements Thread.UncaughtExceptionHandler {
-
-        private String pipeName;
-
-        public PipeThreadExceptionHandler(String pipeName) {
-            this.pipeName = pipeName;
-        }
-
-        @Override
-        public synchronized void uncaughtException(Thread t, Throwable e) {
-            LOGGER.error("Pipe {} failed", pipeName, e);
-
-            PipelineContext pipeInfo = pipelines.get(pipeName);
-            pipeInfo.setStatus(PipelineContext.Status.FAILED);
-        }
     }
 
 }
