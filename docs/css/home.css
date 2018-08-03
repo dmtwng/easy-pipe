@@ -1,0 +1,18 @@
+.page-header {
+    padding: 7rem 5rem 4rem 5rem;
+}
+
+.home-project-name {
+    font-size: 3.5rem;
+    font-weight: bold;
+    color: whitesmoke;
+    margin-top: 1rem;
+    margin-bottom: 0.1rem;
+}
+
+.home-project-description {
+    font-size: 1.5rem;
+    font-weight: normal;
+    color: lightgray;
+    margin-bottom: 2rem;
+}
