@@ -32,7 +32,8 @@ class EasyPipeRegistrySpec extends Specification {
         and: "bean definition of pipeline"
         def annotatedTypeMetadata = Mock(StandardAnnotationMetadata)
         Map<String, Object> attributes = new HashMap<>()
-        attributes.put("value", PIPE_NAME)
+        attributes.put("name", PIPE_NAME)
+        attributes.put("autostart", false)
         annotatedTypeMetadata.getAnnotationAttributes(_ as String) >> attributes
         def beanDefinition = Mock(BeanDefinition)
         beanDefinition.getSource() >> annotatedTypeMetadata
@@ -168,7 +169,8 @@ class EasyPipeRegistrySpec extends Specification {
         and: "bean definition of pipes"
         def annotatedTypeMetadata = Mock(StandardAnnotationMetadata)
         Map<String, Object> attributes = new HashMap<>()
-        attributes.put("value", PIPE_NAME)
+        attributes.put("name", PIPE_NAME)
+        attributes.put("autostart", false)
         annotatedTypeMetadata.getAnnotationAttributes(_ as String) >> attributes
         def beanDefinition = Mock(BeanDefinition)
         beanDefinition.getSource() >> annotatedTypeMetadata
@@ -185,5 +187,43 @@ class EasyPipeRegistrySpec extends Specification {
 
         then: "pipe call start"
         thrown BeanCreationException
+    }
+
+    def "should start autostartable pipelines"() {
+        given: "pipe instance"
+        def autostartPipeline = Mock(PipelineContext)
+        autostartPipeline.getStatus() >> PipelineContext.Status.PENDING
+        autostartPipeline.start() >> true
+
+        and: "application context with bean definition"
+        def applicationContext = Mock(ApplicationContext)
+        applicationContext.getBeansOfType(PipelineContext.class, true, true) >> {
+            Map<String, PipelineContext> pipesBeans = new HashMap<>()
+            pipesBeans.put(PIPE_NAME, autostartPipeline)
+            return pipesBeans
+        }
+
+        and: "bean definition of pipeline"
+        def annotatedTypeMetadata = Mock(StandardAnnotationMetadata)
+        Map<String, Object> attributes = new HashMap<>()
+        attributes.put("name", PIPE_NAME)
+        attributes.put("autostart", true)
+        annotatedTypeMetadata.getAnnotationAttributes(_ as String) >> attributes
+        def beanDefinition = Mock(BeanDefinition)
+        beanDefinition.getSource() >> annotatedTypeMetadata
+
+        and: "Spring beans factory"
+        def beanFactory = Mock(ConfigurableListableBeanFactory)
+        beanFactory.getBeanDefinition(PIPE_NAME) >> beanDefinition
+
+        and: "easy pipes registry"
+        def easyPipeRegistry = new EasyPipeRegistry(applicationContext, beanFactory)
+
+        when: "post construct invoked"
+        easyPipeRegistry.buildPipe()
+
+        then: "test pipeline should be registered and pending"
+        easyPipeRegistry.pipesList().keySet().contains(PIPE_NAME)
+        1 * autostartPipeline.start()
     }
 }

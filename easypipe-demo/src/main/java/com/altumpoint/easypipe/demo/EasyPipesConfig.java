@@ -25,7 +25,7 @@ public class EasyPipesConfig {
 
 
     @Autowired
-    @EasyPipeComponent("doubles-stream")
+    @EasyPipeComponent(name = "doubles-stream")
     public PipelineContext doublesStream(
             SimplePipeBuilder pipeBuilder,
             DoublesConsumer doublesConsumer,
@@ -41,7 +41,7 @@ public class EasyPipesConfig {
     }
 
     @Autowired
-    @EasyPipeComponent("created-files-auditor")
+    @EasyPipeComponent(name = "created-files-auditor", autostart = false)
     public PipelineContext createdFilesAuditor(SimplePipeBuilder pipeBuilder) {
         return pipeBuilder
                 .startPipe("created-files-auditor")

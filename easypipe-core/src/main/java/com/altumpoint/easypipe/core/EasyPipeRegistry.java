@@ -55,15 +55,19 @@ public class EasyPipeRegistry {
             if(beanDefinition.getSource() instanceof AnnotatedTypeMetadata) {
                 AnnotatedTypeMetadata metadata = (AnnotatedTypeMetadata) beanDefinition.getSource();
                 Map<String, Object> attributes = metadata.getAnnotationAttributes(EasyPipeComponent.class.getName());
-                if (attributes != null && attributes.containsKey("value")) {
-                    String annotationValue = (String) attributes.get("value");
-                    registerPipe("".equals(annotationValue) ? beanName : annotationValue, entry.getValue());
+                if (attributes != null && attributes.containsKey("name")) {
+                    String annotationValue = (String) attributes.get("name");
+                    registerPipe(
+                            "".equals(annotationValue) ? beanName : annotationValue,
+                            entry.getValue(),
+                            (Boolean) attributes.get("autostart")
+                    );
                 }
             }
         }
     }
 
-    private void registerPipe(String name, PipelineContext pipelineContext) {
+    private void registerPipe(String name, PipelineContext pipelineContext, boolean autostart) {
         if (pipelines.containsKey(name)) {
             throw new BeanCreationException(String
                     .format("Failed to create EasyPipe Registry: pipe with name %s already registered", name));
@@ -72,6 +76,10 @@ public class EasyPipeRegistry {
         pipelineContext.setPipeName(name);
         pipelines.put(name, pipelineContext);
         LOGGER.info("EasyPipe Registry: registering pipe '{}'", name);
+
+        if (autostart) {
+            pipelineContext.start();
+        }
     }
 
     /**

@@ -14,6 +14,18 @@ import java.lang.annotation.RetentionPolicy;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface EasyPipeComponent {
 
-    String value() default "";
+    /**
+     * Name of pipeline. If doesn't specified, name of bean will be used.
+     *
+     * @return name of pipeline.
+     */
+    String name() default "";
 
+    /**
+     * Do pipeline should be started during context startup.
+     * {@code true} by default.
+     *
+     * @return {@code true} if pipeline should be started on startup, {@code false} otherwise.
+     */
+    boolean autostart() default true;
 }
