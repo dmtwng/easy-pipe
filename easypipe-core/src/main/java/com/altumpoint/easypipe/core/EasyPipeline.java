@@ -12,7 +12,7 @@ import java.lang.annotation.RetentionPolicy;
  */
 @Bean
 @Retention(RetentionPolicy.RUNTIME)
-public @interface EasyPipeComponent {
+public @interface EasyPipeline {
 
     /**
      * Name of pipeline. If doesn't specified, name of bean will be used.

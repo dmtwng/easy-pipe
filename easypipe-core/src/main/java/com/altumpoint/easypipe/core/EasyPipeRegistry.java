@@ -54,7 +54,7 @@ public class EasyPipeRegistry {
             BeanDefinition beanDefinition = beanFactory.getBeanDefinition(beanName);
             if(beanDefinition.getSource() instanceof AnnotatedTypeMetadata) {
                 AnnotatedTypeMetadata metadata = (AnnotatedTypeMetadata) beanDefinition.getSource();
-                Map<String, Object> attributes = metadata.getAnnotationAttributes(EasyPipeComponent.class.getName());
+                Map<String, Object> attributes = metadata.getAnnotationAttributes(EasyPipeline.class.getName());
                 if (attributes != null && attributes.containsKey("name")) {
                     String annotationValue = (String) attributes.get("name");
                     registerPipe(
