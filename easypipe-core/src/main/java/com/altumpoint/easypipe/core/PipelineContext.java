@@ -24,15 +24,12 @@ public class PipelineContext {
     /**
      * Starts pipeline in separate thread and changes status to {@code Status.RUNNING}
      * is pipeline started successfully, changes status to {@code Status.FAILED} otherwise.
-     *
-     * @return {@code true} is pipeline started successfully, {@code false} otherwise.
      */
-    public boolean start() {
+    public void start() {
         Thread pipeThread = new Thread(new PipeRunnable(pipe));
         pipeThread.setUncaughtExceptionHandler(new PipeThreadExceptionHandler());
         pipeThread.start();
         status = PipelineContext.Status.RUNNING;
-        return true;
     }
 
     /**

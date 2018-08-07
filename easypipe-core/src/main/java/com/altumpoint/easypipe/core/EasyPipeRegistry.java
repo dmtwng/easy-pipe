@@ -114,8 +114,8 @@ public class EasyPipeRegistry {
         if (pipeIsRunning(pipeName)) {
             return "pipe is running";
         }
-
-        return pipelines.get(pipeName).start() ? "started" : "failed to start";
+        pipelines.get(pipeName).start();
+        return  "started";
     }
 
     /**

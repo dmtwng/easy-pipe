@@ -22,10 +22,9 @@ class PipelineContextSpec extends Specification {
 
     def "pipeline should be started in separate thread"() {
         when: "pipeline is starting"
-        def result = context.start()
+        context.start()
 
         then: "pipe should be started and status changed"
-        result == true
         context.status == PipelineContext.Status.RUNNING
     }
 
@@ -36,13 +35,12 @@ class PipelineContextSpec extends Specification {
         }
 
         when: "pipeline is starting"
-        def result = context.start()
+        context.start()
 
         and: "wait a bit"
         sleep 500
 
         then: "pipe should be started and status changed"
-        result == true
         context.status == PipelineContext.Status.FAILED
     }
 

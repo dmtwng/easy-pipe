@@ -47,7 +47,6 @@ class EasyPipeRegistrySpec extends Specification {
     def "should add correct pipeline with annotation"() {
         given: "pipe instance with pending status"
         pipelineContext.getStatus() >> PipelineContext.Status.PENDING
-        pipelineContext.start() >> true
 
         and: "easy pipes registry"
         def easyPipeRegistry = new EasyPipeRegistry(applicationContext, beanFactory)
@@ -193,7 +192,6 @@ class EasyPipeRegistrySpec extends Specification {
         given: "pipe instance"
         def autostartPipeline = Mock(PipelineContext)
         autostartPipeline.getStatus() >> PipelineContext.Status.PENDING
-        autostartPipeline.start() >> true
 
         and: "application context with bean definition"
         def applicationContext = Mock(ApplicationContext)
