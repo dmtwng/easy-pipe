@@ -21,8 +21,8 @@ Add EasyPipe dependency to you Spring Boot application.
 ```xml
 <dependency>
     <groupId>com.altumpoint.easypipe</groupId>
-    <artifactId>core</artifactId>
-    <version>0.1.1</version>
+    <artifactId>easypipe-core</artifactId>
+    <version>0.2.1</version>
 </dependency>
 ```
 
@@ -30,7 +30,7 @@ Add EasyPipe dependency to you Spring Boot application.
 Build your EasyPipe with builder and add to application context with `EasyPipeComponent` annotation.
 ```java
     @Autowired
-    @EasyPipeComponent("doubles-stream")
+    @EasyPipeComponent(name = "doubles-stream", autostart = false)
     public EasyPipe doublesStream(
             PipeBuilder pipeBuilder,
             DoublesConsumer doublesConsumer,
