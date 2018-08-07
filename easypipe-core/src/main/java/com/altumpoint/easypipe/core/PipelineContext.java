@@ -28,16 +28,10 @@ public class PipelineContext {
      * @return {@code true} is pipeline started successfully, {@code false} otherwise.
      */
     public boolean start() {
-        try {
-            Thread pipeThread = new Thread(new PipeRunnable(pipe));
-            pipeThread.setUncaughtExceptionHandler(new PipeThreadExceptionHandler());
-            pipeThread.start();
-            status = PipelineContext.Status.RUNNING;
-        } catch (RuntimeException e) {
-            LOGGER.error("Failed to start EasyPipe with name {0}", pipeName, e);
-            status = PipelineContext.Status.FAILED;
-            return false;
-        }
+        Thread pipeThread = new Thread(new PipeRunnable(pipe));
+        pipeThread.setUncaughtExceptionHandler(new PipeThreadExceptionHandler());
+        pipeThread.start();
+        status = PipelineContext.Status.RUNNING;
         return true;
     }
 
