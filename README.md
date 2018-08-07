@@ -30,17 +30,18 @@ Add EasyPipe dependency to you Spring Boot application.
 Build your EasyPipe with builder and add to application context with `EasyPipeComponent` annotation.
 ```java
     @Autowired
-    @EasyPipeComponent(name = "doubles-stream", autostart = false)
-    public EasyPipe doublesStream(
-            PipeBuilder pipeBuilder,
+    @EasyPipeline(name = "doubles-stream", autostart = false)
+    public PipelineContext doublesStream(
+            SimplePipeBuilder pipeBuilder,
             DoublesConsumer doublesConsumer,
             PercentsTransformer percentsTransformer,
             LogsPublisher logsPublisher
     ) {
         return pipeBuilder
-                .startPipe("doubles-stream", doublesConsumer)
-                .addTransformer("d-transformer", percentsTransformer)
-                .addPublisher(logsPublisher)
+                .startPipe("doubles-stream")
+                .withSource("doubles-consumer", doublesConsumer)
+                .transform("d-transformer", percentsTransformer)
+                .publish("d-publisher", logsPublisher)
                 .build();
     }
 ```
