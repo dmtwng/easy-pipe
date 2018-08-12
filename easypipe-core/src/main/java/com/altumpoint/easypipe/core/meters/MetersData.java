@@ -1,7 +1,5 @@
 package com.altumpoint.easypipe.core.meters;
 
-import org.springframework.util.StopWatch;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,20 +16,16 @@ public class MetersData {
         dataMap.put(key, data);
     }
 
-    public void addStopWatch(String key) {
-        StopWatch stopWatch = new StopWatch();
-        stopWatch.start();
-        dataMap.put(key, stopWatch);
+    public void startTimer(String key) {
+        dataMap.put(key, System.nanoTime());
     }
 
     public Object getMeterData(String key) {
         return dataMap.get(key);
     }
 
-    public long getStopWatchTaskTime(String key) {
-        StopWatch stopWatch = (StopWatch) dataMap.get(key);
-        stopWatch.stop();
-        return stopWatch.getLastTaskTimeMillis();
+    public long getTimerDuration(String key) {
+        return System.nanoTime() - (Long) dataMap.get(key);
     }
 
 }

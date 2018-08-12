@@ -21,20 +21,19 @@ class MetersDataSpec extends Specification {
         def metersData = new MetersData()
 
         and:
-        def delay = 50
-        def delta = delay / 5
+        def delay = 5
+        def nanoDelay = delay * 1000000
 
         when:
-        metersData.addStopWatch("KEY")
+        metersData.startTimer("KEY")
 
         and:
         sleep(delay)
 
         and:
-        def timerValue = metersData.getStopWatchTaskTime("KEY")
+        def timerValue = metersData.getTimerDuration("KEY")
 
         then:
-        timerValue < delay + delta
-        timerValue > delay - delta
+        timerValue < nanoDelay * 2
     }
 }
