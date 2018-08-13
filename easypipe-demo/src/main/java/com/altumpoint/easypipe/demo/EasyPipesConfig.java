@@ -7,8 +7,8 @@ import com.altumpoint.easypipe.core.pipes.simple.SimplePipeBuilder;
 import com.altumpoint.easypipe.demo.pipes.DoublesConsumer;
 import com.altumpoint.easypipe.demo.pipes.LogsPublisher;
 import com.altumpoint.easypipe.demo.pipes.PercentsTransformer;
-import com.altumpoint.easypipe.fileio.DirectoryConsumer;
-import com.altumpoint.easypipe.fileio.FileEasyPublisher;
+import com.altumpoint.easypipe.fileio.DirectoryListener;
+import com.altumpoint.easypipe.fileio.FilePublisher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.ComponentScan;
@@ -45,8 +45,8 @@ public class EasyPipesConfig {
     public PipelineContext createdFilesAuditor(SimplePipeBuilder pipeBuilder) {
         return pipeBuilder
                 .startPipe("created-files-auditor")
-                .withSource("files-auditor-wather", new DirectoryConsumer("temp/watch"), auditorConsumer)
-                .publish("files-auditor-writer", new FileEasyPublisher("temp/audit.log"), auditorPublisher)
+                .withSource("files-auditor-wather", new DirectoryListener("temp/watch"), auditorConsumer)
+                .publish("files-auditor-writer", new FilePublisher("temp/audit.log"), auditorPublisher)
                 .build();
     }
 

@@ -3,7 +3,7 @@ package com.altumpoint.easypipe.fileio
 import com.altumpoint.easypipe.core.pipes.TypedProperties
 import spock.lang.Specification
 
-class FileEasyPublisherSpec extends Specification {
+class FilePublisherSpec extends Specification {
 
 
     public static final String TEST_MESSAGE = "test-message"
@@ -14,10 +14,10 @@ class FileEasyPublisherSpec extends Specification {
         def writer = Mock(FileWriter)
 
         and: "destination with writer"
-        def publisher = new FileEasyPublisher()
+        def publisher = new FilePublisher()
         publisher.setWriter(writer)
         def properties = new TypedProperties();
-        properties.setProperty(FileEasyPublisher.PROPERTY_ADD_LINE_END, "false")
+        properties.setProperty(FilePublisher.PROPERTY_ADD_LINE_END, "false")
         publisher.loadProperties(properties)
 
         when: "publish a message"
@@ -32,7 +32,7 @@ class FileEasyPublisherSpec extends Specification {
         def writer = Mock(FileWriter)
 
         and: "destination with writer"
-        def publisher = new FileEasyPublisher()
+        def publisher = new FilePublisher()
         publisher.setWriter(writer)
 
         when: "publish a message"
@@ -49,7 +49,7 @@ class FileEasyPublisherSpec extends Specification {
         file.getPath() >> {throw new IOException()}
 
         when: "creates destination"
-        new FileEasyPublisher(file)
+        new FilePublisher(file)
 
         then: "IllegalArgumentException should be thrown"
         thrown IllegalArgumentException
@@ -63,7 +63,7 @@ class FileEasyPublisherSpec extends Specification {
         file.createNewFile() >> false
 
         when: "creates destination"
-        new FileEasyPublisher(file)
+        new FilePublisher(file)
 
         then: "IllegalArgumentException should be thrown"
         thrown IllegalArgumentException
