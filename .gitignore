@@ -1,5 +1,5 @@
 # Maven
-/target/
+**/target/
 
 # Compiled class files
 *.class
@@ -37,3 +37,7 @@ temp/
 docs/_site
 Gemfile
 Gemfile.lock
+
+
+# others
+.DS_Store
