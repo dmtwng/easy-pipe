@@ -11,15 +11,15 @@ import java.io.Writer;
  *
  * @since 0.2.0
  */
-public class WriterEasyPublisher implements EasyDestination<String>, Closeable {
+public class WriterPublisher implements EasyDestination<String>, Closeable {
 
     private Writer writer;
 
 
-    public WriterEasyPublisher() {
+    public WriterPublisher() {
     }
 
-    public WriterEasyPublisher(Writer writer) {
+    public WriterPublisher(Writer writer) {
         this.writer = writer;
     }
 

@@ -18,7 +18,7 @@ import java.util.concurrent.TimeUnit
 import java.util.function.Consumer
 
 @ConfineMetaClassChanges([Paths])
-class DirectoryConsumerSpec extends Specification {
+class DirectoryListenerSpec extends Specification {
 
     private path = Mock(Path)
     private fileSystemProvider = Mock(FileSystemProvider)
@@ -49,26 +49,26 @@ class DirectoryConsumerSpec extends Specification {
         ]
 
         and: "directory and message consumers"
-        def directoryConsumer = new DirectoryConsumer(this.path)
+        def directoryListener = new DirectoryListener(this.path)
         def messageConsumer = Mock(Consumer)
-        directoryConsumer.setMessageConsumer(messageConsumer)
+        directoryListener.setMessageConsumer(messageConsumer)
         def properties = new TypedProperties();
-        properties.setProperty(DirectoryConsumer.PROPERTY_POLL_TIMEOUT, "1000")
-        directoryConsumer.loadProperties(properties)
+        properties.setProperty(DirectoryListener.PROPERTY_POLL_TIMEOUT, "1000")
+        directoryListener.loadProperties(properties)
 
         when: "start consuming"
-        directoryConsumer.start()
+        directoryListener.start()
 
         then: "some"
         messageConsumer.accept(_ as String) >> {
-            directoryConsumer.stop()
+            directoryListener.stop()
         }
         true
     }
 
     def "should fail consumer creation if path is not a directory"() {
         when: "creating new source"
-        new DirectoryConsumer(path).start()
+        new DirectoryListener(path).start()
 
         then: "exception should be thrown"
         fileSystemProvider.readAttributes(path, "basic:isDirectory", _ as LinkOption[]) >> [
@@ -80,10 +80,10 @@ class DirectoryConsumerSpec extends Specification {
     @Timeout(value = 1500, unit = TimeUnit.MILLISECONDS)
     def "should fail start of consuming if creation of watcher failed"() {
         given: "new source"
-        def consumer = new DirectoryConsumer(path)
+        def listener = new DirectoryListener(path)
 
         when: "start consuming"
-        consumer.start()
+        listener.start()
 
         then: "exception should be thrown"
         path.register(_, StandardWatchEventKinds.ENTRY_CREATE) >> {throw new IOException("Failed")}

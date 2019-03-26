@@ -7,6 +7,7 @@ import com.altumpoint.easypipe.core.pipes.EasyTransformer
 import com.altumpoint.easypipe.core.pipes.TypedProperties
 import io.micrometer.core.instrument.Counter
 import io.micrometer.core.instrument.MeterRegistry
+import io.micrometer.core.instrument.Timer
 import spock.lang.Specification
 
 import java.util.concurrent.atomic.AtomicLong
@@ -25,7 +26,7 @@ class SimplePipeBuilderSpec extends Specification {
     def setup() {
         meterRegistry = Mock(MeterRegistry)
         this.meterRegistry.counter(_ as String) >> Mock(Counter)
-        this.meterRegistry.gauge(_ as String, _ as AtomicLong) >> Mock(AtomicLong)
+        this.meterRegistry.timer(_ as String) >> Mock(Timer)
 
         consumer = Mock(EasySource)
         def msgConsumer
@@ -42,7 +43,7 @@ class SimplePipeBuilderSpec extends Specification {
     }
 
 
-    def "should build simple pipeline"() {
+    def "should build context with simple pipeline"() {
         given: "simple pipe builder"
         def pipeBuilder = new SimplePipeBuilder(this.meterRegistry)
 
@@ -54,6 +55,7 @@ class SimplePipeBuilderSpec extends Specification {
                 .filter("test-filter", filter)
                 .publish("test-destination", publisher)
                 .build()
+                .getPipe()
                 .start()
 
         then: "message from source should be published"
@@ -61,7 +63,7 @@ class SimplePipeBuilderSpec extends Specification {
 
     }
 
-    def "should build simple pipeline with component properties"() {
+    def "should build context with simple pipeline with component properties"() {
         given: "simple pipe builder"
         def pipeBuilder = new SimplePipeBuilder(meterRegistry)
 
@@ -76,6 +78,7 @@ class SimplePipeBuilderSpec extends Specification {
                 .filter("test-filter", filter, properties)
                 .publish("test-destination", publisher, properties)
                 .build()
+                .getPipe()
                 .start()
 
         then: "message from source should be published"

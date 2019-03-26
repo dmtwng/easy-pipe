@@ -2,24 +2,23 @@ package com.altumpoint.easypipe.core.meters
 
 import io.micrometer.core.instrument.Counter
 import io.micrometer.core.instrument.MeterRegistry
+import io.micrometer.core.instrument.Timer
 import spock.lang.Specification
-
-import java.util.concurrent.atomic.AtomicLong
 
 class DefaultMetersStrategyTest extends Specification {
     private static final String STOP_WATCH_KEY = "start-stopwatch"
 
     private counter
-    private gauge
+    private timer
     private meterRegistry
     private metersStrategy
 
     void setup() {
         counter = Mock(Counter)
-        gauge = Mock(AtomicLong)
+        timer = Mock(Timer)
         meterRegistry = Mock(MeterRegistry)
-        meterRegistry.counter(_) >> counter
-        meterRegistry.gauge(_, _) >> gauge
+        meterRegistry.counter("easy-pipe.test.count") >> counter
+        meterRegistry.timer("easy-pipe.test.time") >> timer
         metersStrategy = new DefaultMetersStrategy("test", meterRegistry)
     }
 
@@ -37,7 +36,7 @@ class DefaultMetersStrategyTest extends Specification {
 
         then:
         metersData != null
-        metersData.getStopWatchTaskTime(STOP_WATCH_KEY) >= 0
+        metersData.getTimerDuration(STOP_WATCH_KEY) >= 0
     }
 
     def "should record time after message handling"() {
@@ -48,6 +47,6 @@ class DefaultMetersStrategyTest extends Specification {
         metersStrategy.afterHandling(metersData)
 
         then:
-        1 * metersData.getStopWatchTaskTime(STOP_WATCH_KEY)
+        1 * metersData.getTimerDuration(STOP_WATCH_KEY)
     }
 }

@@ -2,7 +2,7 @@ package com.altumpoint.easypipe.fileio
 
 import spock.lang.Specification
 
-class WriterEasyPublisherSpec extends Specification {
+class WriterPublisherSpec extends Specification {
 
     public static final String MESSAGE = "test message"
 
@@ -12,7 +12,7 @@ class WriterEasyPublisherSpec extends Specification {
         def writer = Mock(Writer)
 
         and: "writer easy destination"
-        def publisher = new WriterEasyPublisher(writer)
+        def publisher = new WriterPublisher(writer)
 
         when: "publish was invoked"
         publisher.publish(MESSAGE)
@@ -28,7 +28,7 @@ class WriterEasyPublisherSpec extends Specification {
         writer.write(MESSAGE) >> {throw new IOException()}
 
         and: "writer easy destination"
-        def publisher = new WriterEasyPublisher(writer)
+        def publisher = new WriterPublisher(writer)
 
         when: "publish was invoked"
         publisher.publish(MESSAGE)
@@ -42,7 +42,7 @@ class WriterEasyPublisherSpec extends Specification {
         def writer = Mock(Writer)
 
         and: "writer easy destination"
-        def publisher = new WriterEasyPublisher(writer)
+        def publisher = new WriterPublisher(writer)
 
         when: "close was invoked"
         publisher.close()

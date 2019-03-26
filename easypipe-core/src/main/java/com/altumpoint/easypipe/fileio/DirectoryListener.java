@@ -17,15 +17,15 @@ import java.nio.file.WatchService;
 import java.util.function.Consumer;
 
 /**
- * Easy consumer for consuming all created files in specified directory.
+ * Easy consumer for listening to all created files in specified directory.
  * It is possible to specify timeout in milliseconds for checking directory for new files,
  * by default this value equals {@code 1000}.
  *
  * @since 0.2.0
  */
-public class DirectoryConsumer implements EasySource<String> {
+public class DirectoryListener implements EasySource<String> {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(DirectoryConsumer.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DirectoryListener.class);
 
     public static final String PROPERTY_POLL_TIMEOUT = "pollTimeout";
     public static final int DEFAULT_POLL_TIMEOUT = 1000;
@@ -38,11 +38,11 @@ public class DirectoryConsumer implements EasySource<String> {
     private Consumer<String> messageConsumer;
 
 
-    public DirectoryConsumer(String path) {
+    public DirectoryListener(String path) {
         this(Paths.get(path));
     }
 
-    public DirectoryConsumer(Path path) {
+    public DirectoryListener(Path path) {
         this.path = path;
     }
 

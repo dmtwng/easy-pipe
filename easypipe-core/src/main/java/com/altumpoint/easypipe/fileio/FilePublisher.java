@@ -15,7 +15,7 @@ import java.io.IOException;
  *
  * @since 0.2.0
  */
-public class FileEasyPublisher extends WriterEasyPublisher {
+public class FilePublisher extends WriterPublisher {
 
     public static final String PROPERTY_ADD_LINE_END = "addLineEnd";
     public static final boolean DEFAULT_ADD_LINE_END = true;
@@ -23,14 +23,14 @@ public class FileEasyPublisher extends WriterEasyPublisher {
     private boolean addLineEnding = DEFAULT_ADD_LINE_END;
 
 
-    public FileEasyPublisher() {
+    public FilePublisher() {
     }
 
-    public FileEasyPublisher(String path) {
+    public FilePublisher(String path) {
         this(new File(path));
     }
 
-    public FileEasyPublisher(File file) {
+    public FilePublisher(File file) {
         try {
             if (!file.exists()) {
                 file.getParentFile().mkdirs();

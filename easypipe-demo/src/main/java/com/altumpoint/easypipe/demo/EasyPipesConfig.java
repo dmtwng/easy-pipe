@@ -1,14 +1,14 @@
 package com.altumpoint.easypipe.demo;
 
-import com.altumpoint.easypipe.core.pipes.EasyPipe;
-import com.altumpoint.easypipe.core.EasyPipeComponent;
-import com.altumpoint.easypipe.core.pipes.simple.SimplePipeBuilder;
+import com.altumpoint.easypipe.core.EasyPipeline;
+import com.altumpoint.easypipe.core.PipelineContext;
 import com.altumpoint.easypipe.core.pipes.TypedProperties;
+import com.altumpoint.easypipe.core.pipes.simple.SimplePipeBuilder;
 import com.altumpoint.easypipe.demo.pipes.DoublesConsumer;
 import com.altumpoint.easypipe.demo.pipes.LogsPublisher;
 import com.altumpoint.easypipe.demo.pipes.PercentsTransformer;
-import com.altumpoint.easypipe.fileio.DirectoryConsumer;
-import com.altumpoint.easypipe.fileio.FileEasyPublisher;
+import com.altumpoint.easypipe.fileio.DirectoryListener;
+import com.altumpoint.easypipe.fileio.FilePublisher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.ComponentScan;
@@ -25,8 +25,8 @@ public class EasyPipesConfig {
 
 
     @Autowired
-    @EasyPipeComponent("doubles-stream")
-    public EasyPipe doublesStream(
+    @EasyPipeline(name = "doubles-stream", autostart = false)
+    public PipelineContext doublesStream(
             SimplePipeBuilder pipeBuilder,
             DoublesConsumer doublesConsumer,
             PercentsTransformer percentsTransformer,
@@ -41,12 +41,12 @@ public class EasyPipesConfig {
     }
 
     @Autowired
-    @EasyPipeComponent("created-files-auditor")
-    public EasyPipe createdFilesAuditor(SimplePipeBuilder pipeBuilder) {
+    @EasyPipeline(name = "created-files-auditor", autostart = false)
+    public PipelineContext createdFilesAuditor(SimplePipeBuilder pipeBuilder) {
         return pipeBuilder
                 .startPipe("created-files-auditor")
-                .withSource("files-auditor-wather", new DirectoryConsumer("temp/watch"), auditorConsumer)
-                .publish("files-auditor-writer", new FileEasyPublisher("temp/audit.log"), auditorPublisher)
+                .withSource("files-auditor-wather", new DirectoryListener("temp/watch"), auditorConsumer)
+                .publish("files-auditor-writer", new FilePublisher("temp/audit.log"), auditorPublisher)
                 .build();
     }
 
